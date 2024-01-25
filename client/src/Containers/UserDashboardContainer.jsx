@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import useGetDashboardData from '../apiSlice.js';
 import {
   Paper,
   Button,
@@ -18,14 +19,25 @@ import { RobotoFontFace } from '@fontsource/roboto';
 
 //STATE STATE STATE STATE
 const DashboardPage = () => {
-  // import the rtkquery stuff
+ const {
+    data: dashBoardData,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+    refetch
+  } = useGetDashboardData();
+  if(isSuccess) console.log(dashBoardData);
+
   const [userData, setUserData] = useState(null);
 
   // FETCHING DATA
+  
   const fetchData = () => {
     const token = localStorage.getItem('token');
     console.log ('token data retrieved using localstorage.getItem', token);
     // GET REQUEST TO RETRIEVE USER DATA
+    
     fetch ('http://localhost:3000/dashboard', {
       method: 'GET',
       headers: {
