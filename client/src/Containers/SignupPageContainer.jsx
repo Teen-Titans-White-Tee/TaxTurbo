@@ -64,7 +64,8 @@ const AccountCreationForm = () => {
           localStorage.setItem('token', data.locals.token);
 
           setTimeout (() => {
-            navigate('/dashboard');
+            //Changed this to route to login
+            navigate('/login');
           }, 1000);
         } else {
           console.error('Form submission failed:', data.message);

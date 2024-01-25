@@ -9,7 +9,9 @@ const router = express.Router()
 
 //ROUTE FOR SIGN UP
 
-router.post ('/ignup', userController.newUser ,data.stateBrackets, data.fedBrackets , calc.allTaxes, userController.createUser, authController.signupUser, (req, res) => {
+
+
+router.post ('/', userController.newUser ,data.stateBrackets, data.fedBrackets , calc.allTaxes, userController.createUser, authController.signupUser, (req, res) => {
   res.status(200).json({ success: true, message: 'Request processed successfully', locals: res.locals });
 });
 
