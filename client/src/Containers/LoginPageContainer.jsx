@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Box, Button, TextField } from '@mui/material';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 
 const StyledLogin = styled.div`
@@ -134,8 +135,11 @@ const LoginPageContainer = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
- 
-    const isLoginSuccessful = true;
+    let isLoginSuccessful = false;
+
+    const response = axios.post('/login', {email, password});
+    
+    // const isLoginSuccessful = true;
 
     if (isLoginSuccessful) {
       navigate('/dashboard');

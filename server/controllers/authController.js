@@ -1,8 +1,10 @@
 process.env.SECRET = '7hDkL$2pA!sFg@9rJm&5tYiX';
 require('dotenv').config();
-const models = require('../models/mongooseModels');  
+const { Person } = require('../models/mongooseModels');  
 const jwt = require('jsonwebtoken'); 
  
+const authController = {};
+
 // this creates json web token
 const createToken = (_id) => { 
   if (!process.env.SECRET) {
@@ -12,7 +14,7 @@ const createToken = (_id) => {
 };
 
 // signup user 
-const signupUser = async (req, res, next) => { 
+authController.signupUser = async (req, res, next) => { 
 
   const {email} = req.body;
 
@@ -21,7 +23,7 @@ const signupUser = async (req, res, next) => {
   // try to sign user up using signup method 
   try {
     // const user = await models.Person.signup(firstName, lastName, password, email);  
-    const user = await models.Person.findOne({email});
+    const user = await Person.findOne({email});
 
     console.log ('Found a user to create a token with their document id', user);
 
@@ -45,10 +47,10 @@ const signupUser = async (req, res, next) => {
 }; 
 
 // login user 
-const loginUser = async (req,res) => { 
+authController.loginUser = async (req,res) => { 
   const { email, password } = req.body; 
   try {
-    const user = await models.Person.login(email, password);  
+    const user = await Person.login(email, password);  
 
     // create token
     const token = createToken(user._id);
@@ -62,7 +64,7 @@ const loginUser = async (req,res) => {
 
 /* Controller that verifies token */
 
-const verifyToken = (req, res, next) => {
+authController.verifyToken = (req, res, next) => {
   // Extract token from Authorization header
   const authorizationHeader = req.headers['authorization'];
 
@@ -90,4 +92,4 @@ const verifyToken = (req, res, next) => {
 };
 
 
-module.exports = {verifyToken, loginUser, signupUser};
+module.exports = authController;

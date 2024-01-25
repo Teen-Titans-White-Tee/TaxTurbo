@@ -7,9 +7,10 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
 
-const apiRouterUser = require('./Routes/user');
-const dashboardRouter = require ('./Routes/dashboardRoute')
-const transacionRouter = require ('./Routes/transactions')
+const signupRouter = require('./Routes/signupRouter');
+const dashboardRouter = require ('./Routes/dashboardRoute');
+const transacionRouter = require ('./Routes/transactions');
+const loginRouter = require('./Routes/loginRouter');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -28,11 +29,22 @@ app.use('/build', express.static(path.join(__dirname, '../build')));
 app.use('/dashboard', dashboardRouter);
 
 
+// app.use('/auth', (req, res)=>{
+//   res.send('Auth Path hit');
+// });
+
+app.use('/api', (req, res)=>{
+  res.send('Api Path hit');
+});
+
 app.use('/dashboard', dashboardRouter);
 
-app.use('/signup', apiRouterUser);
+app.use('/signup', signupRouter);
+
+app.use('/login', loginRouter)
 
 app.use('/transaction', transacionRouter);
+
 
 // app.get('/', (req, res) => {
   

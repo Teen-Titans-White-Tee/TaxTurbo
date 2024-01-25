@@ -45,7 +45,7 @@ const personSchema = new Schema({
   filingStatus: String,
   state: String,
   industry: String,
-  email: String,
+  email: {type: String, unique: true, required: true},
   estimatedIncome: Number,
   businessExpenses: Number,
   preTaxRetirementContributions: Number,
@@ -89,11 +89,13 @@ personSchema.statics.signup = async function(firstName, lastName, password, emai
     throw Error('Email already in use');
   } 
   // generate salt and hash
-  const salt = await bcrypt.genSalt(10); 
-  const hash = await bcrypt.hash(password, salt);  
+  // const salt = await bcrypt.genSalt(10); 
+  const hash = await bcrypt.hash(password, 10);  
 
   // store email and password in database
-  const user = await this.create({email, password: hash, firstName}); 
+  const user = await this.create({email, password: hash, firstName, lastName}); 
+
+  console.log(user);
 
   return user;
 
@@ -111,6 +113,7 @@ personSchema.statics.login = async function(email, password) {
   if(!user) {
     throw Error('Incorrect email');
   } 
+  console.log('user---------->', user);
   //compares password to hashed password
   const match = await bcrypt.compare(password, user.password); 
 
@@ -119,6 +122,7 @@ personSchema.statics.login = async function(email, password) {
   } 
   return user;
 };
+
 const Person = mongoose.model('person', personSchema); 
 
 
