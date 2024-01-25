@@ -5,7 +5,9 @@ module.exports = {
   entry: './client/src/index.js',
   output: {
     path: path.resolve(__dirname, 'build'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    clean: true
+    
   },
   mode: process.env.NODE_ENV,
   module: {
@@ -54,24 +56,20 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       hash: true,
-      template: './client/public/index.html' // Updated template path
+      template: './client/src/index.html',
+      inject: 'body'
     })
   ],
   devServer: {
-    static: {
-      directory: path.join(__dirname, 'build'),
-      publicPath: '/build/'
-    },
     proxy: {
-      '/api': 'http://localhost:3000',
-      changeOrigin: true,
-      secure: false,
-      pathRewrite: {
-        '^/api': '' // Remove the '/api' prefix when forwarding the request
-      }
+      '/api': {
+        target: 'http://localhost:3000',
+      },
+      '/auth': 'http://localhost:3000'
     },
     compress: true,
-    historyApiFallback: true
+    historyApiFallback: true,
+    hot: true
   }
 };
 
