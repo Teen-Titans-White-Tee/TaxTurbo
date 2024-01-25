@@ -18,7 +18,7 @@ import { RobotoFontFace } from '@fontsource/roboto';
 
 //STATE STATE STATE STATE
 const DashboardPage = () => {
-
+  // import the rtkquery stuff
   const [userData, setUserData] = useState(null);
 
   // FETCHING DATA
@@ -29,7 +29,7 @@ const DashboardPage = () => {
     fetch ('http://localhost:3000/dashboard', {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${token}`, //handle in react router and server
         'Content-Type': 'application/json',
       },
       //credentials: 'include',

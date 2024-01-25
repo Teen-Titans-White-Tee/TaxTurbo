@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import {
   Container,
   Typography,
@@ -9,6 +10,7 @@ import {
   Box,
   MenuItem,
 } from '@mui/material';
+
 
 const AccountCreationForm = () => {
   //used to redirect upon success recieved from the response object
@@ -25,7 +27,7 @@ const AccountCreationForm = () => {
   const [businessExpenses, setBusinessExpenses] = useState(30);
   const [preTaxRetirementContributions, setPreTaxContributions] = useState(30);
 
-  const handleFormSubmit = (event) => {
+  const handleFormSubmit = async (event) => {
     event.preventDefault();
 
     const formData = {
@@ -55,20 +57,7 @@ const AccountCreationForm = () => {
         if (!response.ok) {
           throw new Error('Form submission failed');
         }
-        return response.json();
-      })
-      .then((data) => {
-        if (data.success) {
-
-          //store cookie on local storage here? data.locals.token
-          localStorage.setItem('token', data.locals.token);
-
-          setTimeout (() => {
-            navigate('/dashboard');
-          }, 1000);
-        } else {
-          console.error('Form submission failed:', data.message);
-        }
+        navigate('/dashboard');
       })
       .catch((error) => {
         console.error('Error during form submission:', error);
