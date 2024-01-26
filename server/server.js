@@ -6,7 +6,7 @@ const PORT = 3000;
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
-
+const apiRouter = require('./Routes/apiRouter');
 const apiRouterUser = require('./Routes/user');
 const dashboardRouter = require ('./Routes/dashboardRoute');
 const transacionRouter = require ('./Routes/transactions');
@@ -31,7 +31,7 @@ app.use('/dashboard', dashboardRouter);
 app.use('/auth', (req, res)=>{
   res.send('Auth Path hit');
 });
-app.use('/api', (req, res)=>{
+app.use('/api', apiRouter, (req, res)=>{
   res.send('Api Path hit');
 });
 
