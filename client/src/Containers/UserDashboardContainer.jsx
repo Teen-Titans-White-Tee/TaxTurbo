@@ -28,6 +28,19 @@ const UserDashboardContainer = () => {
     refetch
   } = useGetUserDataQuery();
   if(isSuccess) {
+    const username = userData.email;
+    const stateTax = (Math.abs(userData.stateTax));
+    //       setUsername(username);
+    const updatedPieChartData = [
+      { id: 'State Tax', label: 'State Tax', value: userData.taxesOwed.stateTax },
+      { id: 'Federal Tax', label: 'Federal Tax', value: (Math.abs(userData.taxesOwed.fed)) },
+      { id: 'SSI Tax', label: 'SSI Tax', value: (Math.abs(userData.taxesOwed.ssi)) },
+      { id: 'Medicare Tax', label: 'Medicare Tax', value: (Math.abs(userData.taxesOwed.medicare)) },
+      { id: 'Deductions', label: 'Deductions', value: (Math.abs(userData.businessExpenses))},
+      { id: 'Earnings', label: 'Earnings', value: (Math.abs(userData.estimatedIncome))},
+    ];
+    //setPieChartData(updatedPieChartData) --Need to translate this to redux reducer/action
+
     return (
       console.log(userData)
     );
@@ -44,20 +57,10 @@ export default UserDashboardContainer;
 
 //   // GET REQUEST TO RETRIEVE USER DATA
 
-//       const username = data.userFound.email;
-//       const stateTax = (Math.abs(data.userFound.stateTax));
-//       setUsername(username);
 
-//       const updatedPieChartData = [
-//         { id: 'State Tax', label: 'State Tax', value: stateTax },
-//         { id: 'Federal Tax', label: 'Federal Tax', value: (Math.abs(data.userFound.fedTax)) },
-//         { id: 'SSI Tax', label: 'SSI Tax', value: (Math.abs(data.userFound.ssiTax)) },
-//         { id: 'Medicare Tax', label: 'Medicare Tax', value: (Math.abs(data.userFound.medicareTax)) },
-//         { id: 'Deductions', label: 'Deductions', value: (Math.abs(data.userFound.businessExpenses))},
-//         { id: 'Earnings', label: 'Earnings', value: (Math.abs(data.userFound.estimatedIncome))},
-//       ];
+//      
         
-//       setPieChartData(updatedPieChartData);
+//       ;
   
   
 //       if (data.userFound) {
