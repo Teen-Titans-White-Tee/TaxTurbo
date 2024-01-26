@@ -1,7 +1,8 @@
 const mongoose = require('mongoose'); 
 const bcrypt = require('bcrypt'); 
 const validator = require('validator');
-const MONGO_URI = 'mongodb+srv://moisesgomezr9:L37udLyPOFIfqRtM@scratch-project.j3hrygw.mongodb.net/?retryWrites=true&w=majority';
+const MONGO_URI = process.env.MONGO_URI;
+
 mongoose.connect(MONGO_URI, {
   // options for the connect method to parse the URI
   useNewUrlParser: true,
@@ -91,11 +92,12 @@ personSchema.statics.signup = async function(firstName, lastName, password, emai
   // generate salt and hash
   // const salt = await bcrypt.genSalt(10); 
   const hash = await bcrypt.hash(password, 10);  
+  // console.log(hash)
 
   // store email and password in database
   const user = await this.create({email, password: hash, firstName, lastName}); 
-
-  console.log(user);
+  // console.log(user);
+  // console.log(user.password)
 
   return user;
 

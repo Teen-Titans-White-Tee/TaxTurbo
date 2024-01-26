@@ -1,16 +1,15 @@
-process.env.SECRET = '7hDkL$2pA!sFg@9rJm&5tYiX';
-require('dotenv').config();
 const { Person } = require('../models/mongooseModels');  
 const jwt = require('jsonwebtoken'); 
+const secret = process.env.SECRET;
  
 const authController = {};
 
 // this creates json web token
 const createToken = (_id) => { 
-  if (!process.env.SECRET) {
+  if (! secret) {
     throw Error('Secret key is missing. Make sure process.env.SECRET is defined.');
   }
-  return jwt.sign({_id}, process.env.SECRET, {expiresIn: '1d'});
+  return jwt.sign({_id}, secret, {expiresIn: '1d'});
 };
 
 // signup user 
@@ -77,7 +76,7 @@ authController.verifyToken = (req, res, next) => {
 
   try {
     // Verify the token
-    const decoded = jwt.verify(token, process.env.SECRET);
+    const decoded = jwt.verify(token, secret);
     
     // Attach the decoded user information onto req.user
     req.user = decoded;
