@@ -1,6 +1,6 @@
 const { Person } = require('../models/mongooseModels');  
 const jwt = require('jsonwebtoken'); 
-const secret = process.env.SECRET;
+const secret = "7hDkL$2pA!sFg@9rJm&5tYiX";
  
 const authController = {};
 
@@ -13,48 +13,51 @@ const createToken = (_id) => {
 };
 
 // signup user 
-authController.signupUser = async (req, res, next) => { 
+// authController.signupUser = async (req, res, next) => { 
 
-  const {email} = req.body;
+//   const {email} = req.body;
 
-  console.log ('Email from the request body in jwt token creation', email);
+//   console.log ('Email from the request body in jwt token creation', email);
 
-  // try to sign user up using signup method 
-  try {
-    // const user = await models.Person.signup(firstName, lastName, password, email);  
-    const user = await Person.findOne({email});
+//   // try to sign user up using signup method 
+//   try {
+//     // const user = await models.Person.signup(firstName, lastName, password, email);  
+//     const user = await Person.findOne({email});
 
-    console.log ('Found a user to create a token with their document id', user);
+//     console.log ('Found a user to create a token with their document id', user);
 
-    // create a token 
-    const token = createToken(user._id);
-    // Send the token as a cookie
-    // res.cookie('token', token, {httpOnly: true});
+//     // create a token 
+//     const token = createToken(user._id);
+//     // Send the token as a cookie
+//     // res.cookie('token', token, {httpOnly: true});
 
-    res.locals.token = token;
-
-
-    //expires: new Date(Date.now() + 24 * 60 * 60 * 1000), secure: true, sameSite: 'Strict'
-
-    return next();
+//     res.locals.token = token;
 
 
-    // res.status(200).json({email, token});
-  } catch (error) {
-    res.status(400).json({error: error.message});
-  }
-}; 
+//     //expires: new Date(Date.now() + 24 * 60 * 60 * 1000), secure: true, sameSite: 'Strict'
+
+//     return next();
+
+
+//     // res.status(200).json({email, token});
+//   } catch (error) {
+//     res.status(400).json({error: error.message});
+//   }
+// }; 
 
 // login user 
 authController.loginUser = async (req,res) => { 
   const { email, password } = req.body; 
+  console.log(req.body);
   try {
     const user = await Person.login(email, password);  
+
+    console.log('user in authController ', user)
 
     // create token
     const token = createToken(user._id);
 
-    res.status(200).json({email, token});
+    res.status(200).json({token});
   } catch (error) {
     res.status(400).json({error: error.message});
   }

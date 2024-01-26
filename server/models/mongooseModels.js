@@ -1,12 +1,9 @@
+require('dotenv').config();
 const mongoose = require('mongoose'); 
 const bcrypt = require('bcrypt'); 
 const validator = require('validator');
-<<<<<<< HEAD
-=======
-require('dotenv').config();
 
->>>>>>> dev
-const MONGO_URI = process.env.MONGO_URI;
+const MONGO_URI = "mongodb+srv://mikebasta:onHHx9oF46ufIN7E@taxturbo.oynuda8.mongodb.net/?retryWrites=true&w=majority";
 
 mongoose.connect(MONGO_URI, {
   // options for the connect method to parse the URI
@@ -64,7 +61,16 @@ const personSchema = new Schema({
   expenses: [expenseSchema]
 });
 
+const SALT_WORK_FACTOR = 10;
+
 //maybe use this is a pre method before storing in to collection ? 
+personSchema.pre('save', function(next) {
+  bcrypt.hash(this.password, SALT_WORK_FACTOR, (err, hash) => {
+    if (err) return next(err);
+    this.password = hash;
+    return next();
+  })
+})
 
 // static signup method 
 personSchema.statics.signup = async function(firstName, lastName, password, email) {  
