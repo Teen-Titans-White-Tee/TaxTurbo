@@ -1,6 +1,8 @@
 const { Person } = require('../models/mongooseModels');  
 const jwt = require('jsonwebtoken'); 
 const secret = "7hDkL$2pA!sFg@9rJm&5tYiX";
+const bcrypt = require('bcrypt');
+const cookie = require('cookie');
  
 const authController = {};
 
@@ -62,11 +64,18 @@ authController.loginUser = async (req,res) => {
     const hash = user.password  
     console.log('userId in authController ', user._id)
 
-    const match = await bcrypt.compare(password, hash)
+    const match = await bcrypt.compare(password, hash);
+
+    console.log(match)
 
     if (match) {
       const token = createToken(user._id);
       console.log(token);
+      const cookieString = cookie.serialize('jwtToken', token, {
+        secure: true,
+        httpOnly: true,
+      });
+      res.setHeader('Set-Cookie', cookieString);
       return res.status(200).json({token});
     }
 
