@@ -17,11 +17,11 @@ userController.newUser = (req, res, next) => {
     preTaxRetirementContributions
   } = req.body;
 
-  res.locals.state = state;
-  res.locals.filingStatus = filingStatus;
-  res.locals.estimatedIncome = estimatedIncome;
-  res.locals.businessExpenses = businessExpenses;
-  res.locals.preTaxRetirementContributions = preTaxRetirementContributions;
+  res.locals.userData.state = state;
+  res.locals.userData.filingStatus = filingStatus;
+  res.locals.userData.estimatedIncome = estimatedIncome;
+  res.locals.userData.businessExpenses = businessExpenses;
+  res.locals.userData.preTaxRetirementContributions = preTaxRetirementContributions;
 
   return next();
 };
@@ -32,7 +32,7 @@ userController.findUser = (req, res, next) => {
 
   userModels.Person.findById(id).exec()
     .then (response => {
-      res.locals.userFound = response;
+      res.locals.userData = response;
       console.log ('User has been found by token verification', response);
       return next();
     })
@@ -51,7 +51,7 @@ userController.createUser = (req, res, next) => {
     estimatedIncome,
     businessExpenses,
     preTaxRetirementContributions
-  } = res.locals;
+  } = res.locals.userData;
 
   const {
     firstName,
@@ -61,10 +61,10 @@ userController.createUser = (req, res, next) => {
     industry
   } = req.body;
 
-  const medicareTax = res.locals.taxesOwed.medicare;
-  const ssiTax = res.locals.taxesOwed.ssi;
-  const fedTax = res.locals.taxesOwed.fed;
-  const stateTax = res.locals.taxesOwed.stateTax;
+  const medicareTax = res.locals.userData.taxesOwed.medicare;
+  const ssiTax = res.locals.userData.taxesOwed.ssi;
+  const fedTax = res.locals.userData.taxesOwed.fed;
+  const stateTax = res.locals.userData.taxesOwed.stateTax;
 
 
 
@@ -162,7 +162,7 @@ userController.updateUser = (req, res, next) => {
   userModels.Person.findByIdAndUpdate(id, update, {new: true}).exec()
     .then(response => {
       console.log ('result of the response from updating the document in db', response);
-      res.locals.responseFromUpdatingDocument = response;
+      res.locals.userData.responseFromUpdatingDocument = response;
       return next();
     })
       

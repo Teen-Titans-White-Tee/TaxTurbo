@@ -27,37 +27,27 @@ const UserDashboardContainer = () => {
     error,
     refetch
   } = useGetUserDataQuery();
-  if(isSuccess) console.log(userData);
-};
+  if(isSuccess) {
+    return (
+      console.log(userData)
+    );
+  }
+};// probably somewhere below
+
 export default UserDashboardContainer;
-// probably somewhere below
+
 //const [userData, setUserData] = useState(null);
 
 // FETCHING DATA
   
 // const fetchData = () => {
-//   const token = localStorage.getItem('token');
-//   console.log ('token data retrieved using localstorage.getItem', token);
+
 //   // GET REQUEST TO RETRIEVE USER DATA
-    
-//   fetch ('http://localhost:3000/dashboard', {
-//     method: 'GET',
-//     headers: {
-//       'Authorization': `Bearer ${token}`, //handle in react router and server
-//       'Content-Type': 'application/json',
-//     },
-//     //credentials: 'include',
-//   })
-//     .then(response => response.json())
-//     .then(data => {
-//       setUserData(data);
-//       console.log('response from GET request to /dashboard in dashboard', data);
 
 //       const username = data.userFound.email;
 //       const stateTax = (Math.abs(data.userFound.stateTax));
 //       setUsername(username);
 
-  
 //       const updatedPieChartData = [
 //         { id: 'State Tax', label: 'State Tax', value: stateTax },
 //         { id: 'Federal Tax', label: 'Federal Tax', value: (Math.abs(data.userFound.fedTax)) },
