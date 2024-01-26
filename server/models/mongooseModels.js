@@ -116,7 +116,7 @@ personSchema.statics.signup = async function(firstName, lastName, password, emai
 }; 
 
 // static login method 
-personSchema.statics.login = async function(email, password) {
+personSchema.statics.login = async function (email, password) {
   if(!email || !password) {
     throw Error('All fields must be filled');
   }  
@@ -126,6 +126,7 @@ personSchema.statics.login = async function(email, password) {
   if(!user) {
     throw Error('Incorrect email');
   } 
+
   console.log('user---------->', user);
   //compares password to hashed password
   const match = await bcrypt.compare(password, user.password); 

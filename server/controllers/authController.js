@@ -48,21 +48,38 @@ const createToken = (_id) => {
 // login user 
 authController.loginUser = async (req,res) => { 
   const { email, password } = req.body; 
-  console.log(req.body);
+
+  console.log('in authController.loginUser req.body ', req.body);
+
   try {
-    const user = await Person.login(email, password);  
+    // const user = await Person.login(email, password);  
+    const user = await Person.findOne({email});
+    
+    if(!user) {
+      throw Error('Incorrect email');
+    } 
 
-    console.log('user in authController ', user)
+    const hash = user.password  
+    console.log('userId in authController ', user._id)
 
-    // create token
-    const token = createToken(user._id);
+    const match = await bcrypt.compare(password, hash)
 
-    res.status(200).json({token});
+    if (match) {
+      const token = createToken(user._id);
+      console.log(token);
+      return res.status(200).json({token});
+    }
+
+    if (!match) {
+      throw Error('Invalid credentials');
+    } 
   } catch (error) {
     res.status(400).json({error: error.message});
   }
 
 }; 
+
+
 
 /* Controller that verifies token */
 
