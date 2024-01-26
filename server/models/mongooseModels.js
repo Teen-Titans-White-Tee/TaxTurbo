@@ -1,6 +1,11 @@
 const mongoose = require('mongoose'); 
 const bcrypt = require('bcrypt'); 
 const validator = require('validator');
+<<<<<<< HEAD
+=======
+require('dotenv').config();
+
+>>>>>>> dev
 const MONGO_URI = process.env.MONGO_URI;
 
 mongoose.connect(MONGO_URI, {
