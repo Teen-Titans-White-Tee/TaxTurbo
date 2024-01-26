@@ -10,5 +10,5 @@ const root = createRoot(document.querySelector('#root'));
 root.render (
   <Provider store={store}>
     <App />
-  </Provider>,
-  <App/>);
+  </Provider>
+);

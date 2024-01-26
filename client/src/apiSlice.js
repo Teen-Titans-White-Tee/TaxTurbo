@@ -6,12 +6,12 @@ export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000/api' }),
   endpoints: (builder) => ({
-    getDashboardData: builder.query({
-      query: () => '/dashboard'
+    getUserData: builder.query({
+      query: () => '/user'
     }),
   }),
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetDashboardData } = apiSlice;
+export const { useGetUserDataQuery } = apiSlice;
