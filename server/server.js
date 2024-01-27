@@ -29,9 +29,7 @@ app.use('/build', express.static(path.join(__dirname, '../build')));
 app.use('/auth', (req, res)=>{
   res.send('Auth Path hit');
 });
-app.use('/api', (req, res)=>{
-  res.send('Api Path hit');
-});
+
 
 app.use('/dashboard', dashboardRouter);
 
