@@ -1,19 +1,30 @@
 import React from 'react';
 import {useGetExpensesQuery} from '../apiSlice.js';
-//import {gotExpenses} from '../userSlice';
+
 const Expenses = (expenseData) => {
-  const postDeduction = () => {
-    const {
-      data: expenseData,
+  const {
+      expenseData,
       isLoading,
       isSuccess,
       isError,
       error,
       refetch
     } = useGetExpensesQuery();
-    if(isSuccess) {
-      //dispatch(gotExpenses(expenseData));
-    }
+    return (
+    <div>
+        {isError ? (
+            <>Oh no, there was an error</>
+        ) : isLoading ? (
+            <>Loading...</>
+        ) : userData ? (
+            <>
+            <h3>imported Expenses</h3>
+                <list expenses/>
+            </>
+            ) : null}
+    </div>
+  )  
+};   
         
          
     // data.userTransactionData.expenses.forEach((deduction) => {
@@ -31,6 +42,4 @@ const Expenses = (expenseData) => {
   
 //     });
           
-  };
-       
-};
+ 

@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import {useGetUserDataQuery} from '../apiSlice.js';
 import {updatedUser} from '../userSlice';
 import Expenses from '../Components/Expenses.jsx';
+import PieChart from '../Components/PieChart.jsx';
 import {
   Paper,
   Button,
@@ -24,25 +25,53 @@ const dispatch = useDispatch();
 //STATE STATE STATE STATE
 const UserDashboardContainer = () => {
   const {
-    data: userData,
+    expenseData,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+    refetch
+  } = useGetExpensesQuery();
+  return (
+  <div>
+      {isError ? (
+          <>Oh no, there was an error</>
+      ) : isLoading ? (
+          <>Loading...</>
+      ) : userData ? (
+          <>
+          <h3>imported Expenses</h3>
+              <list expenses/>
+          </>
+          ) : null}
+  </div>
+)  
+  
+  const {
+    userData,
     isLoading,
     isSuccess,
     isError,
     error,
     refetch
   } = useGetUserDataQuery();
-  if(isSuccess) {
-    dispatch(updatedUser(userData));
-    // useSelector to assign the piechart data,
-    //pass piechartData as props down to component
-    console.log(userData);
-    return (
-      <div>
-        <Expenses/>
-      </div>
-    );
-  }
-};// probably somewhere below
+  console.log(userData);
+  return (
+    <div>
+      {isError ? (
+        <>Oh no, there was an error</>
+      ) : isLoading ? (
+        <>Loading...</>
+      ) : userData ? (
+        <>
+          <h3>{userData.firstName}</h3>
+          <PieChart userData={userData}/>
+        </>
+      ) : null}
+    </div>
+  );
+};
+
 // const username = data:userData.email;
 // const stateTax = (Math.abs(data:userData.stateTax));
 // //       setUsername(username);
