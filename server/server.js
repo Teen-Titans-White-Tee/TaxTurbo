@@ -6,7 +6,7 @@ const PORT = 3000;
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
-
+const apiRouter = require('./routes/apiRouter');
 const apiRouterUser = require('./routes/userRouter');
 const dashboardRouter = require ('./routes/dashboardRouter');
 const transactionRouter = require ('./routes/transactionRouter');

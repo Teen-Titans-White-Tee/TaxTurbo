@@ -35,9 +35,8 @@ const UserDashboardContainer = () => {
     dispatch(updatedUser(userData));
     // useSelector to assign the piechart data,
     //pass piechartData as props down to component
-    
+    console.log(userData);
     return (
-      console.log(userData)
       <div>
         <Expenses/>
       </div>
