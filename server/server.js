@@ -6,9 +6,11 @@ const PORT = 3000;
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
+
+const apiRouterUser = require('./routes/userRouter');
+const dashboardRouter = require ('./routes/dashboardRouter');
+const transactionRouter = require ('./routes/transactionRouter');
 const signupRouter = require('./Routes/signupRouter');
-const dashboardRouter = require ('./Routes/dashboardRoute');
-const transactionRouter = require ('./Routes/transactions');
 const authRouter = require('./Routes/authRouter');
 
 app.use(express.json());
