@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-
+import { useDispatch } from 'react-redux';
 import {useGetUserDataQuery} from '../apiSlice.js';
+import {updatedUser} from '../userSlice';
+import Expenses from '../Components/Expenses.jsx';
 import {
   Paper,
   Button,
@@ -18,6 +20,7 @@ import { ResponsiveBar } from '@nivo/bar';
 import { ResponsiveLine } from '@nivo/line';
 import { RobotoFontFace } from '@fontsource/roboto';
 
+const dispatch = useDispatch();
 //STATE STATE STATE STATE
 const UserDashboardContainer = () => {
   const {
@@ -29,147 +32,150 @@ const UserDashboardContainer = () => {
     refetch
   } = useGetUserDataQuery();
   if(isSuccess) {
-   // dispatch(get the pie chart data)
+    dispatch(updatedUser(userData));
     // useSelector to assign the piechart data,
     //pass piechartData as props down to component
-   const username = userData.email;
-    const stateTax = (Math.abs(userData.stateTax));
-    //       setUsername(username);
-    const updatedPieChartData = [
-      { id: 'State Tax', label: 'State Tax', value: userData.taxesOwed.stateTax },
-      { id: 'Federal Tax', label: 'Federal Tax', value: (Math.abs(userData.taxesOwed.fed)) },
-      { id: 'SSI Tax', label: 'SSI Tax', value: (Math.abs(userData.taxesOwed.ssi)) },
-      { id: 'Medicare Tax', label: 'Medicare Tax', value: (Math.abs(userData.taxesOwed.medicare)) },
-      { id: 'Deductions', label: 'Deductions', value: (Math.abs(userData.businessExpenses))},
-      { id: 'Earnings', label: 'Earnings', value: (Math.abs(userData.estimatedIncome))},
-    ];
-    //setPieChartData(updatedPieChartData) --Need to translate this to redux reducer/action
-
+    
     return (
       console.log(userData)
+      <div>
+        <Expenses/>
+      </div>
     );
   }
 };// probably somewhere below
+// const username = data:userData.email;
+// const stateTax = (Math.abs(data:userData.stateTax));
+// //       setUsername(username);
+// const updatedPieChartData = [
+//   { id: 'State Tax', label: 'State Tax', value: userData.taxesOwed.stateTax },
+//   { id: 'Federal Tax', label: 'Federal Tax', value: (Math.abs(userData.taxesOwed.fed)) },
+//   { id: 'SSI Tax', label: 'SSI Tax', value: (Math.abs(userData.taxesOwed.ssi)) },
+//   { id: 'Medicare Tax', label: 'Medicare Tax', value: (Math.abs(userData.taxesOwed.medicare)) },
+//   { id: 'Deductions', label: 'Deductions', value: (Math.abs(userData.businessExpenses))},
+//   { id: 'Earnings', label: 'Earnings', value: (Math.abs(userData.estimatedIncome))},
+// ];
+// //setPieChartData(updatedPieChartData) --Need to translate this to redux reducer/action
 
-export default UserDashboardContainer;
+// export default UserDashboardContainer;
 
-//const [userData, setUserData] = useState(null);
+// //const [userData, setUserData] = useState(null);
 
-// FETCHING DATA
+// // FETCHING DATA
   
-// const fetchData = () => {
+// // const fetchData = () => {
 
-//   // GET REQUEST TO RETRIEVE USER DATA
+// //   // GET REQUEST TO RETRIEVE USER DATA
 
 
-//      
+// //      
         
-//       ;
+// //       ;
   
   
-//       if (data.userFound) {
-//         setGrossEarnings(data.userFound.estimatedIncome);
-//       }
-//     })
-//     .catch(err => console.log(err));
-// };
-// /*On load we will make a GET request to retrieve user data based on the verification of token  */
-// useEffect(() => {
-//   fetchData();
+// //       if (data.userFound) {
+// //         setGrossEarnings(data.userFound.estimatedIncome);
+// //       }
+// //     })
+// //     .catch(err => console.log(err));
+// // };
+// // /*On load we will make a GET request to retrieve user data based on the verification of token  */
+// // useEffect(() => {
+// //   fetchData();
 
-// }, []);
+// // }, []);
 
-// const [sliderValues, setSliderValues] = useState({ 1: 0, 2: 0 });
-// const [grossEarnings, setGrossEarnings] = useState(0);
-// const [username, setUsername] = useState();
-// const [isBarChart, setIsBarChart] = useState(true);
-// const [isEarningFormOpen, setIsEarningFormOpen] = useState(false);
-// const [isDeductionFormOpen, setIsDeductionFormOpen] = useState(false);
-// const [earningData, setEarningData] = useState({
-//   amount: 0,
-//   source: '',
-//   timestamp: '',
-//   type: 'earning',
-//   medicareTax: 0,
-//   stateTax: 0,
-//   ssiTax: 0,
-//   federalTax: 0,
+// // const [sliderValues, setSliderValues] = useState({ 1: 0, 2: 0 });
+// // const [grossEarnings, setGrossEarnings] = useState(0);
+// // const [username, setUsername] = useState();
+// // const [isBarChart, setIsBarChart] = useState(true);
+// // const [isEarningFormOpen, setIsEarningFormOpen] = useState(false);
+// // const [isDeductionFormOpen, setIsDeductionFormOpen] = useState(false);
+// // const [earningData, setEarningData] = useState({
+// //   amount: 0,
+// //   source: '',
+// //   timestamp: '',
+// //   type: 'earning',
+// //   medicareTax: 0,
+// //   stateTax: 0,
+// //   ssiTax: 0,
+// //   federalTax: 0,
 
-// });
-// const [deductionData, setDeductionData] = useState({
-//   amount: 0,
-//   source: '',
-//   timestamp: '',
-//   type: 'deduction',
-// });
+// // });
+// // const [deductionData, setDeductionData] = useState({
+// //   amount: 0,
+// //   source: '',
+// //   timestamp: '',
+// //   type: 'deduction',
+// // });
 
-//HELPER FUNCTIONS FOR CHARTS / FORMS - TRUE / FALSE
+// //HELPER FUNCTIONS FOR CHARTS / FORMS - TRUE / FALSE
 
-// const toggleChartType = () => {
-//   setIsBarChart(!isBarChart);
-// };
+// // const toggleChartType = () => {
+// //   setIsBarChart(!isBarChart);
+// // };
 
-// const openEarningForm = () => {
-//   setIsEarningFormOpen(true);
-// };
+// // const openEarningForm = () => {
+// //   setIsEarningFormOpen(true);
+// // };
 
-// const openDeductionForm = () => {
-//   setIsDeductionFormOpen(true);
-// };
+// // const openDeductionForm = () => {
+// //   setIsDeductionFormOpen(true);
+// // };
 
-// const closeEarningForm = () => {
-//   setIsEarningFormOpen(false);
-// };
+// // const closeEarningForm = () => {
+// //   setIsEarningFormOpen(false);
+// // };
 
-// const closeDeductionForm = () => {
-//   setIsDeductionFormOpen(false);
-// };
+// // const closeDeductionForm = () => {
+// //   setIsDeductionFormOpen(false);
+// // };
 
-// /* FUNCTION TO SEND POST REQUEST UPON SUBMIT EARNING*/
+// // /* FUNCTION TO SEND POST REQUEST UPON SUBMIT EARNING*/
 
-// const postEarning = () => {
-//   const token = localStorage.getItem('token');
+// // const postEarning = () => {
+// //   const token = localStorage.getItem('token');
 
-//   setTimeout(()=> {
+// //   setTimeout(()=> {
 
-//     fetch('http://localhost:3000/transaction', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//         'Authorization': `Bearer ${token}`
-//       },
-//       body: JSON.stringify(earningData),
-//     })
-//       .then (response => response.json())
-//       .then (data => {
-//         const stateTax = (Math.abs(data.userTransactionData.stateTax));
-//         //DO SOMETHING WITH DATA FROM THE TRANSACTION
-//         //UPDATE STATE OF THE CHART 
+// //     fetch('http://localhost:3000/transaction', {
+// //       method: 'POST',
+// //       headers: {
+// //         'Content-Type': 'application/json',
+// //         'Authorization': `Bearer ${token}`
+// //       },
+// //       body: JSON.stringify(earningData),
+// //     })
+// //       .then (response => response.json())
+// //       .then (data => {
+// //         const stateTax = (Math.abs(data.userTransactionData.stateTax));
+// //         //DO SOMETHING WITH DATA FROM THE TRANSACTION
+// //         //UPDATE STATE OF THE CHART 
 
-//         const updatedPieChartData = [
-//           { id: 'State Tax', label: 'State Tax', value: stateTax },
-//           { id: 'Federal Tax', label: 'Federal Tax', value: (Math.abs(data.userTransactionData.fedTax)).toFixed(2) },
-//           { id: 'SSI Tax', label: 'SSI Tax', value: (Math.abs(data.userTransactionData.ssiTax)).toFixed(2) },
-//           { id: 'Medicare Tax', label: 'Medicare Tax', value: (Math.abs(data.userTransactionData.medicareTax)).toFixed(2) },
-//           { id: 'Deductions', label: 'Deductions', value: (Math.abs(data.userTransactionData.businessExpenses)).toFixed(2) },
-//           { id: 'Earnings', label: 'Earnings', value: (Math.abs(data.userTransactionData.estimatedIncome)).toFixed(2) },
-//         ];
+// //         const updatedPieChartData = [
+// //           { id: 'State Tax', label: 'State Tax', value: stateTax },
+// //           { id: 'Federal Tax', label: 'Federal Tax', value: (Math.abs(data.userTransactionData.fedTax)).toFixed(2) },
+// //           { id: 'SSI Tax', label: 'SSI Tax', value: (Math.abs(data.userTransactionData.ssiTax)).toFixed(2) },
+// //           { id: 'Medicare Tax', label: 'Medicare Tax', value: (Math.abs(data.userTransactionData.medicareTax)).toFixed(2) },
+// //           { id: 'Deductions', label: 'Deductions', value: (Math.abs(data.userTransactionData.businessExpenses)).toFixed(2) },
+// //           { id: 'Earnings', label: 'Earnings', value: (Math.abs(data.userTransactionData.estimatedIncome)).toFixed(2) },
+// //         ];
           
-//         setPieChartData(updatedPieChartData);
-//         console.log ('Result of transaction coming from Dashboard Container', data);
+// //         setPieChartData(updatedPieChartData);
+// //         console.log ('Result of transaction coming from Dashboard Container', data);
 
-//         //ITERATE THROUGH THE TRANSACTION ARRAY AND UPDATE THE STATE.
-//         data.userTransactionData.incomes.forEach((earning) => {
-//           //SETTING TRANSACTION DATA
+// //         //ITERATE THROUGH THE TRANSACTION ARRAY AND UPDATE THE STATE.
+// //         data.userTransactionData.incomes.forEach((earning) => {
+// //           //SETTING TRANSACTION DATA
 
-//           const newEarningTransaction = {
-//             id: transactions.length + 1,
-//             description: `Earning | ${earning.source}`,
-//             amount: `+$${earning.amount.toFixed(2)}`,
-//             medicareTax: `Medicare Tax | ${earning.transMedicare.toFixed(2)}`,
-//             stateTax: `State Tax | ${earning.transState.toFixed(2)}`,
-//             ssiTax:  `SSI Tax | ${earning.transSSI.toFixed(2)}`,
-//             federalTax: `Federal Tax | ${earning.transFed.toFixed(2)}`,
+// //           const newEarningTransaction = {
+// //             id: transactions.length + 1,
+// //             description: `Earning | ${earning.source}`,
+// //             amount: `+$${earning.amount.toFixed(2)}`,
+// //             medicareTax: `Medicare Tax | ${earning.transMedicare.toFixed(2)}`,
+// //             stateTax: `State Tax | ${earning.transState.toFixed(2)}`,
+// //             ssiTax:  `SSI Tax | ${earning.transSSI.toFixed(2)}`,
+// //             federalTax: `Federal Tax | ${earning.transFed.toFixed(2)}`,
           
 //             // timestamp: currentTime.toISOString(),
 //           };
@@ -618,7 +624,9 @@ export default UserDashboardContainer;
 //   };
 
 //   // :)
-// TODO: presentational code should go in a component file
+// TODO: presentational code should go in a component file:
+// Pie chart component
+//Expenses component
 //   return (
 //     <div>
 //       <Paper style={styles.dashboard}>
