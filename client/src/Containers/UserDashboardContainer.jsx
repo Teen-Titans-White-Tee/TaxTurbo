@@ -26,7 +26,7 @@ const DashboardPage = () => {
     // const token = localStorage.getItem('token');
     // console.log ('token data retrieved using localstorage.getItem', token);
     // GET REQUEST TO RETRIEVE USER DATA
-    fetch ('http://localhost:3000/dashboard', {
+    fetch ('http://localhost:3000/auth/verify', {
       method: 'GET',
       headers: {
         // 'Authorization': `Bearer ${token}`,
