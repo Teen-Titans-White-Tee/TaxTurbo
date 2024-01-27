@@ -6,10 +6,10 @@ const PORT = 3000;
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
-const apiRouter = require('./Routes/apiRouter');
-const apiRouterUser = require('./Routes/user');
-const dashboardRouter = require ('./Routes/dashboardRoute');
-const transacionRouter = require ('./Routes/transactions');
+
+const apiRouterUser = require('./routes/userRouter');
+const dashboardRouter = require ('./routes/dashboardRouter');
+const transactionRouter = require ('./routes/transactionRouter');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -25,8 +25,6 @@ app.use('/build', express.static(path.join(__dirname, '../build')));
 //   res.status(200).sendFile(path.join(__dirname, '../build/index.html'));
 // });
 
-app.use('/dashboard', dashboardRouter);
-
 
 app.use('/auth', (req, res)=>{
   res.send('Auth Path hit');
@@ -39,7 +37,7 @@ app.use('/dashboard', dashboardRouter);
 
 app.use('/signup', apiRouterUser);
 
-app.use('/transaction', transacionRouter);
+app.use('/transaction', transactionRouter);
 
 // app.get('/', (req, res) => {
   

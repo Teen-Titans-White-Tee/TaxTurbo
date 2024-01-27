@@ -1,6 +1,6 @@
 {
-  "name": "scratch-project",
-  "version": "1.0.0",
+  "name": "iteration-project",
+  "version": "2.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/PTRI-13-Wonderpuss-Photogenicus/scratch-project.git"
+    "url": "git+https://github.com/Teen-Titans-White-Tee/TaxTurbo.git"
   },
-  "author": "Greg Silvia, Brian Taylor, Matt Allen, Moises Gomez",
+  "author": "Mike Basta, Rob Sand, Wan Ting Lee, Christian Magorrian, Eleanor Christopher, Greg Silvia, Brian Taylor, Matt Allen, Moises Gomez",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/PTRI-13-Wonderpuss-Photogenicus/scratch-project/issues"
   },
-  "homepage": "https://github.com/PTRI-13-Wonderpuss-Photogenicus/scratch-project#readme",
+  "homepage": "https://github.com/Teen-Titans-White-Tee/TaxTurbo/#readme",
   "dependencies": {
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",

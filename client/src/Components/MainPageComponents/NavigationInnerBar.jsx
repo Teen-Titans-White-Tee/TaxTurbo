@@ -119,12 +119,12 @@ export const NavigationInnerBar = () => {
       <div className="logo">
         <div className="group">
           <div className="overlap-group">
-            <div className="text-wrapper">S</div>
+            <div className="text-wrapper">T</div>
             <div className="rectangle" />
           </div>
         </div>
         <div className="fashion-logo">
-          <div className="div">SCRATCH PROJECT</div>
+          <div className="div">TAXTURBO</div>
         </div>
       </div>
       <div className="menu-right">

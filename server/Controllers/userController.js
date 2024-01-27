@@ -147,7 +147,7 @@ userController.updateUser = (req, res, next) => {
   
   const id = req.user._id;
 
-  let update = {
+  const update = {
     estimatedIncome,
     businessExpenses,
     medicareTax: medicare,
