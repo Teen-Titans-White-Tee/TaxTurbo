@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+
 import {useGetUserDataQuery} from '../apiSlice.js';
 import {
   Paper,
@@ -28,7 +29,10 @@ const UserDashboardContainer = () => {
     refetch
   } = useGetUserDataQuery();
   if(isSuccess) {
-    const username = userData.email;
+   // dispatch(get the pie chart data)
+    // useSelector to assign the piechart data,
+    //pass piechartData as props down to component
+   const username = userData.email;
     const stateTax = (Math.abs(userData.stateTax));
     //       setUsername(username);
     const updatedPieChartData = [
@@ -614,6 +618,7 @@ export default UserDashboardContainer;
 //   };
 
 //   // :)
+// TODO: presentational code should go in a component file
 //   return (
 //     <div>
 //       <Paper style={styles.dashboard}>
