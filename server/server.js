@@ -25,8 +25,6 @@ app.use('/build', express.static(path.join(__dirname, '../build')));
 //   res.status(200).sendFile(path.join(__dirname, '../build/index.html'));
 // });
 
-//app.use('/dashboard', dashboardRouter);
-
 
 app.use('/auth', (req, res)=>{
   res.send('Auth Path hit');
