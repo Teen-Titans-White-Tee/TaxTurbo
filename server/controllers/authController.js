@@ -63,18 +63,23 @@ authController.loginUser = async (req,res) => {
     } 
 
     const hash = user.password  
-    // console.log('userId in authController ', user._id)
 
     const match = await bcrypt.compare(password, hash);
 
     if (match) {
       const token = createToken(user._id);
-      // console.log(token);  
+
       const cookieString = cookie.serialize('jwtToken', token, {
         httpOnly: true,
-        secure: true,
+        // secure: true,
       });
-      res.setHeader('Set-Cookie', cookieString);
+      // console.log('Serialized cookie:', cookieString);
+      // res.setHeader('Set-Cookie', cookieString);
+      res.cookie('jwtToken', token, {
+        httpOnly: true,
+        secure: true,
+      })
+      console.log('token ', token);
       return res.status(200).json({token});
     }
 
@@ -93,17 +98,18 @@ authController.verifyToken = (req, res, next) => {
   // const authorizationHeader = req.headers['authorization'];
 
   // if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
-  //   // Token not provided in the correct format
+    // Token not provided in the correct format
   //   return res.status(401).json({ error: 'Unauthorized' });
   // }
 
   // const token = authorizationHeader.split(' ')[1];
   // const token = req.cookies.jwtToken;
   const token = req.cookies.jwtToken;
-  console.log(req.cookies.jwtToken)
+  console.log('req.cookies------------>', req.headers.cookie)
+  console.log('req ', req.headers['cookie']);
   console.log("in authController.verifyToken ", token)
 
-  if (!token) return res.status(403).json({error: 'Unauthorized'})
+  if (token === undefined) return res.status(403).json({error: 'Unauthorized'})
 
   try {
     // Verify the token

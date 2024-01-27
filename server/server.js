@@ -6,17 +6,15 @@ const PORT = 3000;
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
-
 const signupRouter = require('./Routes/signupRouter');
 const dashboardRouter = require ('./Routes/dashboardRoute');
-const transacionRouter = require ('./Routes/transactions');
+const transactionRouter = require ('./Routes/transactions');
 const authRouter = require('./Routes/authRouter');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors());
-
 
 // statically serve everything in the build folder on the route '/build'
 app.use('/build', express.static(path.join(__dirname, '../build')));
@@ -34,11 +32,9 @@ app.use('/api', (req, res)=>{
   res.send('Api Path hit');
 });
 
-app.use('/dashboard', dashboardRouter);
-
 app.use('/signup', signupRouter);
 
-app.use('/transaction', transacionRouter);
+app.use('/transaction', transactionRouter);
 
 
 // app.get('/', (req, res) => {

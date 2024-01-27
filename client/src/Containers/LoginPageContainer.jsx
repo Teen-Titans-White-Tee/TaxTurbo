@@ -142,9 +142,9 @@ const LoginPageContainer = () => {
     axios.post('http://localhost:3000/auth/login', {email, password})
       .then((res) => {
         console.log(res);
-        // if (res.data.token) {
-          // navigate('/dashboard')
-        // }
+        if (res.data.token) {
+          navigate('/signup')
+        }
       }).catch((err) => {
         console.log('Login failed')
       })
