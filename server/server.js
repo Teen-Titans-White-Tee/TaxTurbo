@@ -6,7 +6,7 @@ const PORT = 3000;
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
-const apiRouter = require('./routes/apiRouter');
+
 const apiRouterUser = require('./routes/userRouter');
 const dashboardRouter = require ('./routes/dashboardRouter');
 const transactionRouter = require ('./routes/transactionRouter');
@@ -29,9 +29,7 @@ app.use('/build', express.static(path.join(__dirname, '../build')));
 app.use('/auth', (req, res)=>{
   res.send('Auth Path hit');
 });
-app.use('/api', apiRouter, (req, res)=>{
-  res.send('Api Path hit');
-});
+
 
 app.use('/dashboard', dashboardRouter);
 
