@@ -70,7 +70,7 @@ authController.loginUser = async (req,res) => {
       const token = createToken(user._id);
 
       // const cookieString = cookie.serialize('jwtToken', token, {
-      //   httpOnly: true,
+      //   // httpOnly: true,
       //   // secure: true,
       // });
       // console.log('Serialized cookie:', cookieString);
@@ -105,8 +105,8 @@ authController.verifyToken = (req, res, next) => {
   // const token = authorizationHeader.split(' ')[1];
   // const token = req.cookies.jwtToken;
   const token = req.cookies.jwtToken;
-  console.log('req.cookies------------>', req.headers.cookie)
-  console.log('req ', req.headers['cookie']);
+  // console.log('req.cookies------------>', req.headers.cookie)
+  // console.log('req ', req.headers['cookie']);
   console.log("in authController.verifyToken ", token)
 
   if (token === undefined) return res.status(403).json({error: 'Unauthorized'})

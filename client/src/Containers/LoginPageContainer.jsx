@@ -137,15 +137,16 @@ const LoginPageContainer = () => {
     e.preventDefault();
     let isLoginSuccessful = false;
 
-    const response = axios.post('/auth/login', {email, password})
+    // const response = axios.post('/auth/login', {email, password})
 
     axios.post('/auth/login', {email, password})
       .then((res) => {
-        console.log(res);
+        console.log('response==========>', res);
         if (res.data.token) {
-          navigate('/signup')
+          navigate('/dashboard')
         }
       }).catch((err) => {
+        navigate('/login')
         console.log('Login failed')
       })
     

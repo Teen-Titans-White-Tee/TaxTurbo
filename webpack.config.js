@@ -65,9 +65,13 @@ module.exports = {
       '/api': {
         target: 'http://localhost:3000',
       },
+<<<<<<< HEAD
       '/auth': {
         target: 'http://localhost:3000',
       },
+=======
+      '/auth': 'http://localhost:3000',
+>>>>>>> 5230f7f4b0bc9500f61acf1fd5afafcb91f845d3
       // '/login': 'http://localhost:3000',
       // '/dashboard': 'http://localhost:3000',
     },
