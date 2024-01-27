@@ -33,7 +33,10 @@ app.use('/api', (req, res)=>{
   res.send('Api Path hit');
 });
 
-app.use('/dashboard', dashboardRouter);
+//need to rename dashboardRouter and logically separate
+app.use('/data', dashboardRouter);
+
+// app.use('/dashboard', dashboardRouter);
 
 app.use('/signup', apiRouterUser);
 
@@ -49,6 +52,11 @@ app.get('/*', (req, res) => {
   res.status(200).sendFile(path.join(__dirname, '../client/public/index.html'));
 });
 
+//Global Error Handler
+app.use((err, req, res, next) => {
+  console.log(err);
+  res.status(500).send({ error: err });
+});
 
 
 app.listen(PORT, () => {

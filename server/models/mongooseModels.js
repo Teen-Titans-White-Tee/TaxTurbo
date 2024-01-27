@@ -29,6 +29,8 @@ const incomeSchema = new Schema({
   timestamps: true,
 });
 
+const Income = mongoose.model('income', incomeSchema)
+
 const expenseSchema = new Schema({
   source: { type: String, required: true },
   amount: { type: Number, required: true },
@@ -40,6 +42,8 @@ const expenseSchema = new Schema({
   timestamps: true,
 
 });
+
+const Expense = mongoose.model('expense', expenseSchema); 
 
 const personSchema = new Schema({
   firstName: {type: String, required: true},
@@ -60,6 +64,16 @@ const personSchema = new Schema({
   incomes: [incomeSchema],
   expenses: [expenseSchema]
 });
+
+const plaidExpenseSchema = new Schema({
+  name: {type: String, required: true},
+  amount: {type: String, required: true},
+  category: String,
+  deduction: Number,
+  expenseDate: Date, 
+});
+
+const PlaidExpense = mongoose.model('plaidExpense', plaidExpenseSchema); 
 
 //maybe use this is a pre method before storing in to collection ? 
 
@@ -122,7 +136,8 @@ personSchema.statics.login = async function(email, password) {
   } 
   return user;
 };
+
 const Person = mongoose.model('person', personSchema); 
 
 
-module.exports = { Person };
+module.exports = { Person, Income, Expense, PlaidExpense };
