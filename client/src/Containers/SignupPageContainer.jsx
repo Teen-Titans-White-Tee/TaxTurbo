@@ -44,7 +44,7 @@ const AccountCreationForm = () => {
     console.log ('THIS IS THE FORM DATA FROM SUBMISSION ON SIGN UP', formData);
 
     // FORM SUBMISSION LOGIC
-    fetch('http://localhost:3000/signup', {
+    fetch('/auth/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -6,15 +6,14 @@ const PORT = 3000;
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
-
 const apiRouterUser = require('./routes/userRouter');
-const dashboardRouter = require ('./routes/dashboardRouter');
+// const dashboardRouter = require ('./routes/dashboardRouter');
 const transactionRouter = require ('./routes/transactionRouter');
-const signupRouter = require('./Routes/signupRouter');
-const authRouter = require('./Routes/authRouter');
+// const signupRouter = require('./routes/signupRouter');
+const authRouter = require('./routes/authRouter');
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));s
 app.use(cookieParser());
 app.use(cors());
 
@@ -26,7 +25,7 @@ app.use('/build', express.static(path.join(__dirname, '../build')));
 //   res.status(200).sendFile(path.join(__dirname, '../build/index.html'));
 // });
 
-app.use('/dashboard', dashboardRouter);
+// app.use('/dashboard', dashboardRouter);
 
 app.use('/auth', authRouter);
 
@@ -34,7 +33,7 @@ app.use('/api', (req, res)=>{
   res.send('Api Path hit');
 });
 
-app.use('/signup', signupRouter);
+// app.use('/signup', signupRouter);
 
 app.use('/transaction', transactionRouter);
 

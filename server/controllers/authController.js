@@ -69,15 +69,15 @@ authController.loginUser = async (req,res) => {
     if (match) {
       const token = createToken(user._id);
 
-      const cookieString = cookie.serialize('jwtToken', token, {
-        httpOnly: true,
-        // secure: true,
-      });
+      // const cookieString = cookie.serialize('jwtToken', token, {
+      //   httpOnly: true,
+      //   // secure: true,
+      // });
       // console.log('Serialized cookie:', cookieString);
       // res.setHeader('Set-Cookie', cookieString);
       res.cookie('jwtToken', token, {
         httpOnly: true,
-        secure: true,
+        // secure: true,
       })
       console.log('token ', token);
       return res.status(200).json({token});
