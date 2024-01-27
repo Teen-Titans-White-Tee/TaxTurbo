@@ -9,11 +9,9 @@ const router = express.Router()
 
 //ROUTE FOR SIGN UP
 
-router.post ('/signup', userController.newUser ,data.stateBrackets, data.fedBrackets , calc.allTaxes, userController.createUser, (req, res) => {
+router.post ('/', userController.newUser ,data.stateBrackets, data.fedBrackets , calc.allTaxes, userController.createUser, (req, res) => {
   res.status(200).json({ success: true, message: 'Request processed successfully', locals: res.locals });
 });
 
 
 module.exports = router;
-
-//authController.signupUser, authController.loginUser,

@@ -4,7 +4,7 @@ const authController = require('../Controllers/authController');
 const router = express.Router()
 
 //ROUTE FOR Login
-router.post ('/', authController.loginUser, (req, res) => {
+router.post ('/login', authController.loginUser, (req, res) => {
   res.status(200).json({email, token});
 });
 

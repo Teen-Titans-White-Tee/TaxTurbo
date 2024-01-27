@@ -63,18 +63,16 @@ authController.loginUser = async (req,res) => {
     } 
 
     const hash = user.password  
-    console.log('userId in authController ', user._id)
+    // console.log('userId in authController ', user._id)
 
     const match = await bcrypt.compare(password, hash);
 
-    console.log(match)
-
     if (match) {
       const token = createToken(user._id);
-      console.log(token);
+      // console.log(token);  
       const cookieString = cookie.serialize('jwtToken', token, {
-        secure: true,
         httpOnly: true,
+        secure: true,
       });
       res.setHeader('Set-Cookie', cookieString);
       return res.status(200).json({token});
@@ -86,7 +84,6 @@ authController.loginUser = async (req,res) => {
   } catch (error) {
     res.status(400).json({error: error.message});
   }
-
 }; 
 
 /* Controller that verifies token */
@@ -101,8 +98,10 @@ authController.verifyToken = (req, res, next) => {
   // }
 
   // const token = authorizationHeader.split(' ')[1];
-
+  // const token = req.cookies.jwtToken;
   const token = req.cookies.jwtToken;
+  console.log(req.cookies.jwtToken)
+  console.log("in authController.verifyToken ", token)
 
   if (!token) return res.status(403).json({error: 'Unauthorized'})
 
@@ -121,6 +120,5 @@ authController.verifyToken = (req, res, next) => {
     return res.status(403).json({ error: 'Invalid token' });
   }
 };
-
 
 module.exports = authController;
