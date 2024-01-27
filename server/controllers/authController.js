@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { Person } = require('../models/mongooseModels');  
 const jwt = require('jsonwebtoken'); 
 const secret = "7hDkL$2pA!sFg@9rJm&5tYiX";
@@ -51,7 +52,7 @@ const createToken = (_id) => {
 authController.loginUser = async (req,res) => { 
   const { email, password } = req.body; 
 
-  console.log('in authController.loginUser req.body ', req.body);
+  // console.log('in authController.loginUser req.body ', req.body);
 
   try {
     // const user = await Person.login(email, password);  
@@ -88,20 +89,22 @@ authController.loginUser = async (req,res) => {
 
 }; 
 
-
-
 /* Controller that verifies token */
 
 authController.verifyToken = (req, res, next) => {
   // Extract token from Authorization header
-  const authorizationHeader = req.headers['authorization'];
+  // const authorizationHeader = req.headers['authorization'];
 
-  if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
-    // Token not provided in the correct format
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
+  // if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
+  //   // Token not provided in the correct format
+  //   return res.status(401).json({ error: 'Unauthorized' });
+  // }
 
-  const token = authorizationHeader.split(' ')[1];
+  // const token = authorizationHeader.split(' ')[1];
+
+  const token = req.cookies.jwtToken;
+
+  if (!token) return res.status(403).json({error: 'Unauthorized'})
 
   try {
     // Verify the token
@@ -115,7 +118,7 @@ authController.verifyToken = (req, res, next) => {
     return next();
   } catch (error) {
     console.error('Token verification error:', error);
-    return res.status(401).json({ error: 'Invalid token' });
+    return res.status(403).json({ error: 'Invalid token' });
   }
 };
 
