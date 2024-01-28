@@ -1,8 +1,8 @@
 // Middleware for transactions
-const userController = require('..Controller.js');
-const data = require('../controllers/dataRetrieval.js');
-const authController = require('../controllers/authController.js'); 
-const calc = require('../controllers/calcController.js');
+const userController = require('../Controllers/userController.js');
+const data = require('../Controllers/DataRetrieval.js');
+const authController = require('../Controllers/authController.js'); 
+const calc = require('../Controllers/CalcController.js');
 
 const express = require('express');
 
