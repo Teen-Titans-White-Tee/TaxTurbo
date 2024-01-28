@@ -15,22 +15,115 @@ import {
   Grid,
   IconButton,
 } from '@mui/material';
-import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
-import { ResponsivePie } from '@nivo/pie';
-import { ResponsiveBar } from '@nivo/bar';
-import { ResponsiveLine } from '@nivo/line';
-import { RobotoFontFace } from '@fontsource/roboto';
+
 
 //STATE STATE STATE STATE
 const UserDashboardContainer = () => {
   const expenses = useGetExpensesQuery();
   const userData = useGetUserDataQuery();
-  
+  const styles = {
+    dashboard: {
+      padding: '20px',
+      margin: '60px',
+      backgroundColor: '#EDE7F6',
+    },
+    header: {
+      fontFamily: 'Poppins, sans-serif',
+      color: '#673AB7',
+      marginBottom: '20px',
+    },
+    username: {
+      position: 'absolute',
+      fontFamily: 'Poppins, sans-serif',
+      color: '#673AB7',
+      top: '80px',
+      right: '95px',
+      fontSize: '16px',
+    },
+    chartContainer: {
+      height: '400px',
+      backgroundColor: '#E8EAF6',
+      margin: '20px 0',
+    },
+    buttonContainer: {
+      display: 'flex',
+      justifyContent: 'center',
+      margin: '20px 0',
+    },
+    button: {
+      margin: '5px',
+    },
+    formContainer: {
+      position: 'fixed',
+      top: '55%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      backgroundColor: '#fff',
+      padding: '30px',
+      zIndex: 2,
+      boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.2)',
+      borderRadius: '10px',
+      width: '400px',
+      textAlign: 'center',
+      color: '#333',
+    },
+    closeButton: {
+      position: 'absolute',
+      top: '5px',
+      right: '5px',
+      cursor: 'pointer',
+    },
+    listContainer: {
+      width: '100%',
+      backgroundColor: '#D1C4E9',
+      padding: '8px',
+      right: '10px',
+      bottom: '0px',
+      maxHeight: '247.5px',
+      overflow: 'auto',
+    },
+    listTitle: {
+      padding: '10px',
+      backgroundColor: 'white',
+      position: 'sticky',
+      top: '1px',
+      zIndex: 1,
+    },
+    listContent: {
+      maxHeight: 'calc(100% - 58px)',
+      overflowY: 'auto',
+      marginTop: '7px',
+    },
+    projectionsContainer: {
+      backgroundColor: '#D1C4E9',
+      padding: '20px',
+      margin: '60px',
+      marginTop: '20px',
+    },
+    projection: {
+      fontFamily: 'Poppins, sans-serif',
+      padding: '10px',
+      marginBottom: '10px',
+      borderRadius: '4px',
+      backgroundColor: 'white',
+    },
+    slider: {
+      marginTop: '10px',
+      color: '#673AB7',
+    },
+  };
+    
   return (
-    <div>
-      <PieChart userData={userData}/>
-      <Expenses expenses={expenses}/>
-    </div>
+    <>
+      <h1 style={styles.header}>Prosper Dashboard</h1>
+      <div>
+        <div style={styles.username}>Welcome, {userData.firstName}</div>
+      </div>
+      <div>
+        <PieChart userData={userData} styles={styles}/>
+        <Expenses expenses={expenses} styles={styles}/>
+      </div>
+    </>
   );  
 }; 
 
