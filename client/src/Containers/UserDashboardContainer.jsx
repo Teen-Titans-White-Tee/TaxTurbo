@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import {useGetUserDataQuery, useGetExpensesQuery} from '../apiSlice.js';
 //import {updatedUser} from '../userSlice';
 import Expenses from '../Components/Expenses.jsx';
@@ -21,40 +21,21 @@ import { ResponsiveBar } from '@nivo/bar';
 import { ResponsiveLine } from '@nivo/line';
 import { RobotoFontFace } from '@fontsource/roboto';
 
-const dispatch = useDispatch();
 //STATE STATE STATE STATE
 const UserDashboardContainer = () => {
-  const expenses= useGetExpensesQuery();
-  return (
-  <div>
-      <Expenses expenses={expenses}/>
-  </div>
-)  
+  const expenses = useGetExpensesQuery();
+  const userData = useGetUserDataQuery();
   
-  const {
-    userData,
-    isLoading,
-    isSuccess,
-    isError,
-    error,
-    refetch
-  } = useGetUserDataQuery();
-  console.log(userData);
   return (
     <div>
-      {isError ? (
-        <>Oh no, there was an error</>
-      ) : isLoading ? (
-        <>Loading...</>
-      ) : userData ? (
-        <>
-          <h3>{userData.firstName}</h3>
-          <PieChart userData={userData}/>
-        </>
-      ) : null}
+      <PieChart userData={userData}/>
+      <Expenses expenses={expenses}/>
     </div>
-  );
-};
+  );  
+}; 
+
+export default UserDashboardContainer;
+  
 
 // const username = data:userData.email;
 // const stateTax = (Math.abs(data:userData.stateTax));
