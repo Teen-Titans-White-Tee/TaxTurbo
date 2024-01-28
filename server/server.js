@@ -9,8 +9,10 @@ const cookieParser = require('cookie-parser');
 
 // const signupRouter = require('./Routes/signupRouter');
 // const dashboardRouter = require ('./Routes/dashboardRoute');
-const transactionRouter = require ('./Routes/transactions');
+const transactionRouter = require ('./routes/transactionRouter.js');
 const authRouter = require('./Routes/authRouter');
+
+console.log('starting server')
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
