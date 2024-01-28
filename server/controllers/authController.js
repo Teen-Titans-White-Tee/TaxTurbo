@@ -12,7 +12,7 @@ const createToken = (_id) => {
   if (! secret) {
     throw Error('Secret key is missing. Make sure process.env.SECRET is defined.');
   }
-  return jwt.sign({_id}, secret, {expiresIn: '1d'});
+  return jwt.sign({_id}, secret, {expiresIn: '5d'});
 };
 
 // signup user 
@@ -59,7 +59,7 @@ authController.loginUser = async (req,res) => {
     const user = await Person.findOne({email});
     
     if(!user) {
-      throw Error('Incorrect email');
+      throw Error('Incorrect email or password');
     } 
 
     const hash = user.password  
@@ -69,22 +69,20 @@ authController.loginUser = async (req,res) => {
     if (match) {
       const token = createToken(user._id);
 
-      const cookieString = cookie.serialize('jwtToken', token, {
-        // httpOnly: true,
-        // secure: true,
-      });
+      // const cookieString = cookie.serialize('jwtToken', token, {
+      //   // httpOnly: true,
+      //   // secure: true,
+      // });
       // console.log('Serialized cookie:', cookieString);
       // res.setHeader('Set-Cookie', cookieString);
       res.cookie('jwtToken', token, {
-        httpOnly: true,
-        secure: true,
+        // httpOnly: true,
+        // secure: true,
       })
       console.log('token ', token);
       return res.status(200).json({token});
-    }
-
-    if (!match) {
-      throw Error('Invalid credentials');
+    } else {
+      throw Error('Incorrect email or password');
     } 
   } catch (error) {
     res.status(400).json({error: error.message});

@@ -32,12 +32,12 @@ const DashboardPage = () => {
         // 'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
-      //credentials: 'include',
+      credentials: 'include',
     })
       .then(response => response.json())
       .then(data => {
         setUserData(data);
-        console.log('response from GET request to /dashboard in dashboard', data);
+        console.log('response from GET request to /verify', data);
 
         const username = data.userFound.email;
         const stateTax = (Math.abs(data.userFound.stateTax));
