@@ -13,7 +13,7 @@ router.use('/user', (req, res, next)=>{
 });
 
 router.use('/expenses', (req, res, next) => {
-  res.json(path.resolve(__dirname, '../expenses'));
+  res.status(200).json(path.resolve(__dirname, '../Data/mockTransactions.json'));
 });
 
 

@@ -1,10 +1,20 @@
 import React from 'react';
 import { useNormalizedData } from '@nivo/pie';
-
+import {
+  Paper,
+  Button,
+  List,
+  ListItem,
+  Divider,
+  Slider,
+  Typography,
+  Grid,
+  IconButton,
+} from '@mui/material';
 const Expenses = ({expenses}) => {
 //results from userDataQuery (called in Dashboard Container):
   const {
-    data = expenseData,
+    data,
     isLoading,
     isSuccess,
     isError,
@@ -111,13 +121,13 @@ const Expenses = ({expenses}) => {
         <>Oh no, there was an error</>
       ) : isLoading ? (
         <>Loading...</>
-      ) : expenseData ? (
+      ) : data ? (
         <List style={styles.listContainer}>
           <div style={styles.listTitle}>
             <Typography variant="h7">Imported Transactions</Typography>
           </div>
           <div style={styles.listContent}>
-            {expenseData.map((transaction, index) => (
+            {data.map((transaction, index) => (
               <React.Fragment key={index}>
                 <ListItem style={styles.listItem}>
                   <div style={{ width: '70%', display: 'inline-block' }}>

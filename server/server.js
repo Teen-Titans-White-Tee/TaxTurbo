@@ -6,7 +6,7 @@ const PORT = 3000;
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
-
+const apiRouter = require ('./routes/apiRouter');
 const apiRouterUser = require('./routes/userRouter');
 const dashboardRouter = require ('./routes/dashboardRouter');
 const transactionRouter = require ('./routes/transactionRouter');
@@ -30,6 +30,7 @@ app.use('/auth', (req, res)=>{
   res.send('Auth Path hit');
 });
 
+app.use('/api', apiRouter);
 
 app.use('/dashboard', dashboardRouter);
 
@@ -52,5 +53,6 @@ app.get('/*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
 
 module.exports = app;

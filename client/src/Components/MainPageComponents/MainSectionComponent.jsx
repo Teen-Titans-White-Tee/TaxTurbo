@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const StyledMain = styled.div`
 align-items: center;
@@ -170,15 +170,16 @@ export const MainSectionComponent = () => {
   return (
     <StyledMain>
       <div className="MAIN-INNER">
-      <img
-              className="PAPERTAX-IMAGE"
-              src="build/2183084705-removebg-preview.png"
-            />
+        <img
+          className="PAPERTAX-IMAGE"
+          src="build/2183084705-removebg-preview.png"
+          alt="paper taxes"
+        />
         <div className="overlap">
           <div className="overlap-group">
             <img
               className="GRAPHS-IMAGE"
-              alt="Graphs IMAGE"
+              alt="Graphs"
               src="https://c.animaapp.com/D8QAD2zE/img/graphs-image.png"
             />
             <p className="PROJECTIONS-FOR">
@@ -189,7 +190,7 @@ export const MainSectionComponent = () => {
               <span className="text-wrapper">
                 <br />
               </span>
-              <span className="text-wrapper">{""}</span>
+              <span className="text-wrapper">{''}</span>
             </p>
           </div>
           <div className="div">TEST DIFFERENT SCENARIOS</div>
@@ -204,7 +205,7 @@ export const MainSectionComponent = () => {
           <span className="text-wrapper">
             <br />
           </span>
-          <span className="text-wrapper">{""}</span>
+          <span className="text-wrapper">{''}</span>
         </p>
         <p className="UPLOAD-IMAGES">UPLOAD IMAGES &amp; INVOICES TO TRACK EXPENSES</p>
         <p className="BUDGET-EFFECTIVELY">BUDGET EFFECTIVELY &amp; IDENTIFY SAVINGS</p>

@@ -40,43 +40,9 @@ export default UserDashboardContainer;
 // const username = data:userData.email;
 // const stateTax = (Math.abs(data:userData.stateTax));
 // //       setUsername(username);
-// const updatedPieChartData = [
-//   { id: 'State Tax', label: 'State Tax', value: userData.taxesOwed.stateTax },
-//   { id: 'Federal Tax', label: 'Federal Tax', value: (Math.abs(userData.taxesOwed.fed)) },
-//   { id: 'SSI Tax', label: 'SSI Tax', value: (Math.abs(userData.taxesOwed.ssi)) },
-//   { id: 'Medicare Tax', label: 'Medicare Tax', value: (Math.abs(userData.taxesOwed.medicare)) },
-//   { id: 'Deductions', label: 'Deductions', value: (Math.abs(userData.businessExpenses))},
-//   { id: 'Earnings', label: 'Earnings', value: (Math.abs(userData.estimatedIncome))},
-// ];
+// 
 // //setPieChartData(updatedPieChartData) --Need to translate this to redux reducer/action
-
-// export default UserDashboardContainer;
-
 // //const [userData, setUserData] = useState(null);
-
-// // FETCHING DATA
-  
-// // const fetchData = () => {
-
-// //   // GET REQUEST TO RETRIEVE USER DATA
-
-
-// //      
-        
-// //       ;
-  
-  
-// //       if (data.userFound) {
-// //         setGrossEarnings(data.userFound.estimatedIncome);
-// //       }
-// //     })
-// //     .catch(err => console.log(err));
-// // };
-// // /*On load we will make a GET request to retrieve user data based on the verification of token  */
-// // useEffect(() => {
-// //   fetchData();
-
-// // }, []);
 
 // // const [sliderValues, setSliderValues] = useState({ 1: 0, 2: 0 });
 // // const [grossEarnings, setGrossEarnings] = useState(0);
