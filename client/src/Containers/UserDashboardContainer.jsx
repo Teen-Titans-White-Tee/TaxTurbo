@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 // import { useDispatch } from 'react-redux';
 import {useGetUserDataQuery, useGetExpensesQuery} from '../apiSlice.js';
 //import {updatedUser} from '../userSlice';
-import Expenses from '../Components/Expenses.jsx';
-import PieChart from '../Components/PieChart.jsx';
+import Expenses from '../Components/DashboardComponents/Expenses.jsx';
+import PieChart from '../Components/DashboardComponents/PieChart.jsx';
 import {
   Paper,
   Button,

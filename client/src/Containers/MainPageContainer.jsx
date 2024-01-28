@@ -1,9 +1,9 @@
 import React from 'react';
-import { NavigationInnerBar } from '../components/MainPageComponents/NavigationInnerBar.jsx';
-import { HeroSection } from '../components/MainPageComponents/HeroSectionComponent.jsx';
-import { MainSectionComponent } from '../components/MainPageComponents/MainSectionComponent.jsx';
+import { NavigationInnerBar } from '../Components/MainPageComponents/NavigationInnerBar.jsx';
+import { HeroSection } from '../Components/MainPageComponents/HeroSectionComponent.jsx';
+import { MainSectionComponent } from '../Components/MainPageComponents/MainSectionComponent.jsx';
 import { Box } from '@mui/material';
-import { StayInformedComponent } from '../components/MainPageComponents/StayInformedComponent.jsx';
+import { StayInformedComponent } from '../Components/MainPageComponents/StayInformedComponent.jsx';
 
 const MainPageContainer = () => {
   return (
