@@ -77,7 +77,8 @@ authController.loginUser = async (req,res) => {
       // res.setHeader('Set-Cookie', cookieString);
       res.cookie('jwtToken', token, {
         httpOnly: true,
-        // secure: true,
+        secure: true,
+        maxAge: 24 * 60 * 60 * 1000
       })
       console.log('token ', token);
       return res.status(200).json({token});

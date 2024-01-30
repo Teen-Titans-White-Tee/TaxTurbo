@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Paper,
   Button,
@@ -15,10 +16,12 @@ import { ResponsivePie } from '@nivo/pie';
 import { ResponsiveBar } from '@nivo/bar';
 import { ResponsiveLine } from '@nivo/line';
 import { RobotoFontFace } from '@fontsource/roboto';
+import { DateField } from '@mui/x-date-pickers';
+import dayjs, { Dayjs } from 'dayjs'
 
 //STATE STATE STATE STATE
 const DashboardPage = () => {
-
+  const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
 
   // FETCHING DATA
@@ -39,7 +42,7 @@ const DashboardPage = () => {
         setUserData(data);
         console.log('response from GET request to /dashboard in dashboard', data);
 
-        const username = data.userFound.email;
+        const username = data.userFound.firstName;
         const stateTax = (Math.abs(data.userFound.stateTax));
         setUsername(username);
 
@@ -60,7 +63,10 @@ const DashboardPage = () => {
           setGrossEarnings(data.userFound.estimatedIncome);
         }
       })
-      .catch(err => console.log(err));
+      .catch((err) => {
+        navigate('/login');
+        console.log(err);
+      });
   };
   /*On load we will make a GET request to retrieve user data based on the verification of token  */
   useEffect(() => {
@@ -77,7 +83,7 @@ const DashboardPage = () => {
   const [earningData, setEarningData] = useState({
     amount: 0,
     source: '',
-    timestamp: '',
+    date: '',
     type: 'earning',
     medicareTax: 0,
     stateTax: 0,
@@ -117,7 +123,7 @@ const DashboardPage = () => {
   /* FUNCTION TO SEND POST REQUEST UPON SUBMIT EARNING*/
 
   const postEarning = () => {
-    const token = localStorage.getItem('token');
+    // const token = localStorage.getItem('token');
 
     setTimeout(()=> {
 
@@ -125,7 +131,7 @@ const DashboardPage = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          // 'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(earningData),
       })
@@ -155,11 +161,11 @@ const DashboardPage = () => {
               id: transactions.length + 1,
               description: `Earning | ${earning.source}`,
               amount: `+$${earning.amount.toFixed(2)}`,
+              date: `Date | ${earning.date}`,
               medicareTax: `Medicare Tax | ${earning.transMedicare.toFixed(2)}`,
               stateTax: `State Tax | ${earning.transState.toFixed(2)}`,
               ssiTax:  `SSI Tax | ${earning.transSSI.toFixed(2)}`,
               federalTax: `Federal Tax | ${earning.transFed.toFixed(2)}`,
-          
               // timestamp: currentTime.toISOString(),
             };
       
@@ -185,8 +191,8 @@ const DashboardPage = () => {
 
   // REALLY HANDLE EVERYTHING SUBMIT - EARNINGS
 
-  const handleEarningSubmit = () => {
-
+  const handleEarningSubmit = (e) => {
+    e.preventDefault();
     //POST REQUEST HERE 
     const currentTime = new Date();
     const currentMonth = currentTime.toLocaleString('default', {
@@ -195,11 +201,17 @@ const DashboardPage = () => {
 
     // TURN STRING TO NUM
     const earningAmount = parseFloat(earningData.amount);
-
+    // const earningFormattedDate = earningData.date.toLocaleDateString('en-GB', {
+    //   day: 'numeric',
+    //   month: 'short', 
+    //   year: 'numeric'
+    // })
 
     setEarningData({
       ...earningData,
       // timestamp: currentTime.toISOString(),
+      date: earningData.date,
+      source: earningData.source,
       amount: earningAmount
     });
 
@@ -209,17 +221,19 @@ const DashboardPage = () => {
     // UPDATE GROSS
     setGrossEarnings((prevGrossEarnings) => prevGrossEarnings + earningAmount);
 
+    console.log('earningData.date:', earningData.date);
+
     // CREATE & ADD NEW TRANSACTION
     const newEarningTransaction = {
       id: transactions.length + 1,
       description: `Earning | ${earningData.source}`,
-      amount: `+$${earningAmount.toFixed(2)}`,
+      amount: `+$${earningAmount.toFixed(2)} `,
+      date: dayjs(earningData.date).format('DD MMM YYYY'),
       // timestamp: currentTime.toISOString(),
     };
 
     setTransactions([...transactions, newEarningTransaction]);
-
-
+    console.log('newEarningTransaction:', newEarningTransaction);
 
     // UPDATE PIE
     const updatedPieChartData = pieChartData.map((slice) => {
@@ -270,7 +284,7 @@ const DashboardPage = () => {
     setEarningData({
       amount: 0,
       source: '',
-      timestamp: '',
+      date: '',
       type:'earning',
     });
     closeEarningForm();
@@ -278,7 +292,7 @@ const DashboardPage = () => {
 
 
   const postDeduction = () => {
-    const token = localStorage.getItem('token');
+    // const token = localStorage.getItem('token');
 
     setTimeout (() => {
 
@@ -286,7 +300,7 @@ const DashboardPage = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          // 'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(deductionData),
       })
@@ -709,7 +723,7 @@ const DashboardPage = () => {
                       textAlign: 'right',
                     }}
                   >
-                    Timestamp: {transaction.timestamp}
+                    Date: {transaction.date}
                   </div>
                 </ListItem>
                 <Divider />
@@ -728,7 +742,7 @@ const DashboardPage = () => {
             X
           </IconButton>
           <h3>Record Earning</h3>
-          <form onSubmit={(e) => { handleEarningSubmit(); postEarning(e); }}>
+          <form onSubmit={(e) => { handleEarningSubmit(e); postEarning(e); }}>
             <div>
               <label htmlFor="amount">Amount: $</label>
               <input
@@ -751,6 +765,15 @@ const DashboardPage = () => {
                   setEarningData({ ...earningData, source: e.target.value })
                 }
                 required
+              />
+            </div>
+            <div>
+              <DateField
+                label="Date: "
+                value={earningData.date}
+                onChange={(date) =>
+                  setEarningData({ ...earningData, date: date })
+                }
               />
             </div>
             <button type="submit">Submit</button>

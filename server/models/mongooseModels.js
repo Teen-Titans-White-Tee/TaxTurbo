@@ -20,6 +20,7 @@ const Schema = mongoose.Schema;
 const incomeSchema = new Schema({
   source: { type: String, required: true },
   amount: { type: Number, required: true },
+  date: Date,
   transMedicare: Number,
   transSSI: Number,
   transFed: Number,
@@ -32,13 +33,13 @@ const incomeSchema = new Schema({
 const expenseSchema = new Schema({
   source: { type: String, required: true },
   amount: { type: Number, required: true },
+  date: Date,
   transMedicare: Number,
   transSSI: Number,
   transFed: Number,
   transState: Number,
 } , {
   timestamps: true,
-
 });
 
 const personSchema = new Schema({

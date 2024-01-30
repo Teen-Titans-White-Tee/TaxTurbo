@@ -33,6 +33,7 @@ userController.findUser = (req, res, next) => {
   userModels.Person.findById(id).exec()
     .then (response => {
       res.locals.userFound = response;
+      res.locals.user = response;
       console.log ('User has been found by token verification', response);
       return next();
     })

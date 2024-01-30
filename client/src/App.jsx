@@ -5,10 +5,13 @@ import UserDashboardContainer from './Containers/UserDashboardContainer.jsx';
 import MainPageContainer from './Containers/MainPageContainer.jsx';
 import SignupPageContainer from './Containers/SignupPageContainer.jsx';
 import { BrowserRouter, Navigate, Routes, Route } from 'react-router-dom';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 const App = () => {
   return (
     <div className="app">
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<MainPageContainer />} />
@@ -19,6 +22,7 @@ const App = () => {
           </Route>
         </Routes>
       </BrowserRouter>
+      </LocalizationProvider>
     </div>
   );
 };
