@@ -18,16 +18,16 @@ import {
 
 const Charts = ({userData, styles}) => {
   //destructured results from query (queried from Dashboard container)
-  // const {
-  //   data,
-  //   isLoading,
-  //   isSuccess,
-  //   isError,
-  //   error,
-  //   refetch
-  // } = userData;
+  const {
+    data,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+    refetch
+  } = userData;
 
-  console.log(userData, 'data from userData');
+  console.log(data, 'data from userData');
   
   const pieChartData = [
     { id: 'State Tax', label: 'State Tax', value: data.stateTax },
@@ -37,7 +37,7 @@ const Charts = ({userData, styles}) => {
     { id: 'Deductions', label: 'Deductions', value: (Math.abs(data.businessExpenses))},
     { id: 'Earnings', label: 'Earnings', value: (Math.abs(data.estimatedIncome))},
   ];
-  console.log('data in PieChart:', data);
+  console.log('data in PieChart:', pieChartData);
   
   return (
     <div>
@@ -47,7 +47,7 @@ const Charts = ({userData, styles}) => {
         <>Loading...</>
       ) : userData ? (
         <>
-          <h3>{data.firstName}</h3>
+          <h3>{userData.firstName}</h3>
           <div>
             <Paper style={styles.dashboard}>
               <Grid container spacing={2}>
