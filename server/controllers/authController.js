@@ -1,7 +1,7 @@
 require('dotenv').config();
 const { Person } = require('../models/mongooseModels');  
 const jwt = require('jsonwebtoken'); 
-const secret = "7hDkL$2pA!sFg@9rJm&5tYiX";
+const secret = process.env.SECRET;
 const bcrypt = require('bcrypt');
 const cookie = require('cookie');
  
