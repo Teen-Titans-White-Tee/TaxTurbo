@@ -124,7 +124,7 @@ const UserDashboardContainer = () => {
           <>Loading...</>
         ) : userData.isSuccess ? (
           <>
-            <div style={styles.username}>Welcome, {userData.firstName}</div>
+            <div style={styles.username}>Welcome, {userData.data.firstName}</div>
             {/* if query is status: success, render charts component */}
             <Charts userData={userData} styles={styles}/> 
             {/* <Expenses expenses={expenses} styles={styles}/> */}
