@@ -44,7 +44,7 @@ const AccountCreationForm = () => {
     console.log ('THIS IS THE FORM DATA FROM SUBMISSION ON SIGN UP', formData);
 
     // FORM SUBMISSION LOGIC
-    fetch('http://localhost:3000/signup', {
+    fetch('http://localhost:3000/auth/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -64,7 +64,8 @@ const AccountCreationForm = () => {
           localStorage.setItem('token', data.locals.token);
 
           setTimeout (() => {
-            navigate('/dashboard');
+            //Changed this to route to login
+            navigate('/login');
           }, 1000);
         } else {
           console.error('Form submission failed:', data.message);

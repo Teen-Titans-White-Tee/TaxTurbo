@@ -23,21 +23,21 @@ const DashboardPage = () => {
 
   // FETCHING DATA
   const fetchData = () => {
-    const token = localStorage.getItem('token');
-    console.log ('token data retrieved using localstorage.getItem', token);
+    // const token = localStorage.getItem('token');
+    // console.log ('token data retrieved using localstorage.getItem', token);
     // GET REQUEST TO RETRIEVE USER DATA
-    fetch ('http://localhost:3000/dashboard', {
+    fetch ('http://localhost:3000/auth/verify', {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${token}`,
+        // 'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
-      //credentials: 'include',
+      credentials: 'include',
     })
       .then(response => response.json())
       .then(data => {
         setUserData(data);
-        console.log('response from GET request to /dashboard in dashboard', data);
+        console.log('response from GET request to /verify', data);
 
         const username = data.userFound.email;
         const stateTax = (Math.abs(data.userFound.stateTax));
