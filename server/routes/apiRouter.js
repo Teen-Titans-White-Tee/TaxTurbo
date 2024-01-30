@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const plaidController = require('../Controllers/plaidController');
 
 
-
-router.use('/plaid', (req, res, next)=>{
+router.use('/plaid',plaidController, (req, res)=>{
   res.send('Plaid Endpoint Hit');
 });
 
