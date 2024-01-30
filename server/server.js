@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
 const apiRouter = require ('./routes/apiRouter');
-const apiRouterUser = require('./routes/userRouter');
+const userRouter = require('./routes/userRouter');
 const dashboardRouter = require ('./routes/dashboardRouter');
 const transactionRouter = require ('./routes/transactionRouter');
 
@@ -34,7 +34,7 @@ app.use('/api', apiRouter);
 
 app.use('/dashboard', dashboardRouter);
 
-app.use('/signup', apiRouterUser);
+app.use('/signup', userRouter);
 
 app.use('/transaction', transactionRouter);
 

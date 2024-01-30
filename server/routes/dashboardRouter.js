@@ -2,8 +2,8 @@ const express = require('express');
 
 const router = express.Router();
 
-const authController = require ('../controllers/authController.js');
-const userController = require ('../controllers/userController.js');
+const authController = require ('../Controllers/authController.js');
+const userController = require ('../Controllers/userController.js');
 
 
 router.get('/', authController.verifyToken, userController.findUser, (req, res) => {

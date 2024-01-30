@@ -16,22 +16,24 @@ import {
   IconButton,
 } from '@mui/material';
 
-const PieChart = ({userData, styles}) => {
+const Charts = ({userData, styles}) => {
   //destructured results from query (queried from Dashboard container)
-  const {
-    data,
-    isLoading,
-    isSuccess,
-    isError,
-    error,
-    refetch
-  } = userData;
+  // const {
+  //   data,
+  //   isLoading,
+  //   isSuccess,
+  //   isError,
+  //   error,
+  //   refetch
+  // } = userData;
+
+  console.log(userData, 'data from userData');
   
   const pieChartData = [
-    { id: 'State Tax', label: 'State Tax', value: data.taxesOwed.stateTax },
-    { id: 'Federal Tax', label: 'Federal Tax', value: (Math.abs(data.taxesOwed.fed)) },
-    { id: 'SSI Tax', label: 'SSI Tax', value: (Math.abs(data.taxesOwed.ssi)) },
-    { id: 'Medicare Tax', label: 'Medicare Tax', value: (Math.abs(data.taxesOwed.medicare)) },
+    { id: 'State Tax', label: 'State Tax', value: data.stateTax },
+    { id: 'Federal Tax', label: 'Federal Tax', value: (Math.abs(data.fedTax)) },
+    { id: 'SSI Tax', label: 'SSI Tax', value: (Math.abs(data.ssiTax)) },
+    { id: 'Medicare Tax', label: 'Medicare Tax', value: (Math.abs(data.medicareTax)) },
     { id: 'Deductions', label: 'Deductions', value: (Math.abs(data.businessExpenses))},
     { id: 'Earnings', label: 'Earnings', value: (Math.abs(data.estimatedIncome))},
   ];
@@ -45,7 +47,7 @@ const PieChart = ({userData, styles}) => {
         <>Loading...</>
       ) : userData ? (
         <>
-          <h3>{userData.firstName}</h3>
+          <h3>{data.firstName}</h3>
           <div>
             <Paper style={styles.dashboard}>
               <Grid container spacing={2}>
@@ -159,4 +161,4 @@ const PieChart = ({userData, styles}) => {
     </div>
   );
 };
-export default PieChart;
+export default Charts;

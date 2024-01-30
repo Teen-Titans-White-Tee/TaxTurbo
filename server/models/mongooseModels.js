@@ -3,7 +3,8 @@ const bcrypt = require('bcrypt');
 const validator = require('validator');
 require('dotenv').config();
 
-const MONGO_URI = process.env.MONGO_URI;
+// const MONGO_URI = process.env.MONGO_URI;
+const MONGO_URI = 'mongodb+srv://mikebasta:onHHx9oF46ufIN7E@taxturbo.oynuda8.mongodb.net/?retryWrites=true&w=majority';
 
 mongoose.connect(MONGO_URI, {
   // options for the connect method to parse the URI

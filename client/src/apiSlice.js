@@ -7,7 +7,7 @@ export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000/api' }),
   endpoints: (builder) => ({
     getUserData: builder.query({
-      query: () => '/user'
+      query: () => '/user',
     }),
     getExpenses: builder.query({
       query: () => '/expenses'

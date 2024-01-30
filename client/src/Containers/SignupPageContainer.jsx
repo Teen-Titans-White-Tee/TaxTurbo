@@ -27,7 +27,7 @@ const AccountCreationForm = () => {
   const [businessExpenses, setBusinessExpenses] = useState(30);
   const [preTaxRetirementContributions, setPreTaxContributions] = useState(30);
 
-  const handleFormSubmit = async (event) => {
+  const handleFormSubmit = (event) => {
     event.preventDefault();
 
     const formData = {
@@ -46,7 +46,7 @@ const AccountCreationForm = () => {
     console.log ('THIS IS THE FORM DATA FROM SUBMISSION ON SIGN UP', formData);
 
     // FORM SUBMISSION LOGIC
-    await fetch('http://localhost:3000/signup', {
+    fetch('http://localhost:3000/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

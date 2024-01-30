@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import {useGetUserDataQuery, useGetExpensesQuery} from '../apiSlice.js';
 //import {updatedUser} from '../userSlice';
 import Expenses from '../Components/DashboardComponents/Expenses.jsx';
-import PieChart from '../Components/DashboardComponents/PieChart.jsx';
+import Charts from '../Components/DashboardComponents/Charts.jsx';
 import {
   Paper,
   Button,
@@ -19,8 +19,15 @@ import {
 
 //STATE STATE STATE STATE
 const UserDashboardContainer = () => {
-  const expenses = useGetExpensesQuery();
-  const userData = useGetUserDataQuery();
+  // const expenses = useGetExpensesQuery();
+  const {
+    data,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+    refetch
+  } = useGetUserDataQuery();
   const styles = {
     dashboard: {
       padding: '20px',
@@ -112,16 +119,22 @@ const UserDashboardContainer = () => {
       color: '#673AB7',
     },
   };
+
+  console.log(data, ' userDashboard userData');
     
   return (
     <>
       <h1 style={styles.header}>Prosper Dashboard</h1>
       <div>
-        <div style={styles.username}>Welcome, {userData.firstName}</div>
-      </div>
-      <div>
-        <PieChart userData={userData} styles={styles}/>
-        <Expenses expenses={expenses} styles={styles}/>
+        {isLoading ? (
+          <>Loading...</>
+        ) : isSuccess ? (
+          <div style={styles.username}>Welcome, {data.firstName}
+            <br/>
+            {/* <Charts userData={data} styles={styles}/>  */}
+            {/* <Expenses expenses={expenses} styles={styles}/> */}
+          </div> 
+        ) : null }
       </div>
     </>
   );  
