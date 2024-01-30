@@ -5,6 +5,7 @@ import UserDashboardContainer from './Containers/UserDashboardContainer.jsx';
 import MainPageContainer from './Containers/MainPageContainer.jsx';
 import SignupPageContainer from './Containers/SignupPageContainer.jsx';
 import { BrowserRouter, Navigate, Routes, Route } from 'react-router-dom';
+import LinkButton from './Components/MainPageComponents/Plaid/Link.jsx';
 
 const App = () => {
   return (
