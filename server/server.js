@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -6,15 +7,20 @@ const PORT = 3000;
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
+// const signupRouter = require('./Routes/signupRouter');
+// const dashboardRouter = require ('./Routes/dashboardRoute');
+const transactionRouter = require ('./routes/transactionRouter.js');
+const authRouter = require('./Routes/authRouter');
 
-const apiRouterUser = require('./routes/userRouter');
-const dashboardRouter = require ('./routes/dashboardRouter');
-const transactionRouter = require ('./routes/transactionRouter');
+console.log('starting server')
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({
+  credentials: true,
+  origin: 'http://localhost:8080',
+}));
 
 
 // statically serve everything in the build folder on the route '/build'
@@ -36,9 +42,17 @@ app.use('/data', dashboardRouter);
 
 // app.use('/dashboard', dashboardRouter);
 
-app.use('/signup', apiRouterUser);
+app.use('/auth', authRouter);
+
+app.use('/api', (req, res)=>{
+  res.send('Api Path hit');
+});
+
+
+// app.use('/signup', signupRouter);
 
 app.use('/transaction', transactionRouter);
+
 
 // app.get('/', (req, res) => {
   
