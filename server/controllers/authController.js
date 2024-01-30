@@ -12,7 +12,7 @@ const createToken = (_id) => {
   if (! secret) {
     throw Error('Secret key is missing. Make sure process.env.SECRET is defined.');
   }
-  return jwt.sign({_id}, secret, {expiresIn: '5d'});
+  return jwt.sign({_id}, secret, {expiresIn: '1d'});
 };
 
 // signup user 
@@ -49,7 +49,7 @@ const createToken = (_id) => {
 // }; 
 
 // login user 
-authController.loginUser = async (req,res) => { 
+authController.loginUser = async (req,res,next) => { 
   const { email, password } = req.body; 
 
   // console.log('in authController.loginUser req.body ', req.body);
@@ -79,8 +79,12 @@ authController.loginUser = async (req,res) => {
         // httpOnly: true,
         // secure: true,
       })
-      console.log('token ', token);
-      return res.status(200).json({token});
+      console.log('token>>>>>>>>>>>>>>>>>>>>> ', token);
+      // console.log('req', req)
+      res.locals.token = token
+
+      return next()
+      // return res.status(200).json({token});
     } else {
       throw Error('Incorrect email or password');
     } 

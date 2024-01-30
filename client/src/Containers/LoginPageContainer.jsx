@@ -148,6 +148,7 @@ const LoginPageContainer = () => {
         }
       }).catch((err) => {
         // navigate('/login')
+        console.log(err)
         console.log('Login failed (axios post request)')
         alert('wrong password or username')
       })
