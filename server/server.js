@@ -1,4 +1,3 @@
-require('dotenv').config();
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -9,17 +8,13 @@ const cookieParser = require('cookie-parser');
 
 // const signupRouter = require('./Routes/signupRouter');
 // const dashboardRouter = require ('./Routes/dashboardRoute');
-const transactionRouter = require ('./routes/transactionRouter.js');
-const authRouter = require('./routes/authRouter');
+const transactionRouter = require ('./Routes/transactions');
+const authRouter = require('./Routes/authRouter');
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));s
 app.use(cookieParser());
-app.use(cors({
-  credentials: true,
-  origin: 'http://localhost:8080',
-}));
-
+app.use(cors());
 
 // statically serve everything in the build folder on the route '/build'
 app.use('/build', express.static(path.join(__dirname, '../build')));
@@ -29,16 +24,6 @@ app.use('/build', express.static(path.join(__dirname, '../build')));
 //   res.status(200).sendFile(path.join(__dirname, '../build/index.html'));
 // });
 
-
-app.use('/auth', (req, res)=>{
-  res.send('Auth Path hit');
-});
-
-// auth/login - DONE
-// auth/signup - move signupRouter in - front end reroutes to login upon success
-// auth/verify - protected routes e.g. dashboard. FE protected route will check if user is authenticated. FE auth component that post request to auth/verify. If FE auth component truthy, allow access to protected routes.
-
-
 // app.use('/dashboard', dashboardRouter);
 
 app.use('/auth', authRouter);
@@ -46,7 +31,6 @@ app.use('/auth', authRouter);
 app.use('/api', (req, res)=>{
   res.send('Api Path hit');
 });
-
 
 // app.use('/signup', signupRouter);
 
