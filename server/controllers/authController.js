@@ -1,7 +1,7 @@
 require('dotenv').config();
 const { Person } = require('../models/mongooseModels');  
 const jwt = require('jsonwebtoken'); 
-const secret = "7hDkL$2pA!sFg@9rJm&5tYiX";
+const secret = process.env.SECRET;
 const bcrypt = require('bcrypt');
 const cookie = require('cookie');
  
@@ -49,7 +49,7 @@ const createToken = (_id) => {
 // }; 
 
 // login user 
-authController.loginUser = async (req,res) => { 
+authController.loginUser = async (req,res,next) => { 
   const { email, password } = req.body; 
 
   // console.log('in authController.loginUser req.body ', req.body);
@@ -59,7 +59,7 @@ authController.loginUser = async (req,res) => {
     const user = await Person.findOne({email});
     
     if(!user) {
-      throw Error('Incorrect email');
+      throw Error('Incorrect email or password');
     } 
 
     const hash = user.password  
@@ -76,16 +76,23 @@ authController.loginUser = async (req,res) => {
       // console.log('Serialized cookie:', cookieString);
       // res.setHeader('Set-Cookie', cookieString);
       res.cookie('jwtToken', token, {
+<<<<<<< HEAD
         httpOnly: true,
         secure: true,
         maxAge: 24 * 60 * 60 * 1000
+=======
+        // httpOnly: true,
+        // secure: true,
+>>>>>>> dev
       })
-      console.log('token ', token);
-      return res.status(200).json({token});
-    }
+      console.log('token>>>>>>>>>>>>>>>>>>>>> ', token);
+      // console.log('req', req)
+      res.locals.token = token
 
-    if (!match) {
-      throw Error('Invalid credentials');
+      return next()
+      // return res.status(200).json({token});
+    } else {
+      throw Error('Incorrect email or password');
     } 
   } catch (error) {
     res.status(400).json({error: error.message});

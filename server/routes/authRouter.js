@@ -1,14 +1,14 @@
 // Middleware for user signup & sign in
 const express = require('express')
-const authController = require('../Controllers/authController.js'); 
+const authController = require('../Controllers/authController'); 
 const userController = require ('../Controllers/userController.js');
-const router = express.Router();
-const data = require('../Controllers/DataRetrieval.js')
-const calc = require('../Controllers/CalcController.js')
+const router = express.Router()
+const data = require('../Controllers/DataRetrieval')
+const calc = require('../Controllers/CalcController')
 
 //ROUTE FOR Login
 router.post ('/login', authController.loginUser, (req, res) => {
-  res.status(200).json({email, token});
+  return res.status(200).json({token: res.locals.token})
 });
 
 router.get('/verify', 

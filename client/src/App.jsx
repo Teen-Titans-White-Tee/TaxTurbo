@@ -5,8 +5,12 @@ import UserDashboardContainer from './Containers/UserDashboardContainer.jsx';
 import MainPageContainer from './Containers/MainPageContainer.jsx';
 import SignupPageContainer from './Containers/SignupPageContainer.jsx';
 import { BrowserRouter, Navigate, Routes, Route } from 'react-router-dom';
+<<<<<<< HEAD
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+=======
+import AuthWrapper from './Components/MainPageComponents/AuthWrapper';
+>>>>>>> dev
 
 const App = () => {
   return (
@@ -17,9 +21,12 @@ const App = () => {
           <Route path="/" element={<MainPageContainer />} />
           <Route path="/login" element={<LoginPageContainer />} />
           <Route path="/signup" element={<SignupPageContainer />} />
-          <Route>
-            <Route path="/dashboard" element={<UserDashboardContainer />} />
-          </Route>
+          <Route path="/dashboard" element={
+            <AuthWrapper>
+              <UserDashboardContainer />
+            </AuthWrapper>
+          }
+        />
         </Routes>
       </BrowserRouter>
       </LocalizationProvider>

@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt'); 
 const validator = require('validator');
 
-const MONGO_URI = "mongodb+srv://mikebasta:onHHx9oF46ufIN7E@taxturbo.oynuda8.mongodb.net/?retryWrites=true&w=majority";
+const MONGO_URI = process.env.MONGO_URI
 
 mongoose.connect(MONGO_URI, {
   // options for the connect method to parse the URI

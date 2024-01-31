@@ -139,24 +139,32 @@ const LoginPageContainer = () => {
 
     // const response = axios.post('/auth/login', {email, password})
 
+<<<<<<< HEAD
     axios.post('/auth/login', {email, password})
+=======
+    axios.post('http://localhost:3000/auth/login', {email, password}, { withCredentials: true })
+>>>>>>> dev
       .then((res) => {
         console.log('response==========>', res);
         if (res.data.token) {
+          // isLoginSuccessful = true;
           navigate('/dashboard')
         }
       }).catch((err) => {
-        navigate('/login')
-        console.log('Login failed')
+        // navigate('/login')
+        console.log(err)
+        console.log('Login failed (axios post request)')
+        alert('wrong password or username')
       })
     
-    // const isLoginSuccessful = true;
+    
 
-    if (isLoginSuccessful) {
-      navigate('/dashboard');
-    } else {
-      console.log('Login failed');
-    }
+    // if (isLoginSuccessful) {
+    //   navigate('/dashboard');
+    // } else {
+    //   console.log('Login failed');
+    //   navigate('/login')
+    // }
   };
 
 

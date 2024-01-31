@@ -1,9 +1,16 @@
 // Middleware for user signup & sign in
 const express = require('express')
+<<<<<<< HEAD
 const userController = require('../Controllers/userController.js')
 const data = require('../Controllers/DataRetrieval.js')
 const authController = require('../Controllers/authController.js'); 
 const calc = require('../Controllers/CalcController.js')
+=======
+const userController = require('../Controllers/userController')
+const data = require('../Controllers/DataRetrieval')
+const authController = require('../Controllers/authController'); 
+const calc = require('../Controllers/CalcController')
+>>>>>>> dev
 const router = express.Router()
 
 
