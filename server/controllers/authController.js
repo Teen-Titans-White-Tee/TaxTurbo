@@ -52,7 +52,7 @@ const createToken = (_id) => {
 authController.loginUser = async (req,res,next) => { 
   const { email, password } = req.body; 
 
-  // console.log('in authController.loginUser req.body ', req.body);
+  console.log('in authController.loginUser req.body ', req.body);
 
   try {
     // const user = await Person.login(email, password);  

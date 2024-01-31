@@ -8,11 +8,11 @@ const cookieParser = require('cookie-parser');
 
 // const signupRouter = require('./Routes/signupRouter');
 // const dashboardRouter = require ('./Routes/dashboardRoute');
-const transactionRouter = require ('./Routes/transactions');
-const authRouter = require('./Routes/authRouter');
+const transactionRouter = require ('./routes/transactionRouter');
+const authRouter = require('./routes/authRouter');
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));s
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors());
 
