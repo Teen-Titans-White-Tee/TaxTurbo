@@ -7,8 +7,6 @@ const PORT = 3000;
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
-// const signupRouter = require('./Routes/signupRouter');
-// const dashboardRouter = require ('./Routes/dashboardRoute');
 const transactionRouter = require ('./routes/transactionRouter.js');
 const authRouter = require('./Routes/authRouter');
 const apiRouter = require('./routes/apiRouter');
@@ -32,10 +30,9 @@ app.use('/build', express.static(path.join(__dirname, '../build')));
 //   res.status(200).sendFile(path.join(__dirname, '../build/index.html'));
 // });
 
-// auth/login - DONE
-// auth/signup - move signupRouter in - front end reroutes to login upon success
-// auth/verify - protected routes e.g. dashboard. FE protected route will check if user is authenticated. FE auth component that post request to auth/verify. If FE auth component truthy, allow access to protected routes.
 
+//need to rename dashboardRouternpm run dev and logically separate
+//app.use('/data', dashboardRouter);
 
 // app.use('/dashboard', dashboardRouter);
 
@@ -61,6 +58,11 @@ app.get('/*', (req, res) => {
   res.status(200).sendFile(path.join(__dirname, '../client/public/index.html'));
 });
 
+//Global Error Handler
+app.use((err, req, res, next) => {
+  console.log(err);
+  res.status(500).send({ error: err });
+});
 
 
 app.listen(PORT, () => {
