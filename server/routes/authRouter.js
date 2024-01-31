@@ -15,7 +15,6 @@ router.get('/verify',
   authController.verifyToken, 
   userController.findUser, 
   (req, res) => {
-    console.log('verify endpoint')
     return res.status(200).json(res.locals);
 });
 
