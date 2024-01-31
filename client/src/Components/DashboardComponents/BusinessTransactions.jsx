@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+//IMPORT mui and nivo:
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { ResponsivePie } from '@nivo/pie';
 import { ResponsiveBar } from '@nivo/bar';
@@ -16,7 +17,7 @@ import {
   IconButton,
 } from '@mui/material';
 
-const BusinessTransactions = ({ userData, styles }) => {
+const BusinessTransactions = ({ userData, usePostDeductionMutation, usePostEarningsMutation, styles }) => {
   
   //Earnings state:
   const [grossEarnings, setGrossEarnings] = useState(0); // should this be redux?

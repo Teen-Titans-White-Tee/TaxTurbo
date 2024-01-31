@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {useGetUserDataQuery, useGetTransactionsQuery} from '../apiSlice.js'; //these are our RTKQueries
+import {useGetUserDataQuery, useGetTransactionsQuery, usePostDeductionMutation, usePostEarningsMutation} from '../apiSlice.js'; //these are our RTKQueries
 //import DashboardComponents:
 import ImportedTransactions from '../Components/DashboardComponents/ImportedTransactions.jsx';
 import Charts from '../Components/DashboardComponents/Charts.jsx';
@@ -19,12 +19,13 @@ import {
 
 
 const UserDashboardContainer = () => {
-  //RTK query fetch transactions from plaid api:
+  //RTK query GET transactions from plaid api:
   const importedTransactions = useGetTransactionsQuery();
-  //RTK query fetch userData:
+  //RTK query GET userData:
   const userData = useGetUserDataQuery();
   //console.log(userData.data, ' userDashboard userData');
-  
+  // Both POST queries into an object to pass to Business Transactions Component:
+  const postTransactions = {usePostDeductionMutation, usePostEarningsMutation};
   //Styling for All Dashboard:
   const styles = {
     dashboard: {
@@ -131,7 +132,7 @@ const UserDashboardContainer = () => {
             <div style={styles.username}>Welcome, {userData.data.firstName}</div>
             {/* if query is status: success, render Charts and BusinessExpenses components */}
             <Charts userData={userData} styles={styles}/> 
-            <BusinessTransactions userData={userData} styles={styles}/>
+            <BusinessTransactions userData={userData} postTransactions={postTransactions} styles={styles}/>
           </>
         ) : null }
       </div>
@@ -155,14 +156,14 @@ export default UserDashboardContainer;
 
 
 //MOCK DATE FOR BUILD | REPLACE WITH USER DATA
-const [pieChartData, setPieChartData] = useState([
-  { id: 'State Tax', label: 'State Tax', value: stateTax },
-  { id: 'Federal Tax', label: 'Federal Tax', value: fedTax },
-  { id: 'SSI Tax', label: 'SSI Tax', value: ssiTax },
-  { id: 'Medicare Tax', label: 'Medicare Tax', value: medicareTax },
-  { id: 'Deductions', label: 'Deductions', value: 0 },
-  { id: 'Earnings', label: 'Earnings', value: 0 },
-]);
+// const [pieChartData, setPieChartData] = useState([
+//   { id: 'State Tax', label: 'State Tax', value: stateTax },
+//   { id: 'Federal Tax', label: 'Federal Tax', value: fedTax },
+//   { id: 'SSI Tax', label: 'SSI Tax', value: ssiTax },
+//   { id: 'Medicare Tax', label: 'Medicare Tax', value: medicareTax },
+//   { id: 'Deductions', label: 'Deductions', value: 0 },
+//   { id: 'Earnings', label: 'Earnings', value: 0 },
+// ]);
 const [barChartData, setBarChartData] = useState([
   { month: 'Aug', earnings: 1000, deductions: -500 },
   { month: 'Sep', earnings: 1200, deductions: -600 },
