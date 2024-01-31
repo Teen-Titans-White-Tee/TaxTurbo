@@ -7,8 +7,6 @@ const PORT = 3000;
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
-// const signupRouter = require('./Routes/signupRouter');
-// const dashboardRouter = require ('./Routes/dashboardRoute');
 const transactionRouter = require ('./routes/transactionRouter.js');
 const authRouter = require('./Routes/authRouter');
 
@@ -32,13 +30,8 @@ app.use('/build', express.static(path.join(__dirname, '../build')));
 // });
 
 
-app.use('/auth', (req, res)=>{
-  res.send('Auth Path hit');
-});
-
-
-//need to rename dashboardRouter and logically separate
-app.use('/data', dashboardRouter);
+//need to rename dashboardRouternpm run dev and logically separate
+//app.use('/data', dashboardRouter);
 
 // app.use('/dashboard', dashboardRouter);
 

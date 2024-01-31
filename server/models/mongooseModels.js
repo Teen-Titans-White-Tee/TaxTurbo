@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt'); 
 const validator = require('validator');
 
-const MONGO_URI = process.env.MONGO_URI
+const MONGO_URI = process.env.MONGO_URI;
+const SALT_WORK_FACTOR = 10;
 
 mongoose.connect(MONGO_URI, {
   // options for the connect method to parse the URI
@@ -29,7 +30,7 @@ const incomeSchema = new Schema({
   timestamps: true,
 });
 
-const Income = mongoose.model('income', incomeSchema)
+const Income = mongoose.model('income', incomeSchema);
 
 const expenseSchema = new Schema({
   source: { type: String, required: true },
@@ -44,6 +45,17 @@ const expenseSchema = new Schema({
 });
 
 const Expense = mongoose.model('expense', expenseSchema); 
+
+
+const plaidExpenseSchema = new Schema({
+  name: {type: String, required: true},
+  amount: {type: String, required: true},
+  category: String,
+  deduction: Number,
+  expenseDate: Date, 
+});
+
+const PlaidExpense = mongoose.model('plaidExpense', plaidExpenseSchema); 
 
 const personSchema = new Schema({
   firstName: {type: String, required: true},
@@ -65,17 +77,7 @@ const personSchema = new Schema({
   expenses: [expenseSchema]
 });
 
-const SALT_WORK_FACTOR = 10;
 
-const plaidExpenseSchema = new Schema({
-  name: {type: String, required: true},
-  amount: {type: String, required: true},
-  category: String,
-  deduction: Number,
-  expenseDate: Date, 
-});
-
-const PlaidExpense = mongoose.model('plaidExpense', plaidExpenseSchema); 
 
 //maybe use this is a pre method before storing in to collection ? 
 personSchema.pre('save', function(next) {
