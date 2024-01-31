@@ -65,7 +65,9 @@ module.exports = {
       '/api': {
         target: 'http://localhost:3000',
       },
-      '/auth': 'http://localhost:3000'
+      '/auth': 'http://localhost:3000',
+      // '/login': 'http://localhost:3000',
+      // '/dashboard': 'http://localhost:3000',
     },
     compress: true,
     historyApiFallback: true,
