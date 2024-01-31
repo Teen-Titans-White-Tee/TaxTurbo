@@ -11,21 +11,26 @@ import {
 
 
 export default function Link(){
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState('');
 
   useEffect(() => {
+
     const createLinkToken = async () => {
       const response = await fetch('/api/plaid/generate_link_token', {
         method: 'POST',
       });
-      const { link_token } = await response.json();
-      setToken(link_token);
+     
+      const { token } = await response.json();
+      console.log(token);
+      setToken(token);
+      
     };
-    createLinkToken();
+    createLinkToken().then();
   }, []);
   
   
-
+  
+ 
 
   const { open, ready } = usePlaidLink({
     token,
@@ -35,9 +40,12 @@ export default function Link(){
   });
   
   return (
-    <button onClick={() => open()} disabled={!ready}>
-      Connect a bank account
-    </button>
+    <>
+    
+      <button onClick={() => open()} disabled={!ready}>
+      Connect a bank account 
+      </button>
+    </>
   );
 
 }
