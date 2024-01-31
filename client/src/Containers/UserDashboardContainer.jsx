@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 // import { useDispatch } from 'react-redux';
 import {useGetUserDataQuery, useGetExpensesQuery} from '../apiSlice.js';
 //import {updatedUser} from '../userSlice';
-import Expenses from '../Components/DashboardComponents/Expenses.jsx';
+import ImportedTransactions from '../Components/DashboardComponents/ImportedTransactions.jsx';
 import Charts from '../Components/DashboardComponents/Charts.jsx';
 import {
   Paper,
@@ -19,7 +19,8 @@ import {
 
 //STATE STATE STATE STATE
 const UserDashboardContainer = () => {
-  // const expenses = useGetExpensesQuery();
+  //RTK query fetch transactions from plaid api
+  const importedTransactions = useGetTransactionsQuery();
   const userData = useGetUserDataQuery();
   
   const styles = {

@@ -11,7 +11,7 @@ import {
   Grid,
   IconButton,
 } from '@mui/material';
-const Expenses = ({expenses, styles}) => {
+const ImportedTransactions = ({transactions, styles}) => {
 //results from userDataQuery (called in Dashboard Container):
   const {
     data,
@@ -20,7 +20,7 @@ const Expenses = ({expenses, styles}) => {
     isError,
     error,
     refetch
-  } = expenses;
+  } = transactions;
     
   return (
     <div>
@@ -51,7 +51,7 @@ const Expenses = ({expenses, styles}) => {
   );
 };
          
-export default Expenses;
+export default ImportedTransactions;
 
   
 

@@ -9,12 +9,12 @@ export const apiSlice = createApi({
     getUserData: builder.query({
       query: () => '/user',
     }),
-    getExpenses: builder.query({
-      query: () => '/expenses'
+    getTransactions: builder.query({
+      query: () => '/transactions'
     })
   }),
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetUserDataQuery, useGetExpensesQuery, } = apiSlice;
+export const { useGetUserDataQuery, useGetTransactionsQuery, } = apiSlice;
