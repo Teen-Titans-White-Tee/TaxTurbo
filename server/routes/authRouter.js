@@ -8,7 +8,7 @@ const calc = require('../Controllers/CalcController.js')
 
 //ROUTE FOR Login
 router.post ('/login', authController.loginUser, (req, res) => {
-  res.status(200).json({email, token});
+  res.status(200).json({toke});
 });
 
 router.get('/verify', 
