@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { ResponsivePie } from '@nivo/pie';
 import { ResponsiveBar } from '@nivo/bar';
@@ -29,7 +29,8 @@ const Charts = ({userData, styles}) => {
 
   console.log(data, 'data from userData');
   
-  const pieChartData = [
+  //pulls all of our chartData from query response:
+  const chartData = [
     { id: 'State Tax', label: 'State Tax', value: data.stateTax },
     { id: 'Federal Tax', label: 'Federal Tax', value: (Math.abs(data.fedTax)) },
     { id: 'SSI Tax', label: 'SSI Tax', value: (Math.abs(data.ssiTax)) },
@@ -37,8 +38,39 @@ const Charts = ({userData, styles}) => {
     { id: 'Deductions', label: 'Deductions', value: (Math.abs(data.businessExpenses))},
     { id: 'Earnings', label: 'Earnings', value: (Math.abs(data.estimatedIncome))},
   ];
-  console.log('data in PieChart:', pieChartData);
+  console.log('chartData:', chartData);
   
+  //Bar or Line Chart?
+  const [isBarChart, setIsBarChart] = useState(true);
+  const toggleChartType = () => {
+    setIsBarChart(!isBarChart);
+  };
+  
+  /*//SLIDERS (NOT CURRENTLY RENDERING):
+  //Sliders:
+  const [sliderValues, setSliderValues] = useState({ 1: 0, 2: 0 });
+  const handleSliderChange = (id, newValue) => {
+    setSliderValues({ ...sliderValues, [id]: newValue });
+  };
+  const renderSlider = (id) => (
+    <div key={id} style={styles.projection}>
+      <Typography gutterBottom>
+        {id === '1' ? 'Earning Projection' : 'Deduction Projection'}
+      </Typography>
+      <Slider
+        style={styles.slider}
+        value={sliderValues[id]}
+        onChange={(event, newValue) => handleSliderChange(id, newValue)}
+        aria-labelledby={`slider-${id}`}
+        min={0}
+        max={100000}
+        step={100}
+      />
+      <Typography variant="body2">{`$${sliderValues[id]}`}</Typography>
+    </div>
+  );*/
+
+  //RENDER CHARTS:
   return (
     <div>
       {isError ? (
@@ -51,108 +83,48 @@ const Charts = ({userData, styles}) => {
           <div>
             <Paper style={styles.dashboard}>
               <Grid container spacing={2}>
-                {/* <Grid item xs={12} md={6}>
-              <div style={styles.chartContainer}>
-                {isBarChart ? (
-                <ResponsiveBar
-                  data={barChartData}
-                  keys={['earnings', 'deductions']}
-                  indexBy="month"
-                  margin={{ top: 50, right: 40, bottom: 100, left: 40 }}
-                  padding={0.3}
-                />
-                ) : (
-                <ResponsiveLine
-                  data={lineChartData}
-                  margin={{ top: 50, right: 40, bottom: 100, left: 40 }}
-                />
-                )}
-              </div>
-              <div style={styles.buttonContainer}>
-               <IconButton
-                 onClick={toggleChartType}
-                 style={styles.buttonIcon}
-                 color="white"
-               >
-                 <SwapHorizIcon/>
-               </IconButton>
-             </div>
-           </Grid> */}
+                <Grid item xs={12} md={6}>
+                  <div style={styles.chartContainer}>
+                    {isBarChart ? (
+                      <ResponsiveBar
+                        data={chartData}
+                        keys={['earnings', 'deductions']}
+                        indexBy="month"
+                        margin={{ top: 50, right: 40, bottom: 100, left: 40 }}
+                        padding={0.3}
+                      />
+                    ) : (
+                      <ResponsiveLine
+                        data={chartData}
+                        margin={{ top: 50, right: 40, bottom: 100, left: 40 }}
+                      />
+                    )}
+                  </div>
+                  <div style={styles.buttonContainer}>
+                    <IconButton
+                      onClick={toggleChartType}
+                      style={styles.buttonIcon}
+                      color="white"
+                    >
+                      <SwapHorizIcon/>
+                    </IconButton>
+                  </div>
+                </Grid>
                 <Grid item xs={12} md={6}>
                   <div style={styles.chartContainer}>
                     <ResponsivePie
-                      data={pieChartData}
+                      data={chartData}
                       margin={{ top: 40, right: 0, bottom: 100, left: 40 }}
                       innerRadius={0.5}
                       padAngle={2}
                       activeOuterRadiusOffset={8}
                       colors={{ scheme: 'set3' }}
                     />
-                    {/* <Typography
-                 variant="h6"
-                 style={{
-                   marginTop: '18px',
-                   marginLeft: '225px',
-                   fontFamily: 'Roboto, sans-serif',
-                 }}
-               >
-                 YTD Gross Earnings = ${grossEarnings}
-               </Typography> */}
+                    {/* Cut YTD earnings from here and put in Earnings Component */}
                   </div>
                 </Grid>
               </Grid>
-              {/* <div style={styles.buttonContainer}>
-           <Button
-            variant="contained"
-             style={{
-              ...styles.button,
-               backgroundColor: 'white',
-              color: 'black',
-               boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)',
-             }}
-             onClick={openEarningForm}
-          >
-             Record Earning
-           </Button>
-           <Button
-             variant="contained"
-             style={{
-               ...styles.button,
-               backgroundColor: 'white',
-               color: 'black',
-               boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)',
-             }}
-             onClick={openDeductionForm}
-           >
-             Record Deduction
-           </Button>
-            </div>*/}
-              {/* <List style={styles.listContainer}>
-           <div style={styles.listTitle}>
-             <Typography variant="h7">Previous Transactions</Typography>
-           </div>
-           <div style={styles.listContent}>
-             {transactions.map((transaction) => (
-               <React.Fragment key={transaction.id}>
-                 <ListItem style={styles.listItem}>
-                   <div style={{ width: '70%', display: 'inline-block' }}>
-                     {transaction.description} {transaction.amount} {transaction.medicareTax} {transaction.stateTax} {transaction.federalTax} {transaction.ssiTax}
-                   </div>
-                   <div
-                     style={{
-                       width: '50%',
-                      display: 'inline-block',
-                      textAlign: 'right',
-                    }}
-                  >
-                    Timestamp: {transaction.timestamp}
-                  </div>
-                </ListItem>
-                <Divider />
-              </React.Fragment>
-            ))}
-          </div>
-        </List> */}
+              {/* Cut Record Earnings and Deduction from here and put in BusinessTransactions Component */}
             </Paper>
           </div>
         </>

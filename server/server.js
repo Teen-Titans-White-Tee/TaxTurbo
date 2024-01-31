@@ -34,10 +34,9 @@ app.use('/build', express.static(path.join(__dirname, '../build')));
 //app.use('/data', dashboardRouter);
 
 
-app.use('/dashboard', dashboardRouter);
-
 app.use('/auth', authRouter);
 
+//plaid
 app.use('/api', (req, res)=>{
   res.send('Api Path hit');
 });
