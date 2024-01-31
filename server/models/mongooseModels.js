@@ -50,7 +50,7 @@ const Expense = mongoose.model('expense', expenseSchema);
 const plaidExpenseSchema = new Schema({
   name: {type: String, required: true},
   amount: {type: String, required: true},
-  category: String,
+  category: [String],
   deduction: Number,
   expenseDate: Date, 
 });
