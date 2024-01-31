@@ -46,7 +46,7 @@ const AccountCreationForm = () => {
     console.log ('THIS IS THE FORM DATA FROM SUBMISSION ON SIGN UP', formData);
 
     // FORM SUBMISSION LOGIC
-    fetch('http://localhost:3000/signup', {
+    fetch('http://localhost:3000/auth/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -57,8 +57,14 @@ const AccountCreationForm = () => {
         if (!response.ok) {
           throw new Error('Form submission failed');
         }
-        navigate('/dashboard');
+        return response.json();
       })
+      .then((data) => {
+        if (data.success) {
+          navigate('/login');
+        }
+      } 
+      )
       .catch((error) => {
         console.error('Error during form submission:', error);
       });
