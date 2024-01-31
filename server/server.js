@@ -24,18 +24,11 @@ app.use('/build', express.static(path.join(__dirname, '../build')));
 //   res.status(200).sendFile(path.join(__dirname, '../build/index.html'));
 // });
 
-// auth/login - DONE
-// auth/signup - move signupRouter in - front end reroutes to login upon success
-// auth/verify - protected routes e.g. dashboard. FE protected route will check if user is authenticated. FE auth component that post request to auth/verify. If FE auth component truthy, allow access to protected routes.
 
-
-// app.use('/dashboard', dashboardRouter);
-
-app.use('/auth', authRouter);
-
-app.use('/api', (req, res)=>{
-  res.send('Api Path hit');
+app.use('/auth', (req, res)=>{
+  res.send('Auth Path hit');
 });
+
 
 
 // app.use('/signup', signupRouter);
