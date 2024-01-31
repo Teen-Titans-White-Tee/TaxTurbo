@@ -139,11 +139,7 @@ const LoginPageContainer = () => {
 
     // const response = axios.post('/auth/login', {email, password})
 
-<<<<<<< HEAD
-    axios.post('/auth/login', {email, password})
-=======
     axios.post('http://localhost:3000/auth/login', {email, password}, { withCredentials: true })
->>>>>>> dev
       .then((res) => {
         console.log('response==========>', res);
         if (res.data.token) {

@@ -30,6 +30,8 @@ const incomeSchema = new Schema({
   timestamps: true,
 });
 
+const Income = mongoose.model('income', incomeSchema); 
+
 const expenseSchema = new Schema({
   source: { type: String, required: true },
   amount: { type: Number, required: true },
@@ -41,6 +43,8 @@ const expenseSchema = new Schema({
 } , {
   timestamps: true,
 });
+
+const Expense = mongoose.model('expense', expenseSchema); 
 
 const personSchema = new Schema({
   firstName: {type: String, required: true},
@@ -58,8 +62,8 @@ const personSchema = new Schema({
   fedTax: Number,
   stateTax: Number,
 
-  incomes: [incomeSchema],
-  expenses: [expenseSchema]
+  incomes: [{ type: Schema.Types.ObjectId, ref: 'Income' }],
+  expenses: [{ type: Schema.Types.ObjectId, ref: 'Expense' }]
 });
 
 const SALT_WORK_FACTOR = 10;
@@ -141,4 +145,4 @@ personSchema.statics.login = async function (email, password) {
 const Person = mongoose.model('person', personSchema); 
 
 
-module.exports = { Person };
+module.exports = { Person, Income, Expense };
