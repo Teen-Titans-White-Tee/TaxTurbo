@@ -624,6 +624,7 @@ const DashboardPage = () => {
     <div>
       <Paper style={styles.dashboard}>
         <h1 style={styles.header}>Prosper Dashboard</h1>
+        <a href="/auth/signout" >SIGN OUT</a>
         <div>
           <div style={styles.username}>Welcome, {username}</div>
         </div>
