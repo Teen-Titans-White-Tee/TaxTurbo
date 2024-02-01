@@ -804,10 +804,7 @@ const DashboardPage = () => {
   );
 };
 
-<<<<<<< Updated upstream
 export default DashboardPage;
-=======
-export default UserDashboardContainer;
 
 
 //MOCK DATE FOR BUILD | REPLACE WITH USER DATA
@@ -851,4 +848,3 @@ export default UserDashboardContainer;
 //     ],
 //   },
 // ]);      
->>>>>>> Stashed changes
