@@ -55,7 +55,43 @@ const BusinessTransactions = ({ userData, usePostDeductionMutation, usePostEarni
     date: '',
     type: 'deduction',
   });
+  
+  const handleDeductionSubmit = async() => {
+    const {
+      data: deduction,
+      isLoading,
+      isSuccess,
+      isError,
+      error,
+      refetch
+    } = usePostDeductionMutate(deductionData);
+    git
+    isSuccess ? (
+     
+      const currentMonth = currentTime.toLocaleString('default', {month: 'short'});
+      const deductionAmount = parseFloat(deduction.amount);
+    ) : null;
+  //  const newDeductionTransaction = {
+  //   id: transactions.length + 1,
+  //   description: `Deduction | ${postDeduction.data.source}`,
+  //   amount: `+$${deduction.amount.toFixed(2)}`,
+  //   date: new Date().toLocaleDateString(),
+  // };
+  setDeductionData({
+    ...deductionData,
+    amount: deductionAmount
+  });
+  // setTransactions([...transactions, newDeductionTransaction]);
 
+// RESET FORM
+setEarningData({
+  amount: 0,
+  source: '',
+  timestamp: '',
+  type:'earning',
+});
+closeEarningForm();
+}
   /* NEED TO REFACTOR:
   /* FUNCTION TO SEND POST REQUEST UPON SUBMIT EARNING -- need to translate to RTKQuery:
 const postEarning = async () => {
@@ -80,53 +116,9 @@ const postEarning = async () => {
       
 };*/
   /*fetch request to POST deduction -- translate to RTK query POST:
-  const postDeduction = () => {
-    fetch('http://localhost:3000/transaction', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(deductionData),
-    })
-      .then(response => response.json())
-      .then (data => {
-        //DONT THINK THIS IS NEEDED:
-        //const stateTax = (Math.abs(data.userTransactionData.stateTax));
-       
-        // const updatedPieChartData = [
-        //   { id: 'State Tax', label: 'State Tax', value: stateTax },
-        //   { id: 'Federal Tax', label: 'Federal Tax', value: (Math.abs(data.userTransactionData.fedTax)).toFixed(2) },
-        //   { id: 'SSI Tax', label: 'SSI Tax', value: (Math.abs(data.userTransactionData.ssiTax)).toFixed(2) },
-        //   { id: 'Medicare Tax', label: 'Medicare Tax', value: (Math.abs(data.userTransactionData.medicareTax)).toFixed(2) },
-        //   { id: 'Deductions', label: 'Deductions', value: (Math.abs(data.userTransactionData.businessExpenses)).toFixed(2) },
-        //   { id: 'Earnings', label: 'Earnings', value: (Math.abs(data.userTransactionData.estimatedIncome)).toFixed(2) },
-        // ];
-            
-            
-        data.userTransactionData.expenses.forEach((deduction) => {
         //SETTING TRANSACTION DATA
-  
-          const newDeductionTransaction = {
-            id: transactions.length + 1,
-            description: `Deduction | ${deduction.source}`,
-            amount: `+$${deduction.amount.toFixed(2)}`,
-            date: new Date().toLocaleDateString(),
-          };
-        
-          setTransactions([...transactions, newDeductionTransaction]);
-        });
-        // RESET FORM
-        setEarningData({
-          amount: 0,
-          source: '',
-          timestamp: '',
-          type:'earning',
-        });
-        closeEarningForm();
-      })
-      .catch((error) => {
-        console.error('Error while fetching transaction data', error);
-      });
+          
+    
   
   };*/
   /* REALLY HANDLE EVERYTHING SUBMIT - EARNINGS
@@ -212,20 +204,11 @@ const postEarning = async () => {
 
     setLineChartData(updatedLineChartData);
  */
-  /* ANOTHER HANDLE EVERYTHING SUBMIT - DEDUCTIONS
-      const handleDeductionSubmit = () => {
-        //POST REQUEST HERE 
-        const currentTime = new Date();
-        const currentMonth = currentTime.toLocaleString('default', {
-          month: 'short',
-        });
-        const deductionAmount = parseFloat(deductionData.amount);
-    
-        setDeductionData({
-          ...deductionData,
-          // timestamp: currentTime.toISOString(),
-          amount: deductionAmount
-        });
+  /* ANOTHER HANDLE EVERYTHING SUBMIT - DEDUCTIONS*/
+      
+      
+        
+        
     
         // TURN STRING TO NUM
        
