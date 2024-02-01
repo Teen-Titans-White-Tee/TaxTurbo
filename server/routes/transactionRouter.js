@@ -10,7 +10,8 @@ const router = express.Router();
 
 
 router.post('/', authController.verifyToken, userController.findUser, calc.newNumbers, calc.storage, data.stateBrackets, data.fedBrackets , calc.allTaxes, calc.transactionOwed, userController.updateUser, (req, res) =>{
-  res.status(200).json({userTransactionData:  res.locals.responseFromUpdatingDocument, owedTaxesOfTransaction: res.locals.transactionOwed });
+  console.log('in transactionRouter ');
+  return res.status(200).json({userTransactionData:  res.locals.responseFromUpdatingDocument, owedTaxesOfTransaction: res.locals.transactionOwed });
 });
 
 module.exports = router;

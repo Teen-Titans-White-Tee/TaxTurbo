@@ -34,6 +34,7 @@ userController.findUser = (req, res, next) => {
     .then (response => {
       res.locals.userFound = response;
       res.locals.user = response;
+      res.locals.id = id;
       console.log ('User has been found by token verification', response);
       return next();
     })

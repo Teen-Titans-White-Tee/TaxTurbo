@@ -138,6 +138,7 @@ const DashboardPage = () => {
         .then (response => response.json())
         .then (data => {
           const stateTax = (Math.abs(data.userTransactionData.stateTax));
+          console.log('data in userdashboard ', data);
           //DO SOMETHING WITH DATA FROM THE TRANSACTION
           //UPDATE STATE OF THE CHART 
 

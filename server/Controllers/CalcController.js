@@ -1,3 +1,4 @@
+const { Income, Expense, Person } = require('../models/mongooseModels');
 
 const calc = {};
 
@@ -218,11 +219,11 @@ calc.storage = (req, res, next) => {
 };
 
 calc.newNumbers = (req, res, next) => {
-
+  
   const amount = parseInt(req.body.amount);
 
   console.log ('COMING FROM THE NEW NUMBERS MIDDLEWARE, VALUE OF AMOUNT COMING FROM THE TRANSACTION', typeof amount);
-
+  try {
   if (req.body.type === 'earning'){
     res.locals.estimatedIncome = res.locals.userFound.estimatedIncome + amount;
     res.locals.businessExpenses = res.locals.userFound.businessExpenses;
@@ -238,8 +239,14 @@ calc.newNumbers = (req, res, next) => {
   console.log ('DATA TYPE OF THE ESTIMATED INCOME', typeof res.locals.estimatedIncome);
 
   console.log ('Coming from newnumbers middleware, result of adding the income plus earning', res.locals.estimatedIncome);
-
+  
   return next();
+  }
+
+  catch {(err) => {
+    console.log('Error in calc.newNumbers' + err);
+    return next(err);
+  }};
 };
 
 calc.transactionOwed = (req , res, next) => {
@@ -258,5 +265,33 @@ calc.transactionOwed = (req , res, next) => {
 
   return next();
 };
+
+calc.incomeStorage = (req, res, next) => {
+  console.log(req.body, ' calc.incomeStorage req.body');
+  const { type, amount, date, source } = req.body;
+
+  if (type === 'earning'){
+    const newIncome = { source, amount, date}; 
+    Person.findByIdAndUpdate(
+      res.locals.id,
+      { $push: { incomes: newIncome } },
+      { new: true }
+    ).then(earnings => {
+      console.log(earnings, " in calc.incomeStorage earnings");
+      return next();
+    }).catch(err => {
+      console.log(err, " error noted in calc.incomeStorage")
+    })
+    // res.locals.estimatedIncome = res.locals.userFound.estimatedIncome + amount;
+    // res.locals.businessExpenses = res.locals.userFound.businessExpenses;
+  } else {
+    console.log('not earnings');
+    return next()
+    // res.locals.estimatedIncome = res.locals.userFound.estimatedIncome;
+    // res.locals.businessExpenses = res.locals.userFound.businessExpenses + amount;
+  }  
+
+  return next()
+}
 
 module.exports = calc;

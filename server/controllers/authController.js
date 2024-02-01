@@ -1,7 +1,7 @@
 require('dotenv').config();
 const { Person } = require('../models/mongooseModels');  
 const jwt = require('jsonwebtoken'); 
-const secret = process.env.SECRET;
+const secret = '7hDkL$2pA!sFg@9rJm&5tYiX';
 const bcrypt = require('bcrypt');
 const cookie = require('cookie');
  
@@ -110,7 +110,7 @@ authController.verifyToken = (req, res, next) => {
   const token = req.cookies.jwtToken;
   // console.log('req.cookies------------>', req.headers.cookie)
   // console.log('req ', req.headers['cookie']);
-  console.log("in authController.verifyToken ", token)
+  // console.log("in authController.verifyToken ", token)
 
   if (token === undefined) return res.status(403).json({error: 'Unauthorized'})
 
