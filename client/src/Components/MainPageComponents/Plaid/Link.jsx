@@ -25,7 +25,7 @@ export default function Link(){
       setToken(token);
       
     };
-    createLinkToken().then();
+    createLinkToken();
   }, []);
   
   
@@ -34,8 +34,21 @@ export default function Link(){
 
   const { open, ready } = usePlaidLink({
     token,
-    onSuccess: (public_token, metadata) => {
+    onSuccess: async (public_token, metadata) => {
       // send public_token to server
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({public_token})
+      };
+      try{
+        const response = await fetch('/api/plaid/exchange_token', options);
+        console.log(response);
+      }catch(err){
+        console.log(err);
+      }
     },
   });
   
