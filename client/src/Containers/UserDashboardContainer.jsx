@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {useGetUserDataQuery, useGetTransactionsQuery, usePostDeductionMutation, usePostEarningsMutation} from '../apiSlice.js'; //these are our RTKQueries
+
+
 //import DashboardComponents:
 import ImportedTransactions from '../Components/DashboardComponents/ImportedTransactions.jsx';
 import Charts from '../Components/DashboardComponents/Charts.jsx';
@@ -23,6 +25,7 @@ const UserDashboardContainer = () => {
   const importedTransactions = useGetTransactionsQuery();
   //RTK query GET userData:
   const userData = useGetUserDataQuery();
+  
   //console.log(userData.data, ' userDashboard userData');
   // Both POST queries into an object to pass to Business Transactions Component:
   const postTransactions = {usePostDeductionMutation, usePostEarningsMutation};
@@ -131,6 +134,7 @@ const UserDashboardContainer = () => {
           <>
             <div style={styles.username}>Welcome, {userData.data.firstName}</div>
             {/* if query is status: success, render Charts and BusinessExpenses components */}
+            {console.log(userData.data)}
             <Charts userData={userData} styles={styles}/> 
             <BusinessTransactions userData={userData} postTransactions={postTransactions} styles={styles}/>
           </>

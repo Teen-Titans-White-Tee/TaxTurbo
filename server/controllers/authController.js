@@ -103,7 +103,7 @@ authController.verifyToken = (req, res, next) => {
   // Token not provided in the correct format
   //   return res.status(401).json({ error: 'Unauthorized' });
   // }
-
+  console.log(req.headers);
   // const token = authorizationHeader.split(' ')[1];
   // const token = req.cookies.jwtToken;
   const token = req.cookies.jwtToken;

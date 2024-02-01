@@ -37,7 +37,7 @@ app.use('/auth', authRouter);
 
 app.use('/data', dataRouter);
 
-app.use('/data', dataRouter);
+
 
 
 app.use('/api', (req, res)=>{
