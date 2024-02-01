@@ -1,7 +1,7 @@
 require('dotenv').config();
 const { Person } = require('../models/mongooseModels');  
 const jwt = require('jsonwebtoken'); 
-const secret = '7hDkL$2pA!sFg@9rJm&5tYiX';
+const secret = process.env.SECRET;
 const bcrypt = require('bcrypt');
 const cookie = require('cookie');
  
@@ -52,7 +52,7 @@ const createToken = (_id) => {
 authController.loginUser = async (req,res,next) => { 
   const { email, password } = req.body; 
 
-  console.log('in authController.loginUser req.body ', req.body);
+  // console.log('in authController.loginUser req.body ', req.body);
 
   try {
     // const user = await Person.login(email, password);  
@@ -76,9 +76,8 @@ authController.loginUser = async (req,res,next) => {
       // console.log('Serialized cookie:', cookieString);
       // res.setHeader('Set-Cookie', cookieString);
       res.cookie('jwtToken', token, {
-        httpOnly: true,
-        secure: true,
-        maxAge: 24 * 60 * 60 * 1000
+        // httpOnly: true,
+        // secure: true,
       })
       console.log('token>>>>>>>>>>>>>>>>>>>>> ', token);
       // console.log('req', req)
@@ -110,9 +109,9 @@ authController.verifyToken = (req, res, next) => {
   const token = req.cookies.jwtToken;
   // console.log('req.cookies------------>', req.headers.cookie)
   // console.log('req ', req.headers['cookie']);
-  // console.log("in authController.verifyToken ", token)
+  console.log("in authController.verifyToken ", token)
 
-  if (token === undefined) return res.status(403).json({error: 'Unauthorized'})
+  if (token === undefined) return res.status(403).json({error: 'Unauthorized cookies'})
 
   try {
     // Verify the token

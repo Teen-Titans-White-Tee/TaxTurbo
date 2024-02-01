@@ -9,9 +9,20 @@ const express = require('express');
 const router = express.Router();
 
 
-router.post('/', authController.verifyToken, userController.findUser, calc.newNumbers, calc.storage, data.stateBrackets, data.fedBrackets , calc.allTaxes, calc.transactionOwed, userController.updateUser, (req, res) =>{
-  console.log('in transactionRouter ');
-  return res.status(200).json({userTransactionData:  res.locals.responseFromUpdatingDocument, owedTaxesOfTransaction: res.locals.transactionOwed });
+router.post('/', 
+  authController.verifyToken, 
+  userController.findUser,
+  calc.newNumbers, 
+  calc.storage, 
+  data.stateBrackets, 
+  data.fedBrackets, 
+  calc.allTaxes, 
+  calc.transactionOwed, 
+  userController.updateUser, 
+  (req, res, next) =>{
+    console.log('in transactionRouter ');
+    return res.status(200).json({userTransactionData:  res.locals.responseFromUpdatingDocument, owedTaxesOfTransaction: res.locals.transactionOwed });
 });
+
 
 module.exports = router;

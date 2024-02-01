@@ -94,6 +94,7 @@ const DashboardPage = () => {
   const [deductionData, setDeductionData] = useState({
     amount: 0,
     source: '',
+    date: '',
     timestamp: '',
     type: 'deduction',
   });
@@ -133,6 +134,7 @@ const DashboardPage = () => {
           'Content-Type': 'application/json',
           // 'Authorization': `Bearer ${token}`
         },
+        credentials: 'include',
         body: JSON.stringify(earningData),
       })
         .then (response => response.json())
@@ -202,11 +204,6 @@ const DashboardPage = () => {
 
     // TURN STRING TO NUM
     const earningAmount = parseFloat(earningData.amount);
-    // const earningFormattedDate = earningData.date.toLocaleDateString('en-GB', {
-    //   day: 'numeric',
-    //   month: 'short', 
-    //   year: 'numeric'
-    // })
 
     setEarningData({
       ...earningData,
@@ -221,8 +218,6 @@ const DashboardPage = () => {
     
     // UPDATE GROSS
     setGrossEarnings((prevGrossEarnings) => prevGrossEarnings + earningAmount);
-
-    console.log('earningData.date:', earningData.date);
 
     // CREATE & ADD NEW TRANSACTION
     const newEarningTransaction = {
@@ -303,6 +298,7 @@ const DashboardPage = () => {
           'Content-Type': 'application/json',
           // 'Authorization': `Bearer ${token}`
         },
+        credentials: 'include',
         body: JSON.stringify(deductionData),
       })
         .then (response => response.json())
@@ -360,6 +356,7 @@ const DashboardPage = () => {
     setDeductionData({
       ...deductionData,
       // timestamp: currentTime.toISOString(),
+      date: deductionData.date,
       amount: deductionAmount
     });
 
@@ -376,6 +373,7 @@ const DashboardPage = () => {
       id: transactions.length + 1,
       description: `Deduction | ${deductionData.source}`,
       amount: `-$${deductionAmount.toFixed(2)}`,
+      date: dayjs(deductionData.date).format('DD MMM YYYY'),
       // timestamp: currentTime.toISOString(),
     };
 
@@ -815,6 +813,15 @@ const DashboardPage = () => {
                 }
                 required
               />
+              <div>
+              <DateField
+                label="Date: "
+                value={deductionData.date}
+                onChange={(date) =>
+                  setDeductionData({ ...deductionData, date: date })
+                }
+              />
+            </div>
             </div>
             <button type="submit">Submit</button>
           </form>

@@ -75,8 +75,8 @@ const personSchema = new Schema({
   fedTax: Number,
   stateTax: Number,
 
-  incomes: [{ type: Schema.Types.ObjectId, ref: 'Income' }],
-  expenses: [{ type: Schema.Types.ObjectId, ref: 'Expense' }]
+  incomes: [incomeSchema],
+  expenses: [expenseSchema]
 });
 
 

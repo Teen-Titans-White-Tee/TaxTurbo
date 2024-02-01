@@ -223,6 +223,7 @@ calc.newNumbers = (req, res, next) => {
   const amount = parseInt(req.body.amount);
 
   console.log ('COMING FROM THE NEW NUMBERS MIDDLEWARE, VALUE OF AMOUNT COMING FROM THE TRANSACTION', typeof amount);
+
   try {
   if (req.body.type === 'earning'){
     res.locals.estimatedIncome = res.locals.userFound.estimatedIncome + amount;
@@ -265,33 +266,5 @@ calc.transactionOwed = (req , res, next) => {
 
   return next();
 };
-
-calc.incomeStorage = (req, res, next) => {
-  console.log(req.body, ' calc.incomeStorage req.body');
-  const { type, amount, date, source } = req.body;
-
-  if (type === 'earning'){
-    const newIncome = { source, amount, date}; 
-    Person.findByIdAndUpdate(
-      res.locals.id,
-      { $push: { incomes: newIncome } },
-      { new: true }
-    ).then(earnings => {
-      console.log(earnings, " in calc.incomeStorage earnings");
-      return next();
-    }).catch(err => {
-      console.log(err, " error noted in calc.incomeStorage")
-    })
-    // res.locals.estimatedIncome = res.locals.userFound.estimatedIncome + amount;
-    // res.locals.businessExpenses = res.locals.userFound.businessExpenses;
-  } else {
-    console.log('not earnings');
-    return next()
-    // res.locals.estimatedIncome = res.locals.userFound.estimatedIncome;
-    // res.locals.businessExpenses = res.locals.userFound.businessExpenses + amount;
-  }  
-
-  return next()
-}
 
 module.exports = calc;
