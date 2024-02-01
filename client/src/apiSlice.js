@@ -14,7 +14,7 @@ export const apiSlice = createApi({
 export const apiUser = createApi(
   {
     reducerPath: 'data',
-    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000/data'}),
+    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000/data', credentials: 'include'}),
     endpoints: (builder) => ({
       getUserData: builder.query({
         query: () => '/getuser',
