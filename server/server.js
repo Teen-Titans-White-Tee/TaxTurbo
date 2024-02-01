@@ -10,7 +10,7 @@ const cookieParser = require('cookie-parser');
 const transactionRouter = require ('./routes/transactionRouter.js');
 const authRouter = require('./Routes/authRouter');
 
-console.log('starting server')
+console.log('starting server');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
