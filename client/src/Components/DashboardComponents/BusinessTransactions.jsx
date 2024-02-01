@@ -58,41 +58,8 @@ const BusinessTransactions = ({ userData, usePostDeductionMutation, usePostEarni
 
   /* NEED TO REFACTOR:
   /* FUNCTION TO SEND POST REQUEST UPON SUBMIT EARNING -- need to translate to RTKQuery:
-const postEarning = () => {
-  const token = localStorage.getItem('token');
-
-  setTimeout(()=> {
-
-    fetch('http://localhost:3000/transaction', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify(earningData),
-    })
-      .then (response => response.json())
-      .then (data => {
-        const stateTax = (Math.abs(data.userTransactionData.stateTax));
-        //DO SOMETHING WITH DATA FROM THE TRANSACTION
-        //UPDATE STATE OF THE CHART 
-
-        const updatedPieChartData = [
-          { id: 'State Tax', label: 'State Tax', value: stateTax },
-          { id: 'Federal Tax', label: 'Federal Tax', value: (Math.abs(data.userTransactionData.fedTax)).toFixed(2) },
-          { id: 'SSI Tax', label: 'SSI Tax', value: (Math.abs(data.userTransactionData.ssiTax)).toFixed(2) },
-          { id: 'Medicare Tax', label: 'Medicare Tax', value: (Math.abs(data.userTransactionData.medicareTax)).toFixed(2) },
-          { id: 'Deductions', label: 'Deductions', value: (Math.abs(data.userTransactionData.businessExpenses)).toFixed(2) },
-          { id: 'Earnings', label: 'Earnings', value: (Math.abs(data.userTransactionData.estimatedIncome)).toFixed(2) },
-        ];
-          
-        setPieChartData(updatedPieChartData);
-        console.log ('Result of transaction coming from Dashboard Container', data);
-
-        //ITERATE THROUGH THE TRANSACTION ARRAY AND UPDATE THE STATE.
-        data.userTransactionData.incomes.forEach((earning) => {
-          //SETTING TRANSACTION DATA
-          const newEarningTransaction = {
+const postEarning = async () => {
+     const newEarningTransaction = {
             id: transactions.length + 1,
             description: `Earning | ${earning.source}`,
             amount: `+$${earning.amount.toFixed(2)}`,
@@ -102,13 +69,15 @@ const postEarning = () => {
             federalTax: `Federal Tax | ${earning.transFed.toFixed(2)}`,
             timestamp: currentTime.toISOString(),
           };
-          setTransactions([...transactions, newEarningTransaction]);
-        });
-      })
-      .catch((error) => {
-        console.error('Error while fetching transaction data', error);
-      });
-  }, 0);
+
+  await usePostEarnings(earning);
+      if (isSuccess) {
+        const stateTax = (Math.abs(data.userTransactionData.stateTax));
+        data.userTransactionData.incomes.forEach((earning) => {
+        setTransactions([...transactions, newEarningTransaction]);
+      }
+      //ITERATE THROUGH THE TRANSACTION ARRAY AND UPDATE THE STATE.
+      
 };*/
   /*fetch request to POST deduction -- translate to RTK query POST:
   const postDeduction = () => {
