@@ -5,7 +5,7 @@ const authController = require('../controllers/authController');
 
 
 
-router.get('/getUser', authController.verifyToken, (req, res, next)=>{
+router.get('/getUser', authController.verifyToken, userController.findUser, (req, res, next)=>{
   res.status(200).json(res.locals.userFound);
 });
 
