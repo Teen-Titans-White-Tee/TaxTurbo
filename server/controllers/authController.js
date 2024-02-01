@@ -129,10 +129,9 @@ authController.verifyToken = (req, res, next) => {
   }
 };
 
-authController.deleteToken = (req, res) => {
+authController.deleteToken = (req, res, next) => {
   try {
     res.clearCookie("jwtToken");
-    res.end();
     return next()
   } catch (error) {
     console.error('Token deletion error:', error);

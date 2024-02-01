@@ -525,6 +525,23 @@ const DashboardPage = () => {
     </div>
   );
 
+  const handleSignOut = () => {
+    try {
+      fetch('http://localhost:3000/auth/signout', {
+        method: 'GET',
+        credentials: 'include'
+      }).then(response => {
+        if (!response.ok) {
+          throw new Error('Sign-out request failed');
+        }
+        navigate('/');
+      })
+    } catch {(error) => {
+      console.log('error in handleSignOut delete request -> ', error)
+    }
+    }
+  }
+
   //STYLING FOR COMPONENTS
 
   const styles = {
@@ -624,7 +641,7 @@ const DashboardPage = () => {
     <div>
       <Paper style={styles.dashboard}>
         <h1 style={styles.header}>Prosper Dashboard</h1>
-        <a href="/auth/signout" >SIGN OUT</a>
+        <button onClick={handleSignOut}>SIGN OUT</button>
         <div>
           <div style={styles.username}>Welcome, {username}</div>
         </div>
