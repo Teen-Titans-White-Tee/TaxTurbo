@@ -8,6 +8,7 @@ import { BrowserRouter, Navigate, Routes, Route } from 'react-router-dom';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import AuthWrapper from './Components/MainPageComponents/AuthWrapper';
+import LinkButton from './Components/MainPageComponents/Plaid/Link.jsx';
 
 const App = () => {
   return (
@@ -23,7 +24,8 @@ const App = () => {
               <UserDashboardContainer />
             </AuthWrapper>
           }
-        />
+          />
+          <Route path="/link" element={<LinkButton/>}/>
         </Routes>
       </BrowserRouter>
       </LocalizationProvider>
