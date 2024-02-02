@@ -73,6 +73,13 @@ const personSchema = new Schema({
   fedTax: Number,
   stateTax: Number,
 
+  plaidItems: [
+    {
+      itemID: String,
+      accessToken: String
+    }
+  ],
+
   incomes: [incomeSchema],
   expenses: [expenseSchema]
 });
