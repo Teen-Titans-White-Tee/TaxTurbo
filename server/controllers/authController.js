@@ -119,6 +119,7 @@ authController.verifyToken = (req, res, next) => {
     
     // Attach the decoded user information onto req.user
     req.user = decoded;
+    res.locals.id = req.user._id;
     
     console.log('THIS IS THE DATA DECODED', decoded);
     
