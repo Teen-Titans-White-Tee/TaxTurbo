@@ -706,14 +706,17 @@ const DashboardPage = () => {
         {/* BUTTON to import transactions from plaid */}
         <div>
           <button></button>
+          {console.log(importedTransactions.data)}
         </div>     
         <div>
+        {console.log(importedTransactions.data)}
           {importedTransactions.isLoading ? (
             <>Loading...</>
           ) : importedTransactions.isSuccess ? (
             <>
-              
+              {console.log(importedTransactions.data)}
               {/* if query is status: success, render charts component */}
+              {/* {importedTransactions.data.added.map((transactions) => )} */}
               <ImportedTransactions importedTransactions={importedTransactions.data} styles={styles}/> 
             </>
           ) : null }
