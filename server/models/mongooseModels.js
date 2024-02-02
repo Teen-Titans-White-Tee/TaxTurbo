@@ -72,14 +72,7 @@ const personSchema = new Schema({
   ssiTax: Number,
   fedTax: Number,
   stateTax: Number,
-
-  plaidItems: [
-    {
-      itemID: String,
-      accessToken: String
-    }
-  ],
-
+  accessToken: String,
   incomes: [incomeSchema],
   expenses: [expenseSchema]
 });
@@ -92,8 +85,8 @@ personSchema.pre('save', function(next) {
     if (err) return next(err);
     this.password = hash;
     return next();
-  })
-})
+  });
+});
 
 // static signup method 
 // personSchema.statics.signup = async function(firstName, lastName, password, email) {  

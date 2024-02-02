@@ -17,8 +17,8 @@ const plaidClient = new PlaidApi(plaidConfig);
 const plaidController = {};
 
 plaidController.generateLinkToken = async (req, res, next)=>{
- 
-  const CURR_USER_ID =  '1';
+  const {id} = res.locals.id;
+  const CURR_USER_ID =  id;
   const linkTokenConfig = {
     user: { client_user_id: CURR_USER_ID },
     client_name: 'Plaid Tutorial',
@@ -51,6 +51,8 @@ plaidController.exchangePublicForAccessToken = async (req, res, next) => {
     const accessToken = response.data.access_token;
     const itemId = response.data.item_id;
     console.log(itemId, accessToken);
+
+    ///Add to Database Here
     return next();
   } catch (err) {
     console.log(err);
@@ -58,6 +60,8 @@ plaidController.exchangePublicForAccessToken = async (req, res, next) => {
 };
 
 plaidController.getTransactions = async (req, res, next) => {
+  //This should be on the user
+  const {access_token} = res.locals.user.accessToken;
   const request = {
     access_token: 'access-sandbox-8f4db8b7-f066-41a9-a585-c9fb12f3bb9f',
   };
@@ -66,5 +70,9 @@ plaidController.getTransactions = async (req, res, next) => {
   console.log(data);
 };
 
-plaidController.getTransactions();
+plaidController.saveAccessToken = async (req, res, next) => {
+
+};
+
+
 module.exports = plaidController;
