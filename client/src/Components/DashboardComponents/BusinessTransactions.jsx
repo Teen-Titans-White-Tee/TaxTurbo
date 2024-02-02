@@ -56,42 +56,42 @@ const BusinessTransactions = ({ userData, usePostDeductionMutation, usePostEarni
     type: 'deduction',
   });
   
-  const handleDeductionSubmit = async() => {
-    const {
-      data: deduction,
-      isLoading,
-      isSuccess,
-      isError,
-      error,
-      refetch
-    } = usePostDeductionMutate(deductionData);
-    git
-    isSuccess ? (
+  // const handleDeductionSubmit = async() => {
+  //   const {
+  //     data: deduction,
+  //     isLoading,
+  //     isSuccess,
+  //     isError,
+  //     error,
+  //     refetch
+  //   } = usePostDeductionMutate(deductionData);
+  //   git
+  //   isSuccess ? (
      
-      const currentMonth = currentTime.toLocaleString('default', {month: 'short'});
-      const deductionAmount = parseFloat(deduction.amount);
-    ) : null;
+  //     const currentMonth = currentTime.toLocaleString('default', {month: 'short'});
+  //     const deductionAmount = parseFloat(deduction.amount);
+  //   ) : null;
   //  const newDeductionTransaction = {
   //   id: transactions.length + 1,
   //   description: `Deduction | ${postDeduction.data.source}`,
   //   amount: `+$${deduction.amount.toFixed(2)}`,
   //   date: new Date().toLocaleDateString(),
   // };
-  setDeductionData({
-    ...deductionData,
-    amount: deductionAmount
-  });
-  // setTransactions([...transactions, newDeductionTransaction]);
+  // setDeductionData({
+  //   ...deductionData,
+  //   amount: deductionAmount
+  // });
+  // // setTransactions([...transactions, newDeductionTransaction]);
 
-// RESET FORM
-setEarningData({
-  amount: 0,
-  source: '',
-  timestamp: '',
-  type:'earning',
-});
-closeEarningForm();
-}
+  // // RESET FORM
+  // setEarningData({
+  //   amount: 0,
+  //   source: '',
+  //   timestamp: '',
+  //   type:'earning',
+  // });
+  // closeEarningForm();
+  // }
   /* NEED TO REFACTOR:
   /* FUNCTION TO SEND POST REQUEST UPON SUBMIT EARNING -- need to translate to RTKQuery:
 const postEarning = async () => {
@@ -210,88 +210,88 @@ const postEarning = async () => {
         
         
     
-        // TURN STRING TO NUM
+  // TURN STRING TO NUM
        
+  /*  
+  // UPDATE GROSS
+  setGrossEarnings(
+    (prevGrossEarnings) => prevGrossEarnings - deductionAmount
+  );
     
-        // UPDATE GROSS
-        setGrossEarnings(
-          (prevGrossEarnings) => prevGrossEarnings - deductionAmount
-        );
+  // CREATE & ADD NEW TRANSACTION
+  const newDeductionTransaction = {
+    id: transactions.length + 1,
+    description: `Deduction | ${deductionData.source}`,
+    amount: `-$${deductionAmount.toFixed(2)}`,
+    // timestamp: currentTime.toISOString(),
+  };
     
-        // CREATE & ADD NEW TRANSACTION
-        const newDeductionTransaction = {
-          id: transactions.length + 1,
-          description: `Deduction | ${deductionData.source}`,
-          amount: `-$${deductionAmount.toFixed(2)}`,
-          // timestamp: currentTime.toISOString(),
-        };
+  setTransactions([...transactions, newDeductionTransaction]);
     
-        setTransactions([...transactions, newDeductionTransaction]);
-    
-        // UPDATE PIE
-        const updatedPieChartData = pieChartData.map((slice) => {
-          if (slice.id === 'Deductions') {
-            return {
-              ...slice,
-              value: slice.value + deductionAmount,
-            };
-          }
-          return slice;
-        });
-    
-        setPieChartData(updatedPieChartData);
-    
-        // UPDATE BAR
-        const updatedBarChartData = barChartData.map((monthData) => {
-          if (monthData.month === currentMonth) {
-            return {
-              ...monthData,
-              deductions: monthData.deductions - deductionAmount,
-            };
-          }
-          return monthData;
-        });
-    
-        setBarChartData(updatedBarChartData);
-    
-        // UPDATE LINE
-        const updatedLineChartData = lineChartData.map((lineData) => {
-          if (lineData.id === 'Deductions') {
-            return {
-              ...lineData,
-              data: [
-                ...lineData.data,
-                {
-                  x: currentMonth,
-                  y: lineData.data[lineData.data.length - 1].y + deductionAmount,
-                },
-              ],
-            };
-          }
-          return lineData;
-        });
-    
-        setLineChartData(updatedLineChartData);
-    
-        // RESET FORM
-        setDeductionData({
-          amount: 0,
-          source: '',
-          timestamp: '',
-          type: 'deduction',
-        });
-        closeDeductionForm();
+  // UPDATE PIE
+  const updatedPieChartData = pieChartData.map((slice) => {
+    if (slice.id === 'Deductions') {
+      return {
+        ...slice,
+        value: slice.value + deductionAmount,
       };
+    }
+    return slice;
+  });
     
-      // RUN ONCE / TRY REDUCE TO ADD ALL PIE SLICES
-      useEffect(() => {
-        const initialGrossEarnings = pieChartData.reduce(
-          (total, slice) => total + slice.value,
-          0
-        );
-        setGrossEarnings(initialGrossEarnings);
-      }, []);
-    */
+  setPieChartData(updatedPieChartData);
+    
+  // UPDATE BAR
+  const updatedBarChartData = barChartData.map((monthData) => {
+    if (monthData.month === currentMonth) {
+      return {
+        ...monthData,
+        deductions: monthData.deductions - deductionAmount,
+      };
+    }
+    return monthData;
+  });
+    
+  setBarChartData(updatedBarChartData);
+    
+  // UPDATE LINE
+  const updatedLineChartData = lineChartData.map((lineData) => {
+    if (lineData.id === 'Deductions') {
+      return {
+        ...lineData,
+        data: [
+          ...lineData.data,
+          {
+            x: currentMonth,
+            y: lineData.data[lineData.data.length - 1].y + deductionAmount,
+          },
+        ],
+      };
+    }
+    return lineData;
+  });
+    
+  setLineChartData(updatedLineChartData);
+    
+  // RESET FORM
+  setDeductionData({
+    amount: 0,
+    source: '',
+    timestamp: '',
+    type: 'deduction',
+  });
+  closeDeductionForm();
+      
+    
+  // RUN ONCE / TRY REDUCE TO ADD ALL PIE SLICES
+  // useEffect(() => {
+  //   const initialGrossEarnings = pieChartData.reduce(
+  //     (total, slice) => total + slice.value,
+  //     0
+  //   );
+  //   setGrossEarnings(initialGrossEarnings);
+  // }, []);
+    
 
   // MOCK DATA FOR DEDUCTIONS:
   const [transactions, setTransactions] = useState([
@@ -306,8 +306,9 @@ const postEarning = async () => {
     { id: 9, description: 'Transaction 9', amount: '$-45.00' },
     { id: 10, description: 'Transaction 10', amount: '$-15.00' },
   ]);  
-  
+  */
   //RENDER YTD EARNINGS, BUTTONS TO RECORD EARNINGS AND DEDUCTIONS, LIST OF RECORDED DEDUCTIONS:
+  
   return (
     <Paper style={styles.dashboard}>
       
@@ -358,7 +359,7 @@ const postEarning = async () => {
       </div>
       
       {/* List of recorded business transactions: */}
-      <List style={styles.listContainer}>
+      {/* <List style={styles.listContainer}>
         <div style={styles.listTitle}>
           <Typography variant="h7">Recorded Business Transactions </Typography>
         </div>
@@ -383,7 +384,7 @@ const postEarning = async () => {
             </React.Fragment>
           ))}
         </div>
-      </List>
+      </List> */}
     </Paper>
   );
 }; 
