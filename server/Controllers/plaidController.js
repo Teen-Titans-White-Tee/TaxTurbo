@@ -1,6 +1,6 @@
 const {Configuration, PlaidApi, PlaidEnvironments } = require('plaid');
 require('dotenv').config();
-
+const userModels = require('../models/mongooseModels');
 const {PLAID_CLIENT, PLAID_SECRET,PLAID_ENV } = process.env;
 
 const plaidConfig = new Configuration({
@@ -17,8 +17,8 @@ const plaidClient = new PlaidApi(plaidConfig);
 const plaidController = {};
 
 plaidController.generateLinkToken = async (req, res, next)=>{
-  const {id} = res.locals.id;
-  const CURR_USER_ID =  id;
+  const id = res.locals.id;
+  const CURR_USER_ID = id;
   const linkTokenConfig = {
     user: { client_user_id: CURR_USER_ID },
     client_name: 'Plaid Tutorial',
@@ -42,32 +42,51 @@ plaidController.generateLinkToken = async (req, res, next)=>{
 
 plaidController.exchangePublicForAccessToken = async (req, res, next) => {
   const {public_token} = req.body;
+
   console.log(public_token, '<<===================Public_Token');
   const request = {
     public_token: public_token,
   };
-  try {
-    const response = await plaidClient.itemPublicTokenExchange(request);
-    const accessToken = response.data.access_token;
-    const itemId = response.data.item_id;
-    console.log(itemId, accessToken);
+  
+  const response = await plaidClient.itemPublicTokenExchange(request);
+  const accessToken = response.data.access_token;
+  const {id} = res.locals;
 
-    ///Add to Database Here
-    return next();
-  } catch (err) {
-    console.log(err);
-  }
+  ///Add to Database Here
+  userModels.Person.findOneAndUpdate({_id: id}, {accessToken}).exec()
+    .then (response => {
+      res.locals.userFound = response;
+      
+      console.log ('User has been found by token verification', response);
+      return next();
+    }) .catch((err) => {
+      console.log('Error in User Controller' + err);
+      return next(err);
+    });
+
+    
+  
 };
 
 plaidController.getTransactions = async (req, res, next) => {
   //This should be on the user
-  const {access_token} = res.locals.user.accessToken;
+  //Get the access_token from the user ID
+  const {id} = res.locals;
+  const user = await userModels.Person.findOne({_id: id});
+  
+  const access_token = user.accessToken;
+  
   const request = {
-    access_token: 'access-sandbox-8f4db8b7-f066-41a9-a585-c9fb12f3bb9f',
+    access_token: access_token,
   };
-  const response = await plaidClient.transactionsSync(request);
-  const data = response.data;
-  console.log(data);
+  try{
+    const response = await plaidClient.transactionsSync(request);
+    res.locals.transactions = response.data;
+   
+    return next();
+  }catch(err){
+    console.log(err);
+  }
 };
 
 plaidController.saveAccessToken = async (req, res, next) => {
