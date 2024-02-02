@@ -5,12 +5,15 @@ import UserDashboardContainer from './Containers/UserDashboardContainer.jsx';
 import MainPageContainer from './Containers/MainPageContainer.jsx';
 import SignupPageContainer from './Containers/SignupPageContainer.jsx';
 import { BrowserRouter, Navigate, Routes, Route } from 'react-router-dom';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import AuthWrapper from './Components/MainPageComponents/AuthWrapper';
 import LinkButton from './Components/MainPageComponents/Plaid/Link.jsx';
 
 const App = () => {
   return (
     <div className="app">
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<MainPageContainer />} />
@@ -25,6 +28,7 @@ const App = () => {
           <Route path="/link" element={<LinkButton/>}/>
         </Routes>
       </BrowserRouter>
+      </LocalizationProvider>
     </div>
   );
 };

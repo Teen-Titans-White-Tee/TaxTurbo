@@ -22,5 +22,9 @@ router.post ('/signup', userController.newUser ,data.stateBrackets, data.fedBrac
   res.status(200).json({ success: true, message: 'Request processed successfully', locals: res.locals });
 });
 
+router.get('/signout', authController.deleteToken, (req, res) => {
+  return res.status(200).json({})
+});
+
 
 module.exports = router;
