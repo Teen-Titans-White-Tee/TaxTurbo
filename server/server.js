@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
 const transactionRouter = require ('./routes/transactionRouter.js');
-const authRouter = require('./Routes/authRouter');
+const authRouter = require('./routes/authRouter');
 const dataRouter = require('./routes/dataRouter');
 
 console.log('starting server')

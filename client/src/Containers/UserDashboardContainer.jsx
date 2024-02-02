@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Paper,
   Button,
@@ -15,10 +16,12 @@ import { ResponsivePie } from '@nivo/pie';
 import { ResponsiveBar } from '@nivo/bar';
 import { ResponsiveLine } from '@nivo/line';
 import { RobotoFontFace } from '@fontsource/roboto';
+import { DateField } from '@mui/x-date-pickers';
+import dayjs, { Dayjs } from 'dayjs'
 
 //STATE STATE STATE STATE
 const DashboardPage = () => {
-
+  const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
 
   // FETCHING DATA
@@ -26,7 +29,7 @@ const DashboardPage = () => {
     // const token = localStorage.getItem('token');
     // console.log ('token data retrieved using localstorage.getItem', token);
     // GET REQUEST TO RETRIEVE USER DATA
-    fetch ('http://localhost:3000/auth/verify', {
+    fetch ('/auth/verify', {
       method: 'GET',
       headers: {
         // 'Authorization': `Bearer ${token}`,
@@ -39,7 +42,7 @@ const DashboardPage = () => {
         setUserData(data);
         console.log('response from GET request to /verify', data);
 
-        const username = data.userFound.email;
+        const username = data.userFound.firstName;
         const stateTax = (Math.abs(data.userFound.stateTax));
         setUsername(username);
 
@@ -60,7 +63,10 @@ const DashboardPage = () => {
           setGrossEarnings(data.userFound.estimatedIncome);
         }
       })
-      .catch(err => console.log(err));
+      .catch((err) => {
+        navigate('/login');
+        console.log(err);
+      });
   };
   /*On load we will make a GET request to retrieve user data based on the verification of token  */
   useEffect(() => {
@@ -77,7 +83,7 @@ const DashboardPage = () => {
   const [earningData, setEarningData] = useState({
     amount: 0,
     source: '',
-    timestamp: '',
+    date: '',
     type: 'earning',
     medicareTax: 0,
     stateTax: 0,
@@ -88,6 +94,7 @@ const DashboardPage = () => {
   const [deductionData, setDeductionData] = useState({
     amount: 0,
     source: '',
+    date: '',
     timestamp: '',
     type: 'deduction',
   });
@@ -117,7 +124,7 @@ const DashboardPage = () => {
   /* FUNCTION TO SEND POST REQUEST UPON SUBMIT EARNING*/
 
   const postEarning = () => {
-    const token = localStorage.getItem('token');
+    // const token = localStorage.getItem('token');
 
     setTimeout(()=> {
 
@@ -125,13 +132,15 @@ const DashboardPage = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          // 'Authorization': `Bearer ${token}`
         },
+        credentials: 'include',
         body: JSON.stringify(earningData),
       })
         .then (response => response.json())
         .then (data => {
           const stateTax = (Math.abs(data.userTransactionData.stateTax));
+          console.log('data in userdashboard ', data);
           //DO SOMETHING WITH DATA FROM THE TRANSACTION
           //UPDATE STATE OF THE CHART 
 
@@ -155,11 +164,11 @@ const DashboardPage = () => {
               id: transactions.length + 1,
               description: `Earning | ${earning.source}`,
               amount: `+$${earning.amount.toFixed(2)}`,
+              date: `Date | ${earning.date}`,
               medicareTax: `Medicare Tax | ${earning.transMedicare.toFixed(2)}`,
               stateTax: `State Tax | ${earning.transState.toFixed(2)}`,
               ssiTax:  `SSI Tax | ${earning.transSSI.toFixed(2)}`,
               federalTax: `Federal Tax | ${earning.transFed.toFixed(2)}`,
-          
               // timestamp: currentTime.toISOString(),
             };
       
@@ -185,8 +194,8 @@ const DashboardPage = () => {
 
   // REALLY HANDLE EVERYTHING SUBMIT - EARNINGS
 
-  const handleEarningSubmit = () => {
-
+  const handleEarningSubmit = (e) => {
+    e.preventDefault();
     //POST REQUEST HERE 
     const currentTime = new Date();
     const currentMonth = currentTime.toLocaleString('default', {
@@ -196,10 +205,11 @@ const DashboardPage = () => {
     // TURN STRING TO NUM
     const earningAmount = parseFloat(earningData.amount);
 
-
     setEarningData({
       ...earningData,
       // timestamp: currentTime.toISOString(),
+      date: earningData.date,
+      source: earningData.source,
       amount: earningAmount
     });
 
@@ -213,13 +223,13 @@ const DashboardPage = () => {
     const newEarningTransaction = {
       id: transactions.length + 1,
       description: `Earning | ${earningData.source}`,
-      amount: `+$${earningAmount.toFixed(2)}`,
+      amount: `+$${earningAmount.toFixed(2)} `,
+      date: dayjs(earningData.date).format('DD MMM YYYY'),
       // timestamp: currentTime.toISOString(),
     };
 
     setTransactions([...transactions, newEarningTransaction]);
-
-
+    console.log('newEarningTransaction:', newEarningTransaction);
 
     // UPDATE PIE
     const updatedPieChartData = pieChartData.map((slice) => {
@@ -270,7 +280,7 @@ const DashboardPage = () => {
     setEarningData({
       amount: 0,
       source: '',
-      timestamp: '',
+      date: '',
       type:'earning',
     });
     closeEarningForm();
@@ -278,7 +288,7 @@ const DashboardPage = () => {
 
 
   const postDeduction = () => {
-    const token = localStorage.getItem('token');
+    // const token = localStorage.getItem('token');
 
     setTimeout (() => {
 
@@ -286,8 +296,9 @@ const DashboardPage = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          // 'Authorization': `Bearer ${token}`
         },
+        credentials: 'include',
         body: JSON.stringify(deductionData),
       })
         .then (response => response.json())
@@ -345,6 +356,7 @@ const DashboardPage = () => {
     setDeductionData({
       ...deductionData,
       // timestamp: currentTime.toISOString(),
+      date: deductionData.date,
       amount: deductionAmount
     });
 
@@ -361,6 +373,7 @@ const DashboardPage = () => {
       id: transactions.length + 1,
       description: `Deduction | ${deductionData.source}`,
       amount: `-$${deductionAmount.toFixed(2)}`,
+      date: dayjs(deductionData.date).format('DD MMM YYYY'),
       // timestamp: currentTime.toISOString(),
     };
 
@@ -512,6 +525,23 @@ const DashboardPage = () => {
     </div>
   );
 
+  const handleSignOut = () => {
+    try {
+      fetch('http://localhost:3000/auth/signout', {
+        method: 'GET',
+        credentials: 'include'
+      }).then(response => {
+        if (!response.ok) {
+          throw new Error('Sign-out request failed');
+        }
+        navigate('/');
+      })
+    } catch {(error) => {
+      console.log('error in handleSignOut delete request -> ', error)
+    }
+    }
+  }
+
   //STYLING FOR COMPONENTS
 
   const styles = {
@@ -611,6 +641,7 @@ const DashboardPage = () => {
     <div>
       <Paper style={styles.dashboard}>
         <h1 style={styles.header}>Prosper Dashboard</h1>
+        <button onClick={handleSignOut}>SIGN OUT</button>
         <div>
           <div style={styles.username}>Welcome, {username}</div>
         </div>
@@ -709,7 +740,7 @@ const DashboardPage = () => {
                       textAlign: 'right',
                     }}
                   >
-                    Timestamp: {transaction.timestamp}
+                    Date: {transaction.date}
                   </div>
                 </ListItem>
                 <Divider />
@@ -728,7 +759,7 @@ const DashboardPage = () => {
             X
           </IconButton>
           <h3>Record Earning</h3>
-          <form onSubmit={(e) => { handleEarningSubmit(); postEarning(e); }}>
+          <form onSubmit={(e) => { handleEarningSubmit(e); postEarning(e); }}>
             <div>
               <label htmlFor="amount">Amount: $</label>
               <input
@@ -751,6 +782,15 @@ const DashboardPage = () => {
                   setEarningData({ ...earningData, source: e.target.value })
                 }
                 required
+              />
+            </div>
+            <div>
+              <DateField
+                label="Date: "
+                value={earningData.date}
+                onChange={(date) =>
+                  setEarningData({ ...earningData, date: date })
+                }
               />
             </div>
             <button type="submit">Submit</button>
@@ -791,6 +831,15 @@ const DashboardPage = () => {
                 }
                 required
               />
+              <div>
+              <DateField
+                label="Date: "
+                value={deductionData.date}
+                onChange={(date) =>
+                  setDeductionData({ ...deductionData, date: date })
+                }
+              />
+            </div>
             </div>
             <button type="submit">Submit</button>
           </form>

@@ -111,7 +111,7 @@ authController.verifyToken = (req, res, next) => {
   // console.log('req ', req.headers['cookie']);
   console.log("in authController.verifyToken ", token)
 
-  if (token === undefined) return res.status(403).json({error: 'Unauthorized'})
+  if (token === undefined) return res.status(403).json({error: 'Unauthorized cookies'})
 
   try {
     // Verify the token
@@ -119,6 +119,7 @@ authController.verifyToken = (req, res, next) => {
     
     // Attach the decoded user information onto req.user
     req.user = decoded;
+    res.locals.id = req.user._id;
     
     console.log('THIS IS THE DATA DECODED', decoded);
     
@@ -128,5 +129,15 @@ authController.verifyToken = (req, res, next) => {
     return res.status(403).json({ error: 'Invalid token' });
   }
 };
+
+authController.deleteToken = (req, res, next) => {
+  try {
+    res.clearCookie("jwtToken");
+    return next()
+  } catch (error) {
+    console.error('Token deletion error:', error);
+    return res.status(403).json({ error: 'Unable to delete token' });
+  }
+}
 
 module.exports = authController;

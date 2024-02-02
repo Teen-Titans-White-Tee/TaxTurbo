@@ -21,6 +21,7 @@ const Schema = mongoose.Schema;
 const incomeSchema = new Schema({
   source: { type: String, required: true },
   amount: { type: Number, required: true },
+  date: Date,
   transMedicare: Number,
   transSSI: Number,
   transFed: Number,
@@ -35,6 +36,7 @@ const Income = mongoose.model('income', incomeSchema);
 const expenseSchema = new Schema({
   source: { type: String, required: true },
   amount: { type: Number, required: true },
+  date: Date,
   transMedicare: Number,
   transSSI: Number,
   transFed: Number,
@@ -161,6 +163,5 @@ personSchema.statics.login = async function (email, password) {
 };
 
 const Person = mongoose.model('person', personSchema); 
-
 
 module.exports = { Person, Income, Expense, PlaidExpense };

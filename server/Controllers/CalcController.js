@@ -1,3 +1,4 @@
+const { Income, Expense, Person } = require('../models/mongooseModels');
 
 const calc = {};
 
@@ -218,11 +219,12 @@ calc.storage = (req, res, next) => {
 };
 
 calc.newNumbers = (req, res, next) => {
-
+  
   const amount = parseInt(req.body.amount);
 
   console.log ('COMING FROM THE NEW NUMBERS MIDDLEWARE, VALUE OF AMOUNT COMING FROM THE TRANSACTION', typeof amount);
 
+  try {
   if (req.body.type === 'earning'){
     res.locals.estimatedIncome = res.locals.userFound.estimatedIncome + amount;
     res.locals.businessExpenses = res.locals.userFound.businessExpenses;
@@ -238,8 +240,14 @@ calc.newNumbers = (req, res, next) => {
   console.log ('DATA TYPE OF THE ESTIMATED INCOME', typeof res.locals.estimatedIncome);
 
   console.log ('Coming from newnumbers middleware, result of adding the income plus earning', res.locals.estimatedIncome);
-
+  
   return next();
+  }
+
+  catch {(err) => {
+    console.log('Error in calc.newNumbers' + err);
+    return next(err);
+  }};
 };
 
 calc.transactionOwed = (req , res, next) => {
