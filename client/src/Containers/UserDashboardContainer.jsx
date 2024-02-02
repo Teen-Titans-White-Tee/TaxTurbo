@@ -714,10 +714,10 @@ const DashboardPage = () => {
             <>Loading...</>
           ) : importedTransactions.isSuccess ? (
             <>
-              {console.log(importedTransactions.data)}
+              {console.log(importedTransactions.data.data.added)}
               {/* if query is status: success, render charts component */}
               {/* {importedTransactions.data.added.map((transactions) => )} */}
-              <ImportedTransactions importedTransactions={importedTransactions.data} styles={styles}/> 
+              <ImportedTransactions data={importedTransactions.data.data.added} styles={styles}/> 
             </>
           ) : null }
         </div>

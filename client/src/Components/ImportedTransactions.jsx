@@ -22,7 +22,7 @@ const ImportedTransactions = ({data, styles}) => {
           <Typography variant="h7">Imported Transactions</Typography>
         </div>
         <div style={styles.listContent}>
-          {data.added.map((transaction, index) => (
+          {data.map((transaction, index) => (
             <React.Fragment key={index}>
               <ListItem style={styles.listItem}>
                 <div style={{ width: '70%', display: 'inline-block' }}>
