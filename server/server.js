@@ -8,10 +8,11 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
 const transactionRouter = require ('./routes/transactionRouter.js');
-const authRouter = require('./routes/authRouter');
+const authRouter = require('./Routes/authRouter');
+const apiRouter = require('./routes/apiRouter');
 const dataRouter = require('./routes/dataRouter');
 
-console.log('starting server')
+console.log('starting server');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -37,7 +38,7 @@ app.use('/auth', authRouter);
 
 app.use('/data', dataRouter);
 
-app.use('/api', (req, res)=>{
+app.use('/api',apiRouter, (req, res)=>{
   res.send('Api Path hit');
 });
 
