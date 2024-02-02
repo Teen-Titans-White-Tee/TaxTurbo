@@ -10,6 +10,7 @@ const cookieParser = require('cookie-parser');
 const transactionRouter = require ('./routes/transactionRouter.js');
 const authRouter = require('./Routes/authRouter');
 const apiRouter = require('./routes/apiRouter');
+const dataRouter = require('./routes/dataRouter');
 
 console.log('starting server');
 
@@ -31,12 +32,11 @@ app.use('/build', express.static(path.join(__dirname, '../build')));
 // });
 
 
-//need to rename dashboardRouternpm run dev and logically separate
-//app.use('/data', dashboardRouter);
-
-// app.use('/dashboard', dashboardRouter);
+// serve user data
 
 app.use('/auth', authRouter);
+
+app.use('/data', dataRouter);
 
 app.use('/api',apiRouter, (req, res)=>{
   res.send('Api Path hit');
@@ -44,6 +44,7 @@ app.use('/api',apiRouter, (req, res)=>{
 
 
 // app.use('/signup', signupRouter);
+
 
 app.use('/transaction', transactionRouter);
 
