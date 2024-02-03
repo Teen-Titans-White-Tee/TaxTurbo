@@ -1,8 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from '../counterSlice';
+import { importedTransactions, apiUser } from '../apiSlice';
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer, 
+    [importedTransactions.reducerPath]: importedTransactions.reducer,
+    [apiUser.reducerPath]: apiUser.reducer,
   },
-})
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(importedTransactions.middleware,apiUser.middleware),
+
+});
