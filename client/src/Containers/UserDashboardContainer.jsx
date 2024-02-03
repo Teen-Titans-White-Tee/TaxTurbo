@@ -22,6 +22,7 @@ import { ResponsiveLine } from '@nivo/line';
 import { RobotoFontFace } from '@fontsource/roboto';
 import { DateField } from '@mui/x-date-pickers';
 import dayjs, { Dayjs } from 'dayjs';
+import '../styles.css'
 
 //STATE STATE STATE STATE
 const DashboardPage = () => {
@@ -30,6 +31,18 @@ const DashboardPage = () => {
   //RTK query GET transactions from plaid api:
   // make sure this only triggers if button is clicked
   const importedTransactions = useGetTransactionsQuery();
+  const [transactions, setTransactions] = useState([
+    // { id: 1, description: 'Transaction 1', amount: '$100.00' },
+    // { id: 2, description: 'Transaction 2', amount: '$200.00' },
+    // { id: 3, description: 'Transaction 3', amount: '$-50.00' },
+    // { id: 4, description: 'Transaction 4', amount: '$-40.00' },
+    // { id: 5, description: 'Transaction 5', amount: '$-35.00' },
+    // { id: 6, description: 'Transaction 6', amount: '$-15.00' },
+    // { id: 7, description: 'Transaction 7', amount: '$-123.00' },
+    // { id: 8, description: 'Transaction 8', amount: '$-66.00' },
+    // { id: 9, description: 'Transaction 9', amount: '$-45.00' },
+    // { id: 10, description: 'Transaction 10', amount: '$-15.00' },
+  ]);
 
   // FETCHING DATA
   const fetchData = () => {
@@ -52,7 +65,9 @@ const DashboardPage = () => {
         const username = data.userFound.firstName;
         const stateTax = (Math.abs(data.userFound.stateTax));
         setUsername(username);
-
+        setTransactions(data.userFound.incomes.concat(data.userFound.expenses));
+        
+        console.log('transactions from fetching data ', transactions)
   
         const updatedPieChartData = [
           { id: 'State Tax', label: 'State Tax', value: stateTax },
@@ -132,7 +147,7 @@ const DashboardPage = () => {
 
   const postEarning = () => {
     // const token = localStorage.getItem('token');
-
+    console.log('in postEarning ')
     setTimeout(()=> {
 
       fetch('http://localhost:3000/transaction', {
@@ -169,16 +184,27 @@ const DashboardPage = () => {
 
             const newEarningTransaction = {
               id: transactions.length + 1,
-              description: `Earning | ${earning.source}`,
-              amount: `+$${earning.amount.toFixed(2)}`,
-              date: `Date | ${earning.date}`,
-              medicareTax: `Medicare Tax | ${earning.transMedicare.toFixed(2)}`,
-              stateTax: `State Tax | ${earning.transState.toFixed(2)}`,
-              ssiTax:  `SSI Tax | ${earning.transSSI.toFixed(2)}`,
-              federalTax: `Federal Tax | ${earning.transFed.toFixed(2)}`,
+              source: earning.source,
+              amount: earning.amount,
+              date: `${dayjs(earningData.date).format('DD MMM YYYY')}`,
+              transMedicare: earning.transMedicare,
+              transState: earning.transState,
+              transSSI: earning.transSSI,
+              transFed: earning.transFed,
               // timestamp: currentTime.toISOString(),
             };
-      
+            // {
+            //   id: transactions.length + 1,
+            //   description: `Earning | ${earning.source} `,
+            //   amount: `+$${earning.amount.toFixed(2)}`,
+            //   date: `${dayjs(earningData.date).format('DD MMM YYYY')}`,
+            //   medicareTax: `Medicare Tax | ${earning.transMedicare.toFixed(2)}`,
+            //   stateTax: `State Tax | ${earning.transState.toFixed(2)}`,
+            //   ssiTax:  `SSI Tax | ${earning.transSSI.toFixed(2)}`,
+            //   federalTax: `Federal Tax | ${earning.transFed.toFixed(2)}`,
+            //   // timestamp: currentTime.toISOString(),
+            // };
+            console.log('newEarningTransaction ', newEarningTransaction);
             setTransactions([...transactions, newEarningTransaction]);
 
 
@@ -217,7 +243,7 @@ const DashboardPage = () => {
       // timestamp: currentTime.toISOString(),
       date: earningData.date,
       source: earningData.source,
-      amount: earningAmount
+      amount: earningAmount,
     });
 
     console.log ('Value of earning data from DashBoard Container', earningData);
@@ -229,14 +255,14 @@ const DashboardPage = () => {
     // CREATE & ADD NEW TRANSACTION
     const newEarningTransaction = {
       id: transactions.length + 1,
-      description: `Earning | ${earningData.source}`,
-      amount: `+$${earningAmount.toFixed(2)} `,
+      source: earningData.source,
+      amount: earningAmount,
       date: dayjs(earningData.date).format('DD MMM YYYY'),
       // timestamp: currentTime.toISOString(),
     };
 
     setTransactions([...transactions, newEarningTransaction]);
-    console.log('newEarningTransaction:', newEarningTransaction);
+    // console.log('newEarningTransaction:', newEarningTransaction);
 
     // UPDATE PIE
     const updatedPieChartData = pieChartData.map((slice) => {
@@ -331,8 +357,13 @@ const DashboardPage = () => {
 
             const newExpenseTransaction = {
               id: transactions.length + 1,
-              description: `Deduction | ${deduction.source}`,
-              amount: `+$${deduction.amount.toFixed(2)}`,
+              source: deduction.source,
+              amount: deduction.amount,
+              date: `${dayjs(deduction.date).format('DD MMM YYYY')}`,
+              transMedicare: deduction.transMedicare,
+              transState: deduction.transState,
+              transSSI: deduction.transSSI,
+              transFed: deduction.transFed,
               // timestamp: currentTime.toISOString(),
             };
       
@@ -378,9 +409,13 @@ const DashboardPage = () => {
     // CREATE & ADD NEW TRANSACTION
     const newDeductionTransaction = {
       id: transactions.length + 1,
-      description: `Deduction | ${deductionData.source}`,
-      amount: `-$${deductionAmount.toFixed(2)}`,
+      source: deductionData.source,
+      amount: deductionAmount,
       date: dayjs(deductionData.date).format('DD MMM YYYY'),
+      transMedicare: deductionData.transMedicare,
+      transState: deductionData.transState,
+      transSSI: deductionData.transSSI,
+      transFed: deductionData.transFed,
       // timestamp: currentTime.toISOString(),
     };
 
@@ -452,18 +487,7 @@ const DashboardPage = () => {
 
   //MOCK DATE FOR BUILD | REPLACE WITH USER DATA
 
-  const [transactions, setTransactions] = useState([
-    // { id: 1, description: 'Transaction 1', amount: '$100.00' },
-    // { id: 2, description: 'Transaction 2', amount: '$200.00' },
-    // { id: 3, description: 'Transaction 3', amount: '$-50.00' },
-    // { id: 4, description: 'Transaction 4', amount: '$-40.00' },
-    // { id: 5, description: 'Transaction 5', amount: '$-35.00' },
-    // { id: 6, description: 'Transaction 6', amount: '$-15.00' },
-    // { id: 7, description: 'Transaction 7', amount: '$-123.00' },
-    // { id: 8, description: 'Transaction 8', amount: '$-66.00' },
-    // { id: 9, description: 'Transaction 9', amount: '$-45.00' },
-    // { id: 10, description: 'Transaction 10', amount: '$-15.00' },
-  ]);
+  
 
   const [pieChartData, setPieChartData] = useState([
     // { id: 'State Tax', label: 'State Tax', value: stateTax },
@@ -563,7 +587,7 @@ const DashboardPage = () => {
       marginBottom: '20px',
     },
     username: {
-      position: 'absolute',
+      // position: 'absolute',
       fontFamily: 'Poppins, sans-serif',
       color: '#673AB7',
       top: '80px',
@@ -596,6 +620,7 @@ const DashboardPage = () => {
       width: '400px',
       textAlign: 'center',
       color: '#333',
+      fontFamily: 'Poppins, sans-serif',
     },
     closeButton: {
       position: 'absolute',
@@ -611,6 +636,7 @@ const DashboardPage = () => {
       bottom: '0px',
       maxHeight: '247.5px',
       overflow: 'auto',
+      fontFamily: 'Roboto, sans-serif'
     },
     listTitle: {
       padding: '10px',
@@ -618,11 +644,13 @@ const DashboardPage = () => {
       position: 'sticky',
       top: '1px',
       zIndex: 1,
+      fontFamily: 'Roboto, sans-serif'
     },
     listContent: {
       maxHeight: 'calc(100% - 58px)',
       overflowY: 'auto',
       marginTop: '7px',
+      fontFamily: 'Roboto, sans-serif'
     },
     projectionsContainer: {
       backgroundColor: '#D1C4E9',
@@ -641,15 +669,20 @@ const DashboardPage = () => {
       marginTop: '10px',
       color: '#673AB7',
     },
+    
   };
 
   // :)
   return (
     <div>
       <Paper style={styles.dashboard}>
-        <h1 style={styles.header}>Prosper Dashboard</h1>
-        <button onClick={handleSignOut}>SIGN OUT</button>
-        <div>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <h1 style={{...styles.header, marginLeft: 0 }}>Prosper Dashboard</h1>
+          <button onClick={handleSignOut} className="div-wrapper" style={{ marginLeft: 'auto' }}>
+            <div className="text-wrapper-2">SIGN OUT</div>
+          </button>
+          </div>
           <div style={styles.username}>Welcome, {username}</div>
         </div>
         <Grid container spacing={2}>
@@ -757,7 +790,7 @@ const DashboardPage = () => {
               <React.Fragment key={transaction.id}>
                 <ListItem style={styles.listItem}>
                   <div style={{ width: '70%', display: 'inline-block' }}>
-                    {transaction.description} {transaction.amount} {transaction.medicareTax} {transaction.stateTax} {transaction.federalTax} {transaction.ssiTax}
+                    {transaction.source} Amount: ${Math.round(transaction.amount)} Medicare: {Math.round(transaction.transMedicare)} State Tax: {Math.round(transaction.transState)} Federal Tax: {Math.round(transaction.transFed)} SSI: {Math.round(transaction.transSSI)}
                   </div>
                   <div
                     style={{
@@ -766,7 +799,7 @@ const DashboardPage = () => {
                       textAlign: 'right',
                     }}
                   >
-                    Date: {transaction.date}
+                    Date: {dayjs(transaction.date).format('DD MMM YYYY')}
                   </div>
                 </ListItem>
                 <Divider />
@@ -871,10 +904,10 @@ const DashboardPage = () => {
           </form>
         </div>
       )}
-      <Paper style={styles.projectionsContainer}>
+      {/* <Paper style={styles.projectionsContainer}>
         <h2 style={styles.header}>Projections</h2>
         {Object.keys(sliderValues).map((id) => renderSlider(id))}
-      </Paper>
+      </Paper> */}
     </div>
   );
 };
