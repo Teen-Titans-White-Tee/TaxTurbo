@@ -128,6 +128,7 @@ userController.updateUser = (req, res, next) => {
       transState,
     }};
   } else if (req.body.type === 'deduction'){
+    console.log('Deduction Body',req.body);
     body = {expenses: {
       ...req.body,
       transMedicare,

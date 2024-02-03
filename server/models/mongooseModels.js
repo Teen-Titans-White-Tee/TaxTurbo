@@ -37,6 +37,7 @@ const expenseSchema = new Schema({
   source: { type: String, required: true },
   amount: { type: Number, required: true },
   date: Date,
+  transaction_id: String,
   transMedicare: Number,
   transSSI: Number,
   transFed: Number,
@@ -50,6 +51,7 @@ const Expense = mongoose.model('expense', expenseSchema);
 
 
 const plaidExpenseSchema = new Schema({
+  transaction_id: String,
   name: {type: String, required: true},
   amount: {type: String, required: true},
   category: [String],
