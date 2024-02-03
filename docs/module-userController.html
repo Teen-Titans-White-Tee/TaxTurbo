@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: LoginContainer</title>
+    <title>JSDoc: Module: userController</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: LoginContainer</h1>
+    <h1 class="page-title">Module: userController</h1>
 
     
 
@@ -34,7 +34,10 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>stateful component to render login options</p>
+            <div class="description"><p>Originally the implementation here was that we would create the document in the database using the Person model in this
+middleware function. Instead we will move the creation of the document at the end of the middleware chain in a function called createUser
+since we do not have all the data we need just from the request body. We would still need the calculations for taxes and that is done further
+down the middleware chain, we will embed that data onto the document once retrieved</p>
 <hr></div>
         
 
@@ -60,13 +63,6 @@
     
 
     
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li></li>
-        </ul>
-    </dd>
-    
 
     
 
@@ -77,7 +73,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="client_src_Containers_LoginPageContainer.jsx.html">client/src/Containers/LoginPageContainer.jsx</a>, <a href="client_src_Containers_LoginPageContainer.jsx.html#line1">line 1</a>
+        <a href="server_controllers_userController.js.html">server/controllers/userController.js</a>, <a href="server_controllers_userController.js.html#line1">line 1</a>
     </li></ul></dd>
     
 
