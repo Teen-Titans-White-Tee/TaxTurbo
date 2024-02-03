@@ -76,7 +76,7 @@ const ImportedTransactions = ({data, styles}) => {
     <div>
       <List style={styles.listContainer}>
         <div style={styles.listTitle}>
-          <Typography variant="h7">Imported Transactions</Typography>
+          <Typography variant="h7">Imported Transactions - Click to Add Expenses</Typography>
         </div>
         <div style={styles.listContent}>
           {data.map((transaction, index) => (
@@ -84,7 +84,7 @@ const ImportedTransactions = ({data, styles}) => {
             <React.Fragment key={index}>
               <ListItem style={styles.listItem} onClick={()=> addExpense(transaction)}>
            
-                <div style={{ width: '70%', display: 'inline-block'}} >
+                <div style={{ width: '70%', display: 'inline-block', cursor:'pointer'}} >
                   {transaction.name} {transaction.amount} {transaction.date} {transaction.category}
                   {/* {console.log('Transaction ID==============>',transaction.transaction_id )}
                   {console.log('Selected ID==============>',selected )} , backgroundColor: selected.includes(transaction.transaction_id) ? 'green' : 'red' } */}
