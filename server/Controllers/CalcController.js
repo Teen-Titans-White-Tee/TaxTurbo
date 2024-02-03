@@ -225,29 +225,29 @@ calc.newNumbers = (req, res, next) => {
   console.log ('COMING FROM THE NEW NUMBERS MIDDLEWARE, VALUE OF AMOUNT COMING FROM THE TRANSACTION', typeof amount);
 
   try {
-  if (req.body.type === 'earning'){
-    res.locals.estimatedIncome = res.locals.userFound.estimatedIncome + amount;
-    res.locals.businessExpenses = res.locals.userFound.businessExpenses;
-  } else {
-    res.locals.estimatedIncome = res.locals.userFound.estimatedIncome;
-    res.locals.businessExpenses = res.locals.userFound.businessExpenses + amount;
-  }
-  res.locals.preTaxRetirementContributions = res.locals.userFound.preTaxRetirementContributions;
+    if (req.body.type === 'earning'){
+      res.locals.estimatedIncome = res.locals.userFound.estimatedIncome + amount;
+      res.locals.businessExpenses = res.locals.userFound.businessExpenses;
+    } else {
+      res.locals.estimatedIncome = res.locals.userFound.estimatedIncome;
+      res.locals.businessExpenses = res.locals.userFound.businessExpenses + amount;
+    }
+    res.locals.preTaxRetirementContributions = res.locals.userFound.preTaxRetirementContributions;
 
-  res.locals.state = res.locals.userFound.state;
-  res.locals.filingStatus = res.locals.userFound.filingStatus;
+    res.locals.state = res.locals.userFound.state;
+    res.locals.filingStatus = res.locals.userFound.filingStatus;
 
-  console.log ('DATA TYPE OF THE ESTIMATED INCOME', typeof res.locals.estimatedIncome);
+    console.log ('DATA TYPE OF THE ESTIMATED INCOME', typeof res.locals.estimatedIncome);
 
-  console.log ('Coming from newnumbers middleware, result of adding the income plus earning', res.locals.estimatedIncome);
+    console.log ('Coming from newnumbers middleware, result of adding the income plus earning', res.locals.estimatedIncome);
   
-  return next();
+    return next();
   }
 
   catch {(err) => {
     console.log('Error in calc.newNumbers' + err);
     return next(err);
-  }};
+  };}
 };
 
 calc.transactionOwed = (req , res, next) => {

@@ -1,3 +1,14 @@
+/**
+ * ************************************
+ *
+ * @module dataRouter
+ * @author Mike Basta
+ * @date 1/29/2024
+ * @description routes for /data path - /getUser
+ *
+ * ************************************
+ */
+
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
