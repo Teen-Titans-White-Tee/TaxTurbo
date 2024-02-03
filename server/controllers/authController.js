@@ -62,7 +62,7 @@ authController.loginUser = async (req,res,next) => {
       throw Error('Incorrect email or password');
     } 
 
-    const hash = user.password  
+    const hash = user.password;  
 
     const match = await bcrypt.compare(password, hash);
 
@@ -78,12 +78,12 @@ authController.loginUser = async (req,res,next) => {
       res.cookie('jwtToken', token, {
         // httpOnly: true,
         // secure: true,
-      })
+      });
       console.log('token>>>>>>>>>>>>>>>>>>>>> ', token);
       // console.log('req', req)
-      res.locals.token = token
+      res.locals.token = token;
 
-      return next()
+      return next();
       // return res.status(200).json({token});
     } else {
       throw Error('Incorrect email or password');
@@ -100,7 +100,7 @@ authController.verifyToken = (req, res, next) => {
   // const authorizationHeader = req.headers['authorization'];
 
   // if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
-    // Token not provided in the correct format
+  // Token not provided in the correct format
   //   return res.status(401).json({ error: 'Unauthorized' });
   // }
 
@@ -109,9 +109,9 @@ authController.verifyToken = (req, res, next) => {
   const token = req.cookies.jwtToken;
   // console.log('req.cookies------------>', req.headers.cookie)
   // console.log('req ', req.headers['cookie']);
-  console.log("in authController.verifyToken ", token)
+  console.log('in authController.verifyToken ', token);
 
-  if (token === undefined) return res.status(403).json({error: 'Unauthorized cookies'})
+  if (token === undefined) return res.status(403).json({error: 'Unauthorized cookies'});
 
   try {
     // Verify the token
@@ -132,12 +132,12 @@ authController.verifyToken = (req, res, next) => {
 
 authController.deleteToken = (req, res, next) => {
   try {
-    res.clearCookie("jwtToken");
-    return next()
+    res.clearCookie('jwtToken');
+    return next();
   } catch (error) {
     console.error('Token deletion error:', error);
     return res.status(403).json({ error: 'Unable to delete token' });
   }
-}
+};
 
 module.exports = authController;
