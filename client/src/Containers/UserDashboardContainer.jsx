@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useGetTransactionsQuery } from '../apiSlice.js'; //this is our RTKQueries
 import { useNavigate } from 'react-router-dom';
 // import DashboardComponents:
+import Link from '../Components/MainPageComponents/Plaid/Link.jsx';
 import ImportedTransactions from '../Components/ImportedTransactions.jsx';
 import {
   Paper,
@@ -702,14 +703,14 @@ const DashboardPage = () => {
             </div>
           </Grid>
         </Grid>
-        {/* this is the component to render imported transactions if Plaid api is selected */}
-        {/* BUTTON to import transactions from plaid */}
+        {/* BUTTON to import transactions from plaid */} 
+       
         <div>
-          <button></button>
+          <Link styles={styles}/>
+        </div>
+        {/* this is the component to render imported transactions if Plaid api is selected */} 
+        <div>
           {console.log(importedTransactions.data)}
-        </div>     
-        <div>
-        {console.log(importedTransactions.data)}
           {importedTransactions.isLoading ? (
             <>Loading...</>
           ) : importedTransactions.isSuccess ? (
@@ -749,7 +750,7 @@ const DashboardPage = () => {
         </div>
         <List style={styles.listContainer}>
           <div style={styles.listTitle}>
-            <Typography variant="h7">Previous Transactions</Typography>
+            <Typography variant="h7">Recorded Transactions</Typography>
           </div>
           <div style={styles.listContent}>
             {transactions.map((transaction) => (
