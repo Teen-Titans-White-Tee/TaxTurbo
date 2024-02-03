@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: server/controllers/CalcController.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: server/controllers/CalcController.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * ************************************
  *
  * @module CalcController
@@ -34,14 +62,14 @@ calc.stateYTDCalc = (req, res, next) => {
   if (bracketHigh[0] === 999999999){
     taxesOwed = YTD * rates[0];
   } else {
-    for (let i = 0; i < bracketLow.length; i++){
+    for (let i = 0; i &lt; bracketLow.length; i++){
       const min = bracketLow[i];
       const max = bracketHigh[i];
       const currentRate = rates[i];
 
       if (max === 999999999){
         taxesOwed += ((YTD - min) * currentRate);
-      } else if (YTD <= max){
+      } else if (YTD &lt;= max){
         taxesOwed += ((YTD - min) * currentRate);
         break;
       } else {
@@ -63,7 +91,7 @@ calc.stateYTDCalc = (req, res, next) => {
  * @returns {function} next() and federal taxes on res.locals.taxesOwed.fed
  */
 calc.fedYTDCalc = (req, res, next) => {
-  const YTD = res.locals.estimatedIncome - (res.locals.businessExpenses + res.locals.preTaxRetirementContributions); // <-- property needs to be added
+  const YTD = res.locals.estimatedIncome - (res.locals.businessExpenses + res.locals.preTaxRetirementContributions); // &lt;-- property needs to be added
   const bracketLow = [];
   res.locals.stateTables.forEach((ele) => {bracketLow.push(ele['income_range_low']);});
   const bracketHigh = [];
@@ -72,14 +100,14 @@ calc.fedYTDCalc = (req, res, next) => {
   res.locals.stateTables.forEach((ele) =>{rates.push(ele['tax_rate']);});
   let taxesOwed = 0;
 
-  for (let i = 0; i < bracketLow.length; i++){
+  for (let i = 0; i &lt; bracketLow.length; i++){
 
     const min = bracketLow[i];
     const max = bracketHigh[i];
     const currentRate = rates[i];
     if (max === 999999999){
       taxesOwed += ((YTD - min) * currentRate);
-    } else if (YTD <= max){
+    } else if (YTD &lt;= max){
       taxesOwed += ((YTD - min) * currentRate);
       break;
     } else {
@@ -101,10 +129,10 @@ calc.fedYTDCalc = (req, res, next) => {
  * @returns {function} next() and social security taxes on res.locals.taxesOwed.SSI
  */
 calc.SSYTDCalc = (req, res, next) => {
-  const YTD = res.locals.estimatedIncome - (res.locals.businessExpenses + res.locals.preTaxRetirementContributions); // <-- property needs to be added
+  const YTD = res.locals.estimatedIncome - (res.locals.businessExpenses + res.locals.preTaxRetirementContributions); // &lt;-- property needs to be added
   let taxesOwed = 0;
 
-  if (YTD < 400) {
+  if (YTD &lt; 400) {
     taxesOwed = 0;
   } else if (YTD > 160200){
     taxesOwed = 160200 * 0.124;
@@ -125,9 +153,9 @@ calc.SSYTDCalc = (req, res, next) => {
  * @returns {function} next() and medicare taxes on res.locals.taxesOwed.medicare
  */
 calc.medicareYTDCalc = (req , res, next) => {
-  const YTD = res.locals.estimatedIncome - (res.locals.businessExpenses + res.locals.preTaxRetirementContributions); // <-- property needs to be added
+  const YTD = res.locals.estimatedIncome - (res.locals.businessExpenses + res.locals.preTaxRetirementContributions); // &lt;-- property needs to be added
   let taxesOwed = 0;
-  taxesOwed = YTD < 400 ? 0 : YTD * 0.029;
+  taxesOwed = YTD &lt; 400 ? 0 : YTD * 0.029;
 
   res.locals.taxesOwed.medicare = taxesOwed;
   return next();
@@ -180,14 +208,14 @@ calc.allTaxes = (req, res, next) => {
   if (stateBracketHigh[0] === 999999999){
     stateTaxesOwed = YTD * stateRates[0];
   } else {
-    for (let i = 0; i < stateBracketLow.length; i++){
+    for (let i = 0; i &lt; stateBracketLow.length; i++){
       const min = stateBracketLow[i];
       const max = stateBracketHigh[i];
       const currentRate = stateRates[i];
 
       if (max === 999999999){
         stateTaxesOwed += ((YTD - min) * currentRate);
-      } else if (YTD <= max){
+      } else if (YTD &lt;= max){
         stateTaxesOwed += ((YTD - min) * currentRate);
         break;
       } else {
@@ -197,7 +225,7 @@ calc.allTaxes = (req, res, next) => {
   }
 
   // calculating federal tax liability 
-  for (let i = 0; i < fedBracketLow.length; i++){
+  for (let i = 0; i &lt; fedBracketLow.length; i++){
 
     const min = fedBracketLow[i];
     const max = fedBracketHigh[i];
@@ -205,7 +233,7 @@ calc.allTaxes = (req, res, next) => {
 
     if (max === 999999999){
       fedTaxesOwed += ((YTD - min) * currentRate);
-    } else if (YTD <= max){
+    } else if (YTD &lt;= max){
       fedTaxesOwed += ((YTD - min) * currentRate);
       break;
     } else {
@@ -214,7 +242,7 @@ calc.allTaxes = (req, res, next) => {
   }
 
   // calculating self employment tax: Social Security Insurance
-  if (YTD < 400) {
+  if (YTD &lt; 400) {
     SSITaxesOwed = 0;
   } else if (YTD > 160200){
     SSITaxesOwed = 160200 * 0.124;
@@ -222,7 +250,7 @@ calc.allTaxes = (req, res, next) => {
     SSITaxesOwed = YTD * 0.124;
   }
   // calculating self employment tax: Medicare
-  MedicareTaxesOwed = YTD < 400 ? 0 : YTD * 0.029;
+  MedicareTaxesOwed = YTD &lt; 400 ? 0 : YTD * 0.029;
 
   console.log (`Final result of all the calculations, Medicare Taxes Owed: ${MedicareTaxesOwed}, SSITaxesOwed: ${SSITaxesOwed}, FedTaxesOwed: ${fedTaxesOwed}, StateTaxesOwed: ${stateTaxesOwed}` );
 
@@ -316,4 +344,26 @@ calc.transactionOwed = (req , res, next) => {
   return next();
 };
 
-module.exports = calc;
+module.exports = calc;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CalcController.html">CalcController</a></li><li><a href="module-LoginContainer.html">LoginContainer</a></li><li><a href="module-authController.html">authController</a></li><li><a href="module-dataRetrieval.html">dataRetrieval</a></li><li><a href="module-plaidController.html">plaidController</a></li><li><a href="module-userController.html">userController</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-plaid-tutorial.html">plaid-tutorial</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sat Feb 03 2024 11:28:53 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
