@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useGetTransactionsQuery } from '../apiSlice.js'; //this is our RTKQueries
 import { useNavigate } from 'react-router-dom';
+// import DashboardComponents:
+import ImportedTransactions from '../Components/ImportedTransactions.jsx';
 import {
   Paper,
   Button,
@@ -17,12 +20,15 @@ import { ResponsiveBar } from '@nivo/bar';
 import { ResponsiveLine } from '@nivo/line';
 import { RobotoFontFace } from '@fontsource/roboto';
 import { DateField } from '@mui/x-date-pickers';
-import dayjs, { Dayjs } from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs';
 
 //STATE STATE STATE STATE
 const DashboardPage = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
+  //RTK query GET transactions from plaid api:
+  // make sure this only triggers if button is clicked
+  const importedTransactions = useGetTransactionsQuery();
 
   // FETCHING DATA
   const fetchData = () => {
@@ -535,12 +541,12 @@ const DashboardPage = () => {
           throw new Error('Sign-out request failed');
         }
         navigate('/');
-      })
+      });
     } catch {(error) => {
-      console.log('error in handleSignOut delete request -> ', error)
+      console.log('error in handleSignOut delete request -> ', error);
+    };
     }
-    }
-  }
+  };
 
   //STYLING FOR COMPONENTS
 
@@ -696,6 +702,25 @@ const DashboardPage = () => {
             </div>
           </Grid>
         </Grid>
+        {/* this is the component to render imported transactions if Plaid api is selected */}
+        {/* BUTTON to import transactions from plaid */}
+        <div>
+          <button></button>
+          {console.log(importedTransactions.data)}
+        </div>     
+        <div>
+        {console.log(importedTransactions.data)}
+          {importedTransactions.isLoading ? (
+            <>Loading...</>
+          ) : importedTransactions.isSuccess ? (
+            <>
+              {console.log(importedTransactions.data.data.added)}
+              {/* if query is status: success, render charts component */}
+              {/* {importedTransactions.data.added.map((transactions) => )} */}
+              <ImportedTransactions data={importedTransactions.data.data.added} styles={styles}/> 
+            </>
+          ) : null }
+        </div>
         <div style={styles.buttonContainer}>
           <Button
             variant="contained"
@@ -832,14 +857,14 @@ const DashboardPage = () => {
                 required
               />
               <div>
-              <DateField
-                label="Date: "
-                value={deductionData.date}
-                onChange={(date) =>
-                  setDeductionData({ ...deductionData, date: date })
-                }
-              />
-            </div>
+                <DateField
+                  label="Date: "
+                  value={deductionData.date}
+                  onChange={(date) =>
+                    setDeductionData({ ...deductionData, date: date })
+                  }
+                />
+              </div>
             </div>
             <button type="submit">Submit</button>
           </form>
