@@ -8,7 +8,6 @@ const express = require('express');
 
 const router = express.Router();
 
-
 router.post('/', 
   authController.verifyToken, 
   userController.findUser,
