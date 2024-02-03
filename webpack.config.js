@@ -67,7 +67,8 @@ module.exports = {
       },
       '/auth': 'http://localhost:3000',
       '/data': 'http://localhost:3000',
-      '/transaction': 'http://localhost:3000'
+      '/transaction': 'http://localhost:3000',
+      '/docs': 'http://localhost:3000',
     },
     compress: true,
     historyApiFallback: true,

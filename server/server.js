@@ -31,6 +31,8 @@ app.use('/build', express.static(path.join(__dirname, '../build')));
 //   res.status(200).sendFile(path.join(__dirname, '../build/index.html'));
 // });
 
+//jsdocs route
+app.use('/docs', express.static(path.join(__dirname, '../docs')));
 
 // serve user data
 

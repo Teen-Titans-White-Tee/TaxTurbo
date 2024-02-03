@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: client/src/Containers/LoginPageContainer.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: client/src/Containers/LoginPageContainer.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * ************************************
  *
  * @module LoginContainer
@@ -25,7 +53,7 @@ const StyledLogin = styled.div`
   height: 1181px;
   position: relative;
 
-  & .MAIN-INNER {
+  &amp; .MAIN-INNER {
     height: 826px;
     left: 15px;
     position: relative;
@@ -33,7 +61,7 @@ const StyledLogin = styled.div`
     width: 1050px;
   }
 
-  & .REGISTER {
+  &amp; .REGISTER {
     color: #ffffff;
     font-family: "Roboto-Black", Helvetica;
     font-size: 38px;
@@ -47,7 +75,7 @@ const StyledLogin = styled.div`
     width: 1050px;
   }
 
-  & .text-wrapper {
+  &amp; .text-wrapper {
     color: #767676;
     flex: 1;
     font-family: "Roboto-Black", Helvetica;
@@ -58,7 +86,7 @@ const StyledLogin = styled.div`
     position: relative;
   }
 
-  & .password-wrapper {
+  &amp; .password-wrapper {
     align-items: center;
     background-color: #ffffff;
     border-radius: 7.5px;
@@ -72,7 +100,7 @@ const StyledLogin = styled.div`
     width: 375px;
   }
 
-  & .email-wrapper {
+  &amp; .email-wrapper {
     align-items: center;
     background-color: #ffffff;
     border-radius: 7.5px;
@@ -86,7 +114,7 @@ const StyledLogin = styled.div`
     width: 375px;
   }
 
-  & .button {
+  &amp; .button {
     all: unset;
     align-items: center;
     background-color: #000000;
@@ -103,7 +131,7 @@ const StyledLogin = styled.div`
     width: 423px;
   }
 
-  & .LOGIN {
+  &amp; .LOGIN {
     color: #ffffff;
     font-family: "Roboto-Black", Helvetica;
     font-size: 22px;
@@ -116,7 +144,7 @@ const StyledLogin = styled.div`
     width: fit-content;
   }
 
-  & .div {
+  &amp; .div {
     color: #ffffff;
     font-family: "Roboto-Black", Helvetica;
     font-size: 20px;
@@ -176,42 +204,65 @@ const LoginPageContainer = () => {
 
 
   return (
-    <StyledLogin>
-      <div className="MAIN">
-        <div className="MAIN-INNER">
-          <div className="REGISTER">Welcome Back</div>
-          <form className="form" onSubmit={handleSubmit}>
-            <div className="password-wrapper">
-              <TextField
+    &lt;StyledLogin>
+      &lt;div className="MAIN">
+        &lt;div className="MAIN-INNER">
+          &lt;div className="REGISTER">Welcome Back&lt;/div>
+          &lt;form className="form" onSubmit={handleSubmit}>
+            &lt;div className="password-wrapper">
+              &lt;TextField
                 type="password"
                 fullWidth
                 label="Password"
                 onChange={handlePasswordChange}
               />
-            </div>
-            <div className="email-wrapper">
-              <TextField
+            &lt;/div>
+            &lt;div className="email-wrapper">
+              &lt;TextField
                 type="email"
                 fullWidth
                 value={email}
                 label="Email"
                 onChange={handleEmailChange}
               />
-            </div>
-            <Button
+            &lt;/div>
+            &lt;Button
               variant="contained"
               color="primary"
               type="submit"
               className="button"
             >
-              <div className="LOGIN">Login</div>
-            </Button>
-          </form>
-          <p className="div">Please enter email and password below</p>
-        </div>
-      </div>
-    </StyledLogin>
+              &lt;div className="LOGIN">Login&lt;/div>
+            &lt;/Button>
+          &lt;/form>
+          &lt;p className="div">Please enter email and password below&lt;/p>
+        &lt;/div>
+      &lt;/div>
+    &lt;/StyledLogin>
   );
 };
 
 export default LoginPageContainer;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CalcController.html">CalcController</a></li><li><a href="module-LoginContainer.html">LoginContainer</a></li><li><a href="module-authController.html">authController</a></li><li><a href="module-dataRetrieval.html">dataRetrieval</a></li><li><a href="module-plaidController.html">plaidController</a></li><li><a href="module-userController.html">userController</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-plaid-tutorial.html">plaid-tutorial</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sat Feb 03 2024 13:19:13 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
