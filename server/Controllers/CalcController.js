@@ -1,6 +1,24 @@
+/**
+ * ************************************
+ *
+ * @module CalcController
+ * @description  Holds logic to calculate tax liabilites
+ *
+ * ************************************
+ */
+
+const { Income, Expense, Person } = require('../models/mongooseModels');
 
 const calc = {};
 
+/**
+ * @function stateYTDCalc
+ * @param {request} req user data 
+ * @param {response} res calculated taxes
+ * @param {function} next next middleware
+  
+ * @returns {function} next() and state taxes on res.locals.taxesOwed.state
+ */
 calc.stateYTDCalc = (req, res, next) => {
 
   const YTD = res.locals.estimatedIncome - (res.locals.businessExpenses + res.locals.preTaxRetirementContributions); 
@@ -36,6 +54,14 @@ calc.stateYTDCalc = (req, res, next) => {
   return next();
 };
 
+/**
+ * @function fedYTDCalc
+ * @param {request} req user data 
+ * @param {response} res calculated taxes
+ * @param {function} next next middleware
+  
+ * @returns {function} next() and federal taxes on res.locals.taxesOwed.fed
+ */
 calc.fedYTDCalc = (req, res, next) => {
   const YTD = res.locals.estimatedIncome - (res.locals.businessExpenses + res.locals.preTaxRetirementContributions); // <-- property needs to be added
   const bracketLow = [];
@@ -66,6 +92,14 @@ calc.fedYTDCalc = (req, res, next) => {
   return next();
 };
 
+/**
+ * @function SSYTDCalc
+ * @param {request} req user data 
+ * @param {response} res calculated taxes
+ * @param {function} next next middleware
+  
+ * @returns {function} next() and social security taxes on res.locals.taxesOwed.SSI
+ */
 calc.SSYTDCalc = (req, res, next) => {
   const YTD = res.locals.estimatedIncome - (res.locals.businessExpenses + res.locals.preTaxRetirementContributions); // <-- property needs to be added
   let taxesOwed = 0;
@@ -82,6 +116,14 @@ calc.SSYTDCalc = (req, res, next) => {
   return next();
 };
 
+/**
+ * @function medicareYTDCalc
+ * @param {request} req user data 
+ * @param {response} res calculated taxes
+ * @param {function} next next middleware
+  
+ * @returns {function} next() and medicare taxes on res.locals.taxesOwed.medicare
+ */
 calc.medicareYTDCalc = (req , res, next) => {
   const YTD = res.locals.estimatedIncome - (res.locals.businessExpenses + res.locals.preTaxRetirementContributions); // <-- property needs to be added
   let taxesOwed = 0;
@@ -91,6 +133,14 @@ calc.medicareYTDCalc = (req , res, next) => {
   return next();
 };
 
+/**
+ * @function allTaxes
+ * @param {request} req user data 
+ * @param {response} res calculated taxes
+ * @param {function} next next middleware
+  
+ * @returns {function} next() and total taxes on res.locals.storage
+ */
 calc.allTaxes = (req, res, next) => {
   
   const YTD = res.locals.estimatedIncome - (res.locals.businessExpenses + res.locals.preTaxRetirementContributions);
@@ -218,28 +268,35 @@ calc.storage = (req, res, next) => {
 };
 
 calc.newNumbers = (req, res, next) => {
-
+  
   const amount = parseInt(req.body.amount);
 
   console.log ('COMING FROM THE NEW NUMBERS MIDDLEWARE, VALUE OF AMOUNT COMING FROM THE TRANSACTION', typeof amount);
 
-  if (req.body.type === 'earning'){
-    res.locals.estimatedIncome = res.locals.userFound.estimatedIncome + amount;
-    res.locals.businessExpenses = res.locals.userFound.businessExpenses;
-  } else {
-    res.locals.estimatedIncome = res.locals.userFound.estimatedIncome;
-    res.locals.businessExpenses = res.locals.userFound.businessExpenses + amount;
+  try {
+    if (req.body.type === 'earning'){
+      res.locals.estimatedIncome = res.locals.userFound.estimatedIncome + amount;
+      res.locals.businessExpenses = res.locals.userFound.businessExpenses;
+    } else {
+      res.locals.estimatedIncome = res.locals.userFound.estimatedIncome;
+      res.locals.businessExpenses = res.locals.userFound.businessExpenses + amount;
+    }
+    res.locals.preTaxRetirementContributions = res.locals.userFound.preTaxRetirementContributions;
+
+    res.locals.state = res.locals.userFound.state;
+    res.locals.filingStatus = res.locals.userFound.filingStatus;
+
+    console.log ('DATA TYPE OF THE ESTIMATED INCOME', typeof res.locals.estimatedIncome);
+
+    console.log ('Coming from newnumbers middleware, result of adding the income plus earning', res.locals.estimatedIncome);
+  
+    return next();
   }
-  res.locals.preTaxRetirementContributions = res.locals.userFound.preTaxRetirementContributions;
 
-  res.locals.state = res.locals.userFound.state;
-  res.locals.filingStatus = res.locals.userFound.filingStatus;
-
-  console.log ('DATA TYPE OF THE ESTIMATED INCOME', typeof res.locals.estimatedIncome);
-
-  console.log ('Coming from newnumbers middleware, result of adding the income plus earning', res.locals.estimatedIncome);
-
-  return next();
+  catch {(err) => {
+    console.log('Error in calc.newNumbers' + err);
+    return next(err);
+  };}
 };
 
 calc.transactionOwed = (req , res, next) => {

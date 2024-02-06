@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: server/controllers/authController.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: server/controllers/authController.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @module authController
+ * @author Wan Ting Lee, Christian Magorrian
+ * @description Creates JWT to persist on authorized routes, logs user in, and verifies JWT
+ */
+require('dotenv').config();
+const { Person } = require('../models/mongooseModels');  
+const jwt = require('jsonwebtoken'); 
+const secret = process.env.SECRET;
+const bcrypt = require('bcrypt');
+const cookie = require('cookie');
+ 
+const authController = {};
+
+// this creates json web token
+const createToken = (_id) => { 
+  if (! secret) {
+    throw Error('Secret key is missing. Make sure process.env.SECRET is defined.');
+  }
+  return jwt.sign({_id}, secret, {expiresIn: '1d'});
+};
+
+// signup user 
+// authController.signupUser = async (req, res, next) => { 
+
+//   const {email} = req.body;
+
+//   console.log ('Email from the request body in jwt token creation', email);
+
+//   // try to sign user up using signup method 
+//   try {
+//     // const user = await models.Person.signup(firstName, lastName, password, email);  
+//     const user = await Person.findOne({email});
+
+//     console.log ('Found a user to create a token with their document id', user);
+
+//     // create a token 
+//     const token = createToken(user._id);
+//     // Send the token as a cookie
+//     // res.cookie('token', token, {httpOnly: true});
+
+//     res.locals.token = token;
+
+
+//     //expires: new Date(Date.now() + 24 * 60 * 60 * 1000), secure: true, sameSite: 'Strict'
+
+//     return next();
+
+
+//     // res.status(200).json({email, token});
+//   } catch (error) {
+//     res.status(400).json({error: error.message});
+//   }
+// }; 
+
+// login user 
+authController.loginUser = async (req,res,next) => { 
+  const { email, password } = req.body; 
+
+  // console.log('in authController.loginUser req.body ', req.body);
+
+  try {
+    // const user = await Person.login(email, password);  
+    const user = await Person.findOne({email});
+    
+    if(!user) {
+      throw Error('Incorrect email or password');
+    } 
+
+    const hash = user.password;  
+
+    const match = await bcrypt.compare(password, hash);
+
+    if (match) {
+      const token = createToken(user._id);
+
+      // const cookieString = cookie.serialize('jwtToken', token, {
+      //   // httpOnly: true,
+      //   // secure: true,
+      // });
+      // console.log('Serialized cookie:', cookieString);
+      // res.setHeader('Set-Cookie', cookieString);
+      res.cookie('jwtToken', token, {
+        // httpOnly: true,
+        // secure: true,
+      });
+      console.log('token>>>>>>>>>>>>>>>>>>>>> ', token);
+      // console.log('req', req)
+      res.locals.token = token;
+
+      return next();
+      // return res.status(200).json({token});
+    } else {
+      throw Error('Incorrect email or password');
+    } 
+  } catch (error) {
+    res.status(400).json({error: error.message});
+  }
+}; 
+
+/* Controller that verifies token */
+
+authController.verifyToken = (req, res, next) => {
+  // Extract token from Authorization header
+  // const authorizationHeader = req.headers['authorization'];
+
+  // if (!authorizationHeader || !authorizationHeader.startsWith('Bearer ')) {
+  // Token not provided in the correct format
+  //   return res.status(401).json({ error: 'Unauthorized' });
+  // }
+
+  // const token = authorizationHeader.split(' ')[1];
+  // const token = req.cookies.jwtToken;
+  const token = req.cookies.jwtToken;
+  // console.log('req.cookies------------>', req.headers.cookie)
+  // console.log('req ', req.headers['cookie']);
+  console.log('in authController.verifyToken ', token);
+
+  if (token === undefined) return res.status(403).json({error: 'Unauthorized cookies'});
+
+  try {
+    // Verify the token
+    const decoded = jwt.verify(token, secret);
+    
+    // Attach the decoded user information onto req.user
+    req.user = decoded;
+    res.locals.id = req.user._id;
+    
+    console.log('THIS IS THE DATA DECODED', decoded);
+    
+    return next();
+  } catch (error) {
+    console.error('Token verification error:', error);
+    return res.status(403).json({ error: 'Invalid token' });
+  }
+};
+
+authController.deleteToken = (req, res, next) => {
+  try {
+    res.clearCookie('jwtToken');
+    return next();
+  } catch (error) {
+    console.error('Token deletion error:', error);
+    return res.status(403).json({ error: 'Unable to delete token' });
+  }
+};
+
+module.exports = authController;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CalcController.html">CalcController</a></li><li><a href="module-LoginContainer.html">LoginContainer</a></li><li><a href="module-authController.html">authController</a></li><li><a href="module-dataRetrieval.html">dataRetrieval</a></li><li><a href="module-plaidController.html">plaidController</a></li><li><a href="module-userController.html">userController</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-plaid-tutorial.html">plaid-tutorial</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sat Feb 03 2024 13:19:13 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

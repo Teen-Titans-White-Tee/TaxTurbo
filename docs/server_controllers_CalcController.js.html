@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: server/controllers/CalcController.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: server/controllers/CalcController.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * ************************************
+ *
+ * @module CalcController
+ * @description  Holds logic to calculate tax liabilites
+ *
+ * ************************************
+ */
+
+const { Income, Expense, Person } = require('../models/mongooseModels');
+
+const calc = {};
+
+/**
+ * @function stateYTDCalc
+ * @param {request} req user data 
+ * @param {response} res calculated taxes
+ * @param {function} next next middleware
+  
+ * @returns {function} next() and state taxes on res.locals.taxesOwed.state
+ */
+calc.stateYTDCalc = (req, res, next) => {
+
+  const YTD = res.locals.estimatedIncome - (res.locals.businessExpenses + res.locals.preTaxRetirementContributions); 
+  const bracketLow = [];
+  res.locals.stateTables.forEach((ele) => {bracketLow.push(ele['income_range_low']);});
+  const bracketHigh = [];
+  res.locals.stateTables.forEach((ele) => {bracketHigh.push(ele['income_range_high']);});
+  const rates = [];
+  res.locals.stateTables.forEach((ele) =>{rates.push(ele['tax_rate']);});
+  let taxesOwed = 0;
+
+  // 
+  if (bracketHigh[0] === 999999999){
+    taxesOwed = YTD * rates[0];
+  } else {
+    for (let i = 0; i &lt; bracketLow.length; i++){
+      const min = bracketLow[i];
+      const max = bracketHigh[i];
+      const currentRate = rates[i];
+
+      if (max === 999999999){
+        taxesOwed += ((YTD - min) * currentRate);
+      } else if (YTD &lt;= max){
+        taxesOwed += ((YTD - min) * currentRate);
+        break;
+      } else {
+        taxesOwed += ((max - min) * currentRate);
+      }
+    }
+  }
+
+  res.locals.taxesOwed.state = taxesOwed;
+  return next();
+};
+
+/**
+ * @function fedYTDCalc
+ * @param {request} req user data 
+ * @param {response} res calculated taxes
+ * @param {function} next next middleware
+  
+ * @returns {function} next() and federal taxes on res.locals.taxesOwed.fed
+ */
+calc.fedYTDCalc = (req, res, next) => {
+  const YTD = res.locals.estimatedIncome - (res.locals.businessExpenses + res.locals.preTaxRetirementContributions); // &lt;-- property needs to be added
+  const bracketLow = [];
+  res.locals.stateTables.forEach((ele) => {bracketLow.push(ele['income_range_low']);});
+  const bracketHigh = [];
+  res.locals.stateTables.forEach((ele) => {bracketHigh.push(ele['income_range_high']);});
+  const rates = [];
+  res.locals.stateTables.forEach((ele) =>{rates.push(ele['tax_rate']);});
+  let taxesOwed = 0;
+
+  for (let i = 0; i &lt; bracketLow.length; i++){
+
+    const min = bracketLow[i];
+    const max = bracketHigh[i];
+    const currentRate = rates[i];
+    if (max === 999999999){
+      taxesOwed += ((YTD - min) * currentRate);
+    } else if (YTD &lt;= max){
+      taxesOwed += ((YTD - min) * currentRate);
+      break;
+    } else {
+      taxesOwed += ((max - min) * currentRate);
+    }
+  }
+  res.locals.taxesOwed.fed = taxesOwed;
+
+  
+  return next();
+};
+
+/**
+ * @function SSYTDCalc
+ * @param {request} req user data 
+ * @param {response} res calculated taxes
+ * @param {function} next next middleware
+  
+ * @returns {function} next() and social security taxes on res.locals.taxesOwed.SSI
+ */
+calc.SSYTDCalc = (req, res, next) => {
+  const YTD = res.locals.estimatedIncome - (res.locals.businessExpenses + res.locals.preTaxRetirementContributions); // &lt;-- property needs to be added
+  let taxesOwed = 0;
+
+  if (YTD &lt; 400) {
+    taxesOwed = 0;
+  } else if (YTD > 160200){
+    taxesOwed = 160200 * 0.124;
+  } else {
+    taxesOwed = YTD * 0.124;
+  }
+
+  res.locals.taxesOwed.SSI = taxesOwed;
+  return next();
+};
+
+/**
+ * @function medicareYTDCalc
+ * @param {request} req user data 
+ * @param {response} res calculated taxes
+ * @param {function} next next middleware
+  
+ * @returns {function} next() and medicare taxes on res.locals.taxesOwed.medicare
+ */
+calc.medicareYTDCalc = (req , res, next) => {
+  const YTD = res.locals.estimatedIncome - (res.locals.businessExpenses + res.locals.preTaxRetirementContributions); // &lt;-- property needs to be added
+  let taxesOwed = 0;
+  taxesOwed = YTD &lt; 400 ? 0 : YTD * 0.029;
+
+  res.locals.taxesOwed.medicare = taxesOwed;
+  return next();
+};
+
+/**
+ * @function allTaxes
+ * @param {request} req user data 
+ * @param {response} res calculated taxes
+ * @param {function} next next middleware
+  
+ * @returns {function} next() and total taxes on res.locals.storage
+ */
+calc.allTaxes = (req, res, next) => {
+  
+  const YTD = res.locals.estimatedIncome - (res.locals.businessExpenses + res.locals.preTaxRetirementContributions);
+  
+  const stateBracketLow = [];
+  const stateBracketHigh = [];
+  const stateRates = [];
+  res.locals.stateTables.forEach((ele) => {
+    stateBracketLow.push(parseInt(ele['income_range_low']));
+    stateBracketHigh.push(parseInt(ele['income_range_high']));
+    stateRates.push(parseFloat(ele['tax_rate']));
+  });
+
+  console.log ('Result from pushing to the arrays', stateBracketLow , stateBracketHigh, stateRates);
+  let stateTaxesOwed = 0;
+
+
+  const fedBracketLow = [];
+  const fedBracketHigh = [];
+  const fedRates = [];
+  res.locals.fedTables.forEach((ele) => {
+    fedBracketLow.push(parseInt(ele['income_range_low']));
+    fedBracketHigh.push(parseInt(ele['income_range_high']));
+    fedRates.push(parseFloat(ele['tax_rate']));
+  });
+
+  console.log ('Result from pushing to the fed arrays', fedBracketLow , fedBracketHigh, fedRates);
+  let fedTaxesOwed = 0;
+  let SSITaxesOwed = 0;
+  let MedicareTaxesOwed = 0;
+
+  //initializing res.locals.taxesOwed
+
+  res.locals.taxesOwed = res.locals.taxesOwed || {};
+
+  // Calculating state tax liability
+  if (stateBracketHigh[0] === 999999999){
+    stateTaxesOwed = YTD * stateRates[0];
+  } else {
+    for (let i = 0; i &lt; stateBracketLow.length; i++){
+      const min = stateBracketLow[i];
+      const max = stateBracketHigh[i];
+      const currentRate = stateRates[i];
+
+      if (max === 999999999){
+        stateTaxesOwed += ((YTD - min) * currentRate);
+      } else if (YTD &lt;= max){
+        stateTaxesOwed += ((YTD - min) * currentRate);
+        break;
+      } else {
+        stateTaxesOwed += ((max - min) * currentRate);
+      }
+    }
+  }
+
+  // calculating federal tax liability 
+  for (let i = 0; i &lt; fedBracketLow.length; i++){
+
+    const min = fedBracketLow[i];
+    const max = fedBracketHigh[i];
+    const currentRate = fedRates[i];
+
+    if (max === 999999999){
+      fedTaxesOwed += ((YTD - min) * currentRate);
+    } else if (YTD &lt;= max){
+      fedTaxesOwed += ((YTD - min) * currentRate);
+      break;
+    } else {
+      fedTaxesOwed += ((max - min) * currentRate);
+    }
+  }
+
+  // calculating self employment tax: Social Security Insurance
+  if (YTD &lt; 400) {
+    SSITaxesOwed = 0;
+  } else if (YTD > 160200){
+    SSITaxesOwed = 160200 * 0.124;
+  } else {
+    SSITaxesOwed = YTD * 0.124;
+  }
+  // calculating self employment tax: Medicare
+  MedicareTaxesOwed = YTD &lt; 400 ? 0 : YTD * 0.029;
+
+  console.log (`Final result of all the calculations, Medicare Taxes Owed: ${MedicareTaxesOwed}, SSITaxesOwed: ${SSITaxesOwed}, FedTaxesOwed: ${fedTaxesOwed}, StateTaxesOwed: ${stateTaxesOwed}` );
+
+  res.locals.taxesOwed = {
+    ...res.locals.taxesOwed,
+    medicare: MedicareTaxesOwed,
+    ssi: SSITaxesOwed,
+    fed: fedTaxesOwed,
+    stateTax: stateTaxesOwed
+  };
+  return next();
+}; 
+
+calc.storage = (req, res, next) => {
+  const {estimatedIncome,
+    businessExpenses,
+    preTaxRetirementContributions,
+    medicareTax,
+    ssiTax,
+    fedTax,
+    stateTax} = res.locals.userFound;
+
+  // estimatedIncome = parseInt (estimatedIncome),
+  // businessExpenses = parseInt(businessExpenses),
+  // preTaxRetirementContributions = parseInt(preTaxRetirementContributions),
+  // medicareTax = parseInt(medicareTax);
+  // ssiTax = parseInt (ssiTax),
+  // fedTax = parseInt (fedTax),
+  // stateTax = parseInt (stateTax);
+
+  res.locals.storage = {};
+  res.locals.storage = {
+    estimatedIncome,
+    businessExpenses,
+    preTaxRetirementContributions,
+    medicareTax,
+    ssiTax,
+    fedTax,
+    stateTax
+  };
+
+  return next();
+};
+
+calc.newNumbers = (req, res, next) => {
+  
+  const amount = parseInt(req.body.amount);
+
+  console.log ('COMING FROM THE NEW NUMBERS MIDDLEWARE, VALUE OF AMOUNT COMING FROM THE TRANSACTION', typeof amount);
+
+  try {
+    if (req.body.type === 'earning'){
+      res.locals.estimatedIncome = res.locals.userFound.estimatedIncome + amount;
+      res.locals.businessExpenses = res.locals.userFound.businessExpenses;
+    } else {
+      res.locals.estimatedIncome = res.locals.userFound.estimatedIncome;
+      res.locals.businessExpenses = res.locals.userFound.businessExpenses + amount;
+    }
+    res.locals.preTaxRetirementContributions = res.locals.userFound.preTaxRetirementContributions;
+
+    res.locals.state = res.locals.userFound.state;
+    res.locals.filingStatus = res.locals.userFound.filingStatus;
+
+    console.log ('DATA TYPE OF THE ESTIMATED INCOME', typeof res.locals.estimatedIncome);
+
+    console.log ('Coming from newnumbers middleware, result of adding the income plus earning', res.locals.estimatedIncome);
+  
+    return next();
+  }
+
+  catch {(err) => {
+    console.log('Error in calc.newNumbers' + err);
+    return next(err);
+  };}
+};
+
+calc.transactionOwed = (req , res, next) => {
+  const { medicare, ssi, fed, stateTax } = res.locals.taxesOwed;
+  const { medicareTax, ssiTax, fedTax} = res.locals.storage;
+  const stateOld = res.locals.storage.stateTax;
+
+  res.locals.transactionOwed = {};
+
+  res.locals.transactionOwed = {
+    transMedicare: medicare - medicareTax,
+    transSSI: ssi - ssiTax,
+    transFed: fed - fedTax,
+    transState: stateTax - stateOld
+  };
+
+  return next();
+};
+
+module.exports = calc;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-CalcController.html">CalcController</a></li><li><a href="module-LoginContainer.html">LoginContainer</a></li><li><a href="module-authController.html">authController</a></li><li><a href="module-dataRetrieval.html">dataRetrieval</a></li><li><a href="module-plaidController.html">plaidController</a></li><li><a href="module-userController.html">userController</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-plaid-tutorial.html">plaid-tutorial</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sat Feb 03 2024 13:19:13 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

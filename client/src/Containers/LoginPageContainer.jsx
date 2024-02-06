@@ -1,7 +1,19 @@
+/**
+ * ************************************
+ *
+ * @module LoginContainer
+ * @author
+ * @date
+ * @description stateful component to render login options
+ *
+ * ************************************
+ */
+
 import React, { useState } from 'react';
 import { Box, Button, TextField } from '@mui/material';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 
 const StyledLogin = styled.div`
@@ -134,14 +146,32 @@ const LoginPageContainer = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
- 
-    const isLoginSuccessful = true;
+    let isLoginSuccessful = false;
 
-    if (isLoginSuccessful) {
-      navigate('/dashboard');
-    } else {
-      console.log('Login failed');
-    }
+    // const response = axios.post('/auth/login', {email, password})
+
+    axios.post('http://localhost:3000/auth/login', {email, password}, { withCredentials: true })
+      .then((res) => {
+        console.log('response==========>', res);
+        if (res.data.token) {
+          // isLoginSuccessful = true;
+          navigate('/dashboard')
+        }
+      }).catch((err) => {
+        // navigate('/login')
+        console.log(err)
+        console.log('Login failed (axios post request)')
+        alert('wrong password or username')
+      })
+    
+    
+
+    // if (isLoginSuccessful) {
+    //   navigate('/dashboard');
+    // } else {
+    //   console.log('Login failed');
+    //   navigate('/login')
+    // }
   };
 
 

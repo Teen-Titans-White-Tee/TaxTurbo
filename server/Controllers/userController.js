@@ -1,3 +1,15 @@
+/**
+ * ************************************
+ *
+ * @module userController
+ * @description  Originally the implementation here was that we would create the document in the database using the Person model in this 
+  middleware function. Instead we will move the creation of the document at the end of the middleware chain in a function called createUser
+  since we do not have all the data we need just from the request body. We would still need the calculations for taxes and that is done further
+  down the middleware chain, we will embed that data onto the document once retrieved
+ *
+ * ************************************
+ */
+
 const userModels = require('../models/mongooseModels');
 
 const userController = {};
@@ -33,6 +45,7 @@ userController.findUser = (req, res, next) => {
   userModels.Person.findById(id).exec()
     .then (response => {
       res.locals.userFound = response;
+      res.locals.user = response;
       console.log ('User has been found by token verification', response);
       return next();
     })
@@ -115,6 +128,7 @@ userController.updateUser = (req, res, next) => {
       transState,
     }};
   } else if (req.body.type === 'deduction'){
+    console.log('Deduction Body',req.body);
     body = {expenses: {
       ...req.body,
       transMedicare,
@@ -147,7 +161,7 @@ userController.updateUser = (req, res, next) => {
   
   const id = req.user._id;
 
-  let update = {
+  const update = {
     estimatedIncome,
     businessExpenses,
     medicareTax: medicare,
